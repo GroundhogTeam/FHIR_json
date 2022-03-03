@@ -5046,7 +5046,7 @@ namespace FHIR_json.Controllers
             HttpClient client = new HttpClient();
 
             var response = await client.PostAsync(url, data);
-            return response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result);
         }
 
 
