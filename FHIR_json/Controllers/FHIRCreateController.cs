@@ -182,7 +182,7 @@ namespace FHIR_json.Controllers
         //}
         //讀檔分類Resource
         [HttpPost]
-        public Bundle LABM_JSON(List<OriginalJson.LABM> Labm_tags)
+        public async Task<dynamic> LABM_JSON(List<OriginalJson.LABM> Labm_tags)
         {
             //StreamReader r = new StreamReader(@"C:\Users\huang\source\repos\GroundhogTeam\NHIRDB_system\WebApplication3\ReadJSON\202112221134197LABM_B+_col_刪除中文結果值.json");
             //StreamReader r = new StreamReader(@"D:\信華專區\newNHIRDB_system\NHIRDB_system\WebApplication3\ReadJSON\202112221134197LABM_B+_col_刪除中文結果值.json");
@@ -465,11 +465,11 @@ namespace FHIR_json.Controllers
             var jsonpat = PatientJSON();
             var jsonenc = EncounterJSON();
             var bundlejson = BundleJSON();
-            return bundle;
+            return await GetandShare_Block(bundlejson);
         }
 
         [HttpPost]
-        public dynamic LABD_JSON(List<OriginalJson.LABD> Labd_tags) //Bundle
+        public async Task<dynamic> LABD_JSON(List<OriginalJson.LABD> Labd_tags) //Bundle
         {
             //var a = Request.Files.Count;
             //StreamReader r = new StreamReader(@"C:\Users\huang\source\repos\GroundhogTeam\NHIRDB_system\WebApplication3\ReadJSON\202112221134261LABD_B+_col.json");
@@ -727,16 +727,12 @@ namespace FHIR_json.Controllers
             var jsonpat = PatientJSON();
             var jsonenc = EncounterJSON();
             var bundlejson = BundleJSON();
-            //var bundlejsona = JsonConvert.DeserializeObject<List<FHIR_PathforCRLFmodel>>(bundlejson);//將JSON格式轉換成物件
-            //return bundlejson;
-            return bundle;
-            //return Json(bundlejson);
-            //return View(bundlejson);
+            return await GetandShare_Block(bundlejson);
         }
 
 
-
-        public Bundle TOTFA_JSON(List<OriginalJson.TOTFA> TOTFA_tags)
+        [HttpPost]
+        public async Task<dynamic> TOTFA_JSON(List<OriginalJson.TOTFA> TOTFA_tags)
         {
 
 
@@ -1641,9 +1637,10 @@ namespace FHIR_json.Controllers
             var jsonenc = EncounterJSON();
             var jsonmedrequest = MedicationRequestJSON();
             var bundlejson = BundleJSON();
-            return bundle;
+            return await GetandShare_Block(bundlejson);
         }
-        public Bundle TOTFB_JSON(List<OriginalJson.TOTFB> TOTFB_tags)
+        [HttpPost]
+        public async Task<dynamic> TOTFB_JSON(List<OriginalJson.TOTFB> TOTFB_tags)
         {
             //StreamReader r = new StreamReader(@"C:\Users\huang\source\repos\GroundhogTeam\NHIRDB_system\WebApplication3\ReadJSON\totfbe_merge_col.json");
             //StreamReader r = new StreamReader(@"D:\信華專區\newNHIRDB_system\NHIRDB_system\WebApplication3\ReadJSON\totfbe_merge_col.json");
@@ -2405,9 +2402,10 @@ namespace FHIR_json.Controllers
             var jsonmedrequest = MedicationRequestJSON();
             var jsonobs = ObservationJSON();
             var bundlejson = BundleJSON();
-            return bundle;
+            return await GetandShare_Block(bundlejson);
         }
-        public Bundle spe_JSON(List<OriginalJson.spe> spe_tags)
+        [HttpPost]
+        public async Task<dynamic> spe_JSON(List<OriginalJson.spe> spe_tags)
         {
             //讀取檔案
             //StreamReader r = new StreamReader(@"C:\Users\huang\source\repos\GroundhogTeam\NHIRDB_system\WebApplication3\ReadJSON\雙榮系統測試用個案清單-en.json");
@@ -2638,11 +2636,11 @@ namespace FHIR_json.Controllers
             var jsonspet = SpecimenJSON();
             var jsonconsent = ConsentJSON();
             var bundlejson = BundleJSON();
-            return bundle;
+            return await GetandShare_Block(bundlejson);
         }
 
 
-
+        [HttpPost]
         public async Task<dynamic> CRLF_JSON(List<OriginalJson.CRLF>  CRLF_tags)
         {
             //讀取檔案
@@ -5036,14 +5034,14 @@ namespace FHIR_json.Controllers
 
         }
 
-
+        [HttpPost]
         public async Task<dynamic> GetandShare_Block(string bundlejson)
         {
             //var json = JsonConvert.SerializeObject(Post_data);
             var data = new StringContent(bundlejson, Encoding.UTF8, "application/json");
 
             //var url = "http://localhost:12904/api/Geth/" + Request_Url;
-            var url = ConfigurationManager.AppSettings.Get("BlockAPI");
+            var url = ConfigurationManager.AppSettings.Get("FHIRAPI");
 
             HttpClient client = new HttpClient();
 
