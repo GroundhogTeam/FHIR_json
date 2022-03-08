@@ -220,7 +220,7 @@ namespace FHIR_json.Models
     public class Patient
     {
         public string resourceType { get; set; } = "Patient";
-        public int id { get; set; }
+        public string id { get; set; }
         public string name { get; set; }
         public string gender { get; set; }
         public string birthDate { get; set; }
@@ -248,7 +248,7 @@ namespace FHIR_json.Models
     public class ChargeItem
     {
         public string resourceType { get; set; } = "ChargeItem";
-        public int id { get; set; }
+        public string id { get; set; }
         public string status { get; set; }
         public subject subject { get; set; }
         public code code { get; set; }
@@ -266,7 +266,7 @@ namespace FHIR_json.Models
     public class Condition
     {
         public string resourceType { get; set; } = "Condition";
-        public int id { get; set; }
+        public string id { get; set; }
         public string recordedDate { get; set; }
 
         public onsetAge onsetAge { get; set; }
@@ -291,7 +291,7 @@ namespace FHIR_json.Models
     public class Organization
     {
         public string resourceType { get; set; } = "Organization";
-        public int id { get; set; }
+        public string id { get; set; }
         public List<identifier> identifier { get; set; }
 
 
@@ -304,7 +304,7 @@ namespace FHIR_json.Models
     public class Procedure
     {
         public string resourceType { get; set; } = "Procedure";
-        public int id { get; set; }
+        public string id { get; set; }
         public string status { get; set; }
         public string performedDateTime { get; set; }
         public subject subject { get; set; }
@@ -336,7 +336,7 @@ namespace FHIR_json.Models
     public class MedicationAdministration
     {
         public string resourceType { get; set; } = "MedicationAdministration";
-        public int id { get; set; }
+        public string id { get; set; }
         public string status { get; set; }//string
         public subject subject { get; set; }
         public List<reasonCode> reasonCode { get; set; }
@@ -358,7 +358,7 @@ namespace FHIR_json.Models
     public class Observation
     {
         public string resourceType { get; set; } = "Observation";
-        public int id { get; set; }
+        public string id { get; set; }
         public string status { get; set; }
         public subject subject { get; set; }
         public code code { get; set; }
@@ -443,7 +443,7 @@ namespace FHIR_json.Models
     public class Encounter
     {
         public string resourceType { get; set; } = "Encounter";
-        public int id { get; set; }
+        public string id { get; set; }
         public string status { get; set; }
 
         public List<type> type { get; set; }
@@ -513,7 +513,7 @@ namespace FHIR_json.Models
     public class MedicationRequest
     {
         public string resourceType { get; set; } = "MedicationRequest";
-        public int id { get; set; }
+        public string id { get; set; }
         public string status { get; set; }//string
         public string intent { get; set; }
 
@@ -604,7 +604,7 @@ namespace FHIR_json.Models
     {
         public string resourceType { get; set; } = "Specimen";
 
-        public int id { get; set; }
+        public string id { get; set; }
         public string status { get; set; }
         public string receivedTime { get; set; }
         public collection collection { get; set; }
@@ -628,7 +628,7 @@ namespace FHIR_json.Models
     {
         public string resourceType { get; set; } = "Consent";
 
-        public int id { get; set; }
+        public string id { get; set; }
         public string dateTime { get; set; }
         public string status { get; set; }
         public List<category> category { get; set; }

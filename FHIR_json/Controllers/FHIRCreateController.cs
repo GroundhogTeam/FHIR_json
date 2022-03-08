@@ -11,6 +11,8 @@ using System.Text.RegularExpressions;
 using System.Configuration;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.Http.Headers;
+using System.Security.Authentication;
 
 namespace FHIR_json.Controllers
 {
@@ -197,7 +199,7 @@ namespace FHIR_json.Controllers
             {
                 //organization
                 labm = new Organization();
-                labm.id = fhir_id++;
+                labm.id = $"{fhir_id++}";
                 labm.identifier = new List<identifier>
                 {
                     new identifier
@@ -209,7 +211,7 @@ namespace FHIR_json.Controllers
 
                 //Patient
                 labm_pt = new Patient();
-                labm_pt.id = fhir_id++;
+                labm_pt.id = $"{fhir_id++}";
                 labm_pt.birthDate = Labm_tag.LABMH10;
                 labm_pt.identifier = new List<identifier>
                 {
@@ -222,7 +224,7 @@ namespace FHIR_json.Controllers
 
                 //ChargeItem
                 labm_ct = new ChargeItem();
-                labm_ct.id = fhir_id++;
+                labm_ct.id = $"{fhir_id++}";
                 labm_ct.enteredDate = Labm_tag.LABMH4;
                 labm_ct.subject = new subject { reference = $"Patient/{labm_pt.id}" };//? 94
                 labm_ct.status = "billed";
@@ -240,7 +242,7 @@ namespace FHIR_json.Controllers
                 chalist.Add(labm_ct);
                 // enc
                 labm_en = new Encounter();
-                labm_en.id = fhir_id++;
+                labm_en.id = $"{fhir_id++}";
                 labm_en.status = "finished";
                 labm_en.type = new List<type>
                 {
@@ -317,7 +319,7 @@ namespace FHIR_json.Controllers
                 enclist.Add(labm_en);
                 //obeser
                 labm_h = new Observation();
-                labm_h.id = fhir_id++;
+                labm_h.id = $"{fhir_id++}";
                 labm_h.status = "final";
                 labm_h.subject = new subject { reference = $"Patient/{labm_pt.id}" };//?94
                 labm_h.encounter = new encounter { reference = $"Encounter/{labm_en.id}" };//?91
@@ -358,7 +360,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(labm_h);
 
                 labm_B = new Observation();
-                labm_B.id = fhir_id++;
+                labm_B.id = $"{fhir_id++}";
                 labm_B.status = "final";
                 labm_B.subject = new subject { reference = $"Patient/{labm_pt.id}" };//?94
                 labm_B.encounter = new encounter { reference = $"Encounter/{labm_en.id}" };//?91
@@ -487,7 +489,7 @@ namespace FHIR_json.Controllers
             {
                 //organization
                 labd = new Organization();
-                labd.id = fhir_id++;
+                labd.id = $"{fhir_id++}";
                 labd.identifier = new List<identifier>
                 {
                     new identifier
@@ -499,7 +501,7 @@ namespace FHIR_json.Controllers
 
                 //Patient
                 labd_pt = new Patient();
-                labd_pt.id = fhir_id++;
+                labd_pt.id = $"{fhir_id++}";
                 labd_pt.birthDate = Labd_tag.LABDH10;
                 labd_pt.identifier = new List<identifier>
                 {
@@ -511,7 +513,7 @@ namespace FHIR_json.Controllers
                 patlist.Add(labd_pt);
                 //enc
                 labd_en = new Encounter();
-                labd_en.id = fhir_id++;
+                labd_en.id = $"{fhir_id++}";
                 labd_en.status = "finished";
                 labd_en.type = new List<type>
                 {
@@ -587,7 +589,7 @@ namespace FHIR_json.Controllers
                 enclist.Add(labd_en);
                 //obeser
                 labd_h = new Observation();
-                labd_h.id = fhir_id++;
+                labd_h.id = $"{fhir_id++}";
                 labd_h.status = "final";
                 labd_h.subject = new subject { reference = $"Patient/{labd_pt.id}" };//?88
                 labd_h.encounter = new encounter { reference = $"Encounter/{labd_en.id}" };//?86
@@ -622,7 +624,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(labd_h);
 
                 labd_B = new Observation();
-                labd_B.id = fhir_id++;
+                labd_B.id = $"{fhir_id++}";
                 labd_B.status = "final";
                 labd_B.subject = new subject { reference = $"Patient/{labd_pt.id}" };//?88
                 labd_B.encounter = new encounter { reference = $"Encounter/{labd_en.id}" };//?86
@@ -750,7 +752,7 @@ namespace FHIR_json.Controllers
             {
                 //organization
                 fa = new Organization();
-                fa.id = fhir_id++;
+                fa.id = $"{fhir_id++}";
                 fa.identifier = new List<identifier>
                 {
                     new identifier
@@ -762,7 +764,7 @@ namespace FHIR_json.Controllers
 
                 //Patient
                 pt = new Patient();
-                pt.id = fhir_id++;
+                pt.id = $"{fhir_id++}";
                 pt.birthDate = TOTFA_tag.TOTFAD11;
                 pt.identifier = new List<identifier>
                 {
@@ -774,7 +776,7 @@ namespace FHIR_json.Controllers
                 patlist.Add(pt);
                 //enc
                 fa_en = new Encounter();
-                fa_en.id = fhir_id++;
+                fa_en.id = $"{fhir_id++}";
                 fa_en.status = "finished";
                 fa_en.type = new List<type>
                 {
@@ -861,7 +863,7 @@ namespace FHIR_json.Controllers
 
                 //obeser
                 med_day = new Observation();
-                med_day.id = fhir_id++;
+                med_day.id = $"{fhir_id++}";
                 med_day.status = "final";
                 med_day.subject = new subject { reference = $"Patient/{pt.id}" };//?
                 med_day.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//?
@@ -882,7 +884,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(med_day);
 
                 med_type = new Observation();
-                med_type.id = fhir_id++;
+                med_type.id = $"{fhir_id++}";
                 med_type.status = "final";
                 med_type.subject = new subject { reference = $"Patient/{pt.id}" };//?
                 med_type.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//?
@@ -904,7 +906,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(med_type);
                 //ChargeItem
                 fa_ct = new ChargeItem();
-                fa_ct.id = fhir_id++;
+                fa_ct.id = $"{fhir_id++}";
                 fa_ct.enteredDate = TOTFA_tag.TOTFAT3;
                 fa_ct.subject = new subject { reference = $"Patient/{pt.id}" };//? 57
                 fa_ct.status = "billed";
@@ -924,7 +926,7 @@ namespace FHIR_json.Controllers
 
                 //procedure
                 fa_p1 = new Procedure();
-                fa_p1.id = fhir_id++;
+                fa_p1.id = $"{fhir_id++}";
                 fa_p1.status = "completed";
                 fa_p1.subject = new subject { reference = $"Patient/{pt.id}" };//57??
                 fa_p1.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//52??
@@ -954,7 +956,7 @@ namespace FHIR_json.Controllers
                 prolist.Add(fa_p1);
 
                 fa_p2 = new Procedure();
-                fa_p2.id = fhir_id++;
+                fa_p2.id = $"{fhir_id++}";
                 fa_p2.status = "completed";
                 fa_p2.subject = new subject { reference = $"Patient/{pt.id}" };//57??
                 fa_p2.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//52??
@@ -984,7 +986,7 @@ namespace FHIR_json.Controllers
                 prolist.Add(fa_p2);
 
                 fa_p3 = new Procedure();
-                fa_p3.id = fhir_id++;
+                fa_p3.id = $"{fhir_id++}";
                 fa_p3.status = "completed";
                 fa_p3.subject = new subject { reference = $"Patient/{pt.id}" };//57??
                 fa_p3.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//52??
@@ -1015,7 +1017,7 @@ namespace FHIR_json.Controllers
                 prolist.Add(fa_p3);
 
                 fa_p4 = new Procedure();
-                fa_p4.id = fhir_id++;
+                fa_p4.id = $"{fhir_id++}";
                 fa_p4.status = "completed";
                 fa_p4.subject = new subject { reference = $"Patient/{pt.id}" };//57??
                 fa_p4.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//52??
@@ -1045,7 +1047,7 @@ namespace FHIR_json.Controllers
                 prolist.Add(fa_p4);
 
                 P1 = new Procedure();
-                P1.id = fhir_id++;
+                P1.id = $"{fhir_id++}";
                 P1.status = "completed";
                 P1.subject = new subject { reference = $"Patient/{pt.id}" };//57??
                 P1.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };// 52??
@@ -1076,7 +1078,7 @@ namespace FHIR_json.Controllers
                 prolist.Add(P1);
 
                 P2 = new Procedure();
-                P2.id = fhir_id++;
+                P2.id = $"{fhir_id++}";
                 P2.status = "completed";
                 P2.subject = new subject { reference = $"Patient/{pt.id}" };//57??
                 P2.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//52??
@@ -1106,7 +1108,7 @@ namespace FHIR_json.Controllers
                 prolist.Add(P2);
 
                 P3 = new Procedure();
-                P3.id = fhir_id++;
+                P3.id = $"{fhir_id++}";
                 P3.status = "completed";
                 P3.subject = new subject { reference = $"Patient/{pt.id}" };//57??
                 P3.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//52??
@@ -1138,7 +1140,7 @@ namespace FHIR_json.Controllers
 
                 //medicationrequest
                 fa_med = new MedicationRequest();
-                fa_med.id = fhir_id++;
+                fa_med.id = $"{fhir_id++}";
                 fa_med.status = "completed";
                 fa_med.intent = "order";
                 fa_med.subject = new subject { reference = $"Patient/{pt.id}" };//57
@@ -1515,7 +1517,7 @@ namespace FHIR_json.Controllers
 
                 //condition_fa_c1
                 fa_c1 = new Condition();
-                fa_c1.id = fhir_id++;
+                fa_c1.id = $"{fhir_id++}";
                 fa_c1.subject = new subject { reference = $"Patient/{pt.id}" };//57
                 fa_c1.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//?52
                                                                                         //fa_c1.code.text = "主診斷代碼";
@@ -1537,7 +1539,7 @@ namespace FHIR_json.Controllers
 
                 //condition_fa_c2
                 fa_c2 = new Condition();
-                fa_c2.id = fhir_id++;
+                fa_c2.id = $"{fhir_id++}";
                 fa_c2.subject = new subject { reference = $"Patient/{pt.id}" };//? 57
                 fa_c2.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//?52
                                                                                         //fa_c2.code.text = "次診斷代碼(一)";
@@ -1559,7 +1561,7 @@ namespace FHIR_json.Controllers
 
                 //condition_fa_c3
                 fa_c3 = new Condition();
-                fa_c3.id = fhir_id++;
+                fa_c3.id = $"{fhir_id++}";
                 fa_c3.subject = new subject { reference = $"Patient/{pt.id}" };//57
                 fa_c3.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//?52
                                                                                         //fa_c2.code.text = "次診斷代碼(二)";
@@ -1581,7 +1583,7 @@ namespace FHIR_json.Controllers
 
                 //condition_fa_c4
                 fa_c4 = new Condition();
-                fa_c4.id = fhir_id++;
+                fa_c4.id = $"{fhir_id++}";
                 fa_c4.subject = new subject { reference = $"Patient/{pt.id}" };//57
                 fa_c4.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//?52
                                                                                         //fa_c4.code.text = "次診斷代碼(三)";
@@ -1603,7 +1605,7 @@ namespace FHIR_json.Controllers
 
                 //condition_fa_c5
                 fa_c5 = new Condition();
-                fa_c5.id = fhir_id++;
+                fa_c5.id = $"{fhir_id++}";
                 fa_c5.subject = new subject { reference = $"Patient/{pt.id}" };//57
                 fa_c5.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//?52
                                                                                         //fa_c5.code.text = "次診斷代碼(四)";
@@ -1655,7 +1657,7 @@ namespace FHIR_json.Controllers
             {
                 //organization
                 fb = new Organization();
-                fb.id = fhir_id++;
+                fb.id = $"{fhir_id++}";
                 fb.identifier = new List<identifier>
                 {
                     new identifier
@@ -1667,7 +1669,7 @@ namespace FHIR_json.Controllers
 
                 //Patient
                 fb_pt = new Patient();
-                fb_pt.id = fhir_id++;
+                fb_pt.id = $"{fhir_id++}";
                 fb_pt.identifier = new List<identifier>
                 {
                     new identifier
@@ -1679,7 +1681,7 @@ namespace FHIR_json.Controllers
                 patlist.Add(fb_pt);
                 //enc
                 fb_en = new Encounter();
-                fb_en.id = fhir_id++;
+                fb_en.id = $"{fhir_id++}";
                 fb_en.status = "finished";
                 fb_en.type = new List<type>
                 {
@@ -1834,7 +1836,7 @@ namespace FHIR_json.Controllers
 
                 //obeser
                 fb_e_bed = new Observation();
-                fb_e_bed.id = fhir_id++;
+                fb_e_bed.id = $"{fhir_id++}";
                 fb_e_bed.status = "final";
                 fb_e_bed.subject = new subject { reference = $"Patient/{fb_pt.id}" };//?
                 fb_e_bed.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//?
@@ -1864,7 +1866,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(fb_e_bed);
 
                 fb_s_bed = new Observation();
-                fb_s_bed.id = fhir_id++;
+                fb_s_bed.id = $"{fhir_id++}";
                 fb_s_bed.status = "final";
                 fb_s_bed.subject = new subject { reference = $"Patient/{fb_pt.id}" };//?
                 fb_s_bed.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//?
@@ -1895,7 +1897,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(fb_s_bed);
                 //ChargeItem
                 fb_ct = new ChargeItem();
-                fb_ct.id = fhir_id++;
+                fb_ct.id = $"{fhir_id++}";
                 fb_ct.enteredDate = TOTFB_tag.TOTFBT3;
                 fb_ct.subject = new subject { reference = $"Patient/{fb_pt.id}" };//? 72
                 fb_ct.status = "billed";
@@ -1915,7 +1917,7 @@ namespace FHIR_json.Controllers
 
                 //procedure
                 fb_p1 = new Procedure();
-                fb_p1.id = fhir_id++;
+                fb_p1.id = $"{fhir_id++}";
                 fb_p1.status = "completed";
                 fb_p1.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_p1.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
@@ -1943,7 +1945,7 @@ namespace FHIR_json.Controllers
                 prolist.Add(fb_p1);
 
                 fb_p2 = new Procedure();
-                fb_p2.id = fhir_id++;
+                fb_p2.id = $"{fhir_id++}";
                 fb_p2.status = "completed";
                 fb_p2.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_p2.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
@@ -1971,7 +1973,7 @@ namespace FHIR_json.Controllers
                 prolist.Add(fb_p2);
 
                 fb_p3 = new Procedure();
-                fb_p3.id = fhir_id++;
+                fb_p3.id = $"{fhir_id++}";
                 fb_p3.status = "completed";
                 fb_p3.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_p3.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
@@ -1999,7 +2001,7 @@ namespace FHIR_json.Controllers
                 prolist.Add(fb_p3);
 
                 fb_p4 = new Procedure();
-                fb_p4.id = fhir_id++;
+                fb_p4.id = $"{fhir_id++}";
                 fb_p4.status = "completed";
                 fb_p4.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_p4.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
@@ -2027,7 +2029,7 @@ namespace FHIR_json.Controllers
                 prolist.Add(fb_p4);
 
                 fb_p5 = new Procedure();
-                fb_p5.id = fhir_id++;
+                fb_p5.id = $"{fhir_id++}";
                 fb_p5.status = "completed";
                 fb_p5.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_p5.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
@@ -2057,7 +2059,7 @@ namespace FHIR_json.Controllers
 
                 // Medcation---------------------------------//
                 fb_med = new MedicationRequest();
-                fb_med.id = fhir_id++;
+                fb_med.id = $"{fhir_id++}";
                 fb_med.status = "completed";
                 fb_med.intent = "order";
                 fb_med.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
@@ -2247,7 +2249,7 @@ namespace FHIR_json.Controllers
 
                 //condition_fb_c1
                 fb_c1 = new Condition();
-                fb_c1.id = fhir_id++;
+                fb_c1.id = $"{fhir_id++}";
                 fb_c1.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_c1.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
                 fb_c1.code = new code
@@ -2275,7 +2277,7 @@ namespace FHIR_json.Controllers
 
                 //condition_fb_c2
                 fb_c2 = new Condition();
-                fb_c2.id = fhir_id++;
+                fb_c2.id = $"{fhir_id++}";
                 fb_c2.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_c2.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
                                                                                         //fb_c2.code.text = "次診斷代碼(一)";
@@ -2304,7 +2306,7 @@ namespace FHIR_json.Controllers
 
                 //condition_fb_c3
                 fb_c3 = new Condition();
-                fb_c3.id = fhir_id++;
+                fb_c3.id = $"{fhir_id++}";
                 fb_c3.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_c3.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
                                                                                         //fb_c3.code.text = "次診斷代碼(二)";
@@ -2333,7 +2335,7 @@ namespace FHIR_json.Controllers
 
                 //condition_fb_c4
                 fb_c4 = new Condition();
-                fb_c4.id = fhir_id++;
+                fb_c4.id = $"{fhir_id++}";
                 fb_c4.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_c4.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
                                                                                         //fb_c4.code.text = "次診斷代碼(三)";
@@ -2362,7 +2364,7 @@ namespace FHIR_json.Controllers
 
                 //condition_fb_c5
                 fb_c5 = new Condition();
-                fb_c5.id = fhir_id++;
+                fb_c5.id = $"{fhir_id++}";
                 fb_c5.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_c5.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
                                                                                         //fb_c5.code.text = "次診斷代碼(四)";
@@ -2422,7 +2424,7 @@ namespace FHIR_json.Controllers
             {
                 //Patient
                 CPat = new Patient();
-                CPat.id = fhir_id++;
+                CPat.id = $"{fhir_id++}";
                 CPat.identifier = new List<identifier>
                 {
                     new identifier
@@ -2436,7 +2438,7 @@ namespace FHIR_json.Controllers
 
                 //organization
                 sp_og = new Organization();
-                sp_og.id = fhir_id++;
+                sp_og.id = $"{fhir_id++}";
                 sp_og.identifier = new List<identifier>
                 {
                     new identifier
@@ -2448,7 +2450,7 @@ namespace FHIR_json.Controllers
 
                 //Specimen
                 Sp = new Specimen();
-                Sp.id = fhir_id++;
+                Sp.id = $"{fhir_id++}";
                 Sp.accessionIdentifier = new accessionIdentifier
                 {
                     value = spe_tag.speid
@@ -2503,7 +2505,7 @@ namespace FHIR_json.Controllers
 
                 //Consent
                 Consent = new Consent();
-                Consent.id = fhir_id++;
+                Consent.id = $"{fhir_id++}";
                 Consent.dateTime = DateTime.Parse(spe_tag.agreedate).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 Consent.status = "active";
                 Consent.category = new List<category>
@@ -2553,7 +2555,7 @@ namespace FHIR_json.Controllers
 
                 //obeser
                 sp_age = new Observation();
-                sp_age.id = fhir_id++;
+                sp_age.id = $"{fhir_id++}";
                 sp_age.status = "final";
                 sp_age.subject = new subject { reference = $"Patient/{CPat.id}" };//559
                 sp_age.performer = new List<performer> { new performer { reference = $"Organization/{sp_og.id}" } };//562
@@ -2575,7 +2577,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(sp_age);
                 //
                 sp_height = new Observation();
-                sp_height.id = fhir_id++;
+                sp_height.id = $"{fhir_id++}";
                 sp_height.status = "final";
                 sp_height.subject = new subject { reference = $"Patient/{CPat.id}" };//559
                 sp_height.performer = new List<performer> { new performer { reference = $"Organization/{sp_og.id}" } };//562
@@ -2600,7 +2602,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(sp_height);
                 //
                 sp_weight = new Observation();
-                sp_weight.id = fhir_id++;
+                sp_weight.id = $"{fhir_id++}";
                 sp_weight.status = "final";
                 sp_weight.subject = new subject { reference = $"Patient/{CPat.id}" };//559
                 sp_weight.performer = new List<performer> { new performer { reference = $"Organization/{sp_og.id}" } };//562
@@ -2657,7 +2659,7 @@ namespace FHIR_json.Controllers
             {
                 //org
                 OG = new Organization();
-                OG.id = fhir_id++;
+                OG.id = $"{fhir_id++}";
                 //OG.identifier[0].value = CRLF_tag.hospid;
                 OG.identifier = new List<identifier>
                 {
@@ -2673,7 +2675,7 @@ namespace FHIR_json.Controllers
 
                 //Patient
                 Pat = new Patient();
-                Pat.id = fhir_id++;
+                Pat.id = $"{fhir_id++}";
                 Pat.identifier = new List<identifier>
                 {
                     new identifier
@@ -2696,7 +2698,7 @@ namespace FHIR_json.Controllers
                 //Procedure
                 //diag
                 diag = new Procedure();
-                diag.id = fhir_id++;
+                diag.id = $"{fhir_id++}";
                 diag.status = "completed";
                 diag.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                                                                                //diag.performedDateTime = CRLF_tag.dsdiag;
@@ -2740,7 +2742,7 @@ namespace FHIR_json.Controllers
 
                 //P1
                 P1 = new Procedure();
-                P1.id = fhir_id++;
+                P1.id = $"{fhir_id++}";
                 P1.status = "completed";
                 P1.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                                                                              // P1.performedDateTime = CRLF_tag.dop_mds; 
@@ -2825,7 +2827,7 @@ namespace FHIR_json.Controllers
 
                 //P2
                 P2 = new Procedure();
-                P2.id = fhir_id++;
+                P2.id = $"{fhir_id++}";
                 P2.status = "completed";
                 P2.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 P2.reasonCode = new List<reasonCode>
@@ -2860,7 +2862,7 @@ namespace FHIR_json.Controllers
 
                 //P3
                 P3 = new Procedure();
-                P3.id = fhir_id++;
+                P3.id = $"{fhir_id++}";
                 P3.status = "completed";
                 P3.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 P3.reasonCode = new List<reasonCode>
@@ -2894,7 +2896,7 @@ namespace FHIR_json.Controllers
 
                 //Radio1
                 Radio1 = new Procedure();
-                Radio1.id = fhir_id++;
+                Radio1.id = $"{fhir_id++}";
                 Radio1.status = "completed";
                 Radio1.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 Radio1.outcome = new outcome
@@ -3163,7 +3165,7 @@ namespace FHIR_json.Controllers
 
                 //M1
                 M1 = new Procedure();
-                M1.id = fhir_id++;
+                M1.id = $"{fhir_id++}";
                 M1.status = "completed";
                 M1.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 if (CRLF_tag.dsyt == null || CRLF_tag.dchem == null)
@@ -3211,7 +3213,7 @@ namespace FHIR_json.Controllers
 
                 //m4
                 m4 = new Procedure();
-                m4.id = fhir_id++;
+                m4.id = $"{fhir_id++}";
                 m4.status = "completed";
                 m4.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 m4.code = new code
@@ -3231,7 +3233,7 @@ namespace FHIR_json.Controllers
 
                 //m7
                 m7 = new Procedure();
-                m7.id = fhir_id++;
+                m7.id = $"{fhir_id++}";
                 m7.status = "completed";
                 m7.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 m7.code = new code
@@ -3250,7 +3252,7 @@ namespace FHIR_json.Controllers
 
                 //condition_Con
                 Con = new Condition();
-                Con.id = fhir_id++;
+                Con.id = $"{fhir_id++}";
                 //Con.subject[0].reference = Pat1.identifier[0].value;
                 Con.subject = new subject { reference = $"Patient/{Pat.id}" };
                 //Con.onsetAge[0].unit = "years";
@@ -3641,7 +3643,7 @@ namespace FHIR_json.Controllers
 
                 //condition-SCC
                 SCC = new Condition();
-                SCC.id = fhir_id++;
+                SCC.id = $"{fhir_id++}";
                 SCC.recordedDate = CRLF_tag.drecur;
                 SCC.subject = new subject { reference = $"Patient/{Pat.id}" };
                 //SCC.extension[0].url = "http://hl7.org/fhir/StructureDefinition/condition-related";
@@ -3700,7 +3702,7 @@ namespace FHIR_json.Controllers
 
                 //chargeitem
                 m6 = new ChargeItem();
-                m6.id = fhir_id++;
+                m6.id = $"{fhir_id++}";
                 m6.status = "billed";
                 m6.subject = new subject { reference = $"Patient/{Pat.id}" };
                 //m6.code[0].text = "申報醫院緩和照護";
@@ -3731,7 +3733,7 @@ namespace FHIR_json.Controllers
 
                 //MedicationAdministration-m2
                 m2 = new MedicationAdministration();
-                m2.id = fhir_id++;
+                m2.id = $"{fhir_id++}";
                 //List<medicationCodeableConce> a = new List<medicationCodeableConce>();
                 m2.status = "completed";
                 m2.subject = new subject { reference = $"Patient/{Pat.id}" };
@@ -3798,7 +3800,7 @@ namespace FHIR_json.Controllers
 
                 //MedicationAdministration-m3
                 m3 = new MedicationAdministration();
-                m3.id = fhir_id++;
+                m3.id = $"{fhir_id++}";
                 m3.status = "completed";
                 m3.subject = new subject { reference = $"Patient/{Pat.id}" };
                 //m3.reasonCode[0].text = "外院免疫治療";
@@ -3864,7 +3866,7 @@ namespace FHIR_json.Controllers
 
                 //MedicationAdministration-m5
                 m5 = new MedicationAdministration();
-                m5.id = fhir_id++;
+                m5.id = $"{fhir_id++}";
                 m5.status = "completed";//重複了
                 m5.subject = new subject { reference = $"Patient/{Pat.id}" };
                 //m5.reasonCode[0].text = "外院標靶治療";
@@ -3929,7 +3931,7 @@ namespace FHIR_json.Controllers
 
                 //Observation
                 TS = new Observation();
-                TS.id = fhir_id++;
+                TS.id = $"{fhir_id++}";
                 TS.subject = new subject { reference = $"Patient/{Pat.id}" };
                 TS.status = "final";
                 TS.code = new code
@@ -4077,7 +4079,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(TS);
                 //
                 pni = new Observation();
-                pni.id = fhir_id++;
+                pni.id = $"{fhir_id++}";
                 pni.subject = new subject { reference = $"Patient/{Pat.id}" };
                 pni.status = "final";
                 pni.code = new code
@@ -4097,7 +4099,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(pni);
 
                 lvi = new Observation();
-                lvi.id = fhir_id++;
+                lvi.id = $"{fhir_id++}";
                 lvi.subject = new subject { reference = $"Patient/{Pat.id}" };
                 lvi.status = "final";
                 lvi.code = new code
@@ -4117,7 +4119,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(lvi);
 
                 nexam = new Observation();
-                nexam.id = fhir_id++;
+                nexam.id = $"{fhir_id++}";
                 nexam.status = "final";
                 nexam.subject = new subject { reference = $"Patient/{Pat.id}" };
                 nexam.code = new code
@@ -4137,7 +4139,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(nexam);
 
                 nposit = new Observation();
-                nposit.id = fhir_id++;
+                nposit.id = $"{fhir_id++}";
                 nposit.status = "final";
                 nposit.subject = new subject { reference = $"Patient/{Pat.id}" };
                 nposit.code = new code
@@ -4157,7 +4159,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(nposit);
 
                 clinical_T = new Observation();
-                clinical_T.id = fhir_id++;
+                clinical_T.id = $"{fhir_id++}";
                 clinical_T.status = "final";
                 clinical_T.subject = new subject { reference = $"Patient/{Pat.id}" };
                 clinical_T.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -4179,7 +4181,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(clinical_T);
 
                 clinical_N = new Observation();
-                clinical_N.id = fhir_id++;
+                clinical_N.id = $"{fhir_id++}";
                 clinical_N.status = "final";
                 clinical_N.subject = new subject { reference = $"Patient/{Pat.id}" };
                 clinical_N.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -4200,7 +4202,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(clinical_N);
 
                 clinical_M = new Observation();
-                clinical_M.id = fhir_id++;
+                clinical_M.id = $"{fhir_id++}";
                 clinical_M.status = "final";
                 clinical_M.subject = new subject { reference = $"Patient/{Pat.id}" };
                 clinical_M.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -4221,7 +4223,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(clinical_M);
 
                 CG_clinical = new Observation();
-                CG_clinical.id = fhir_id++;
+                CG_clinical.id = $"{fhir_id++}";
                 CG_clinical.status = "final";
                 CG_clinical.subject = new subject { reference = $"Patient/{Pat.id}" };
                 CG_clinical.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -4297,7 +4299,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(CG_clinical);
 
                 pathology_T = new Observation();
-                pathology_T.id = fhir_id++;
+                pathology_T.id = $"{fhir_id++}";
                 pathology_T.status = "final";
                 pathology_T.subject = new subject { reference = $"Patient/{Pat.id}" };
                 pathology_T.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -4345,7 +4347,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(pathology_T);
 
                 pathology_N = new Observation();
-                pathology_N.id = fhir_id++;
+                pathology_N.id = $"{fhir_id++}";
                 pathology_N.status = "final";
                 pathology_N.subject = new subject { reference = $"Patient/{Pat.id}" };
                 pathology_N.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -4394,7 +4396,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(pathology_N);
 
                 pathology_M = new Observation();
-                pathology_M.id = fhir_id++;
+                pathology_M.id = $"{fhir_id++}";
                 pathology_M.status = "final";
                 pathology_M.subject = new subject { reference = $"Patient/{Pat.id}" };
                 pathology_M.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -4442,7 +4444,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(pathology_M);
 
                 CG_pathology = new Observation();
-                CG_pathology.id = fhir_id++;
+                CG_pathology.id = $"{fhir_id++}";
                 CG_pathology.status = "final";
                 CG_pathology.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
                 CG_pathology.subject = new subject { reference = $"Patient/{Pat.id}" };
@@ -4519,7 +4521,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(CG_pathology);
 
                 CG_OtherC = new Observation();
-                CG_OtherC.id = fhir_id++;
+                CG_OtherC.id = $"{fhir_id++}";
                 CG_OtherC.code = new code
                 {
                     text = "其他分期系統",
@@ -4567,7 +4569,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(CG_OtherC);
 
                 CG_OtherP = new Observation();
-                CG_OtherP.id = fhir_id++;
+                CG_OtherP.id = $"{fhir_id++}";
                 CG_OtherP.code = new code
                 {
                     text = "其他分期系統",
@@ -4616,7 +4618,7 @@ namespace FHIR_json.Controllers
 
 
                 height = new Observation();
-                height.id = fhir_id++;
+                height.id = $"{fhir_id++}";
                 height.status = "final";
                 height.subject = new subject { reference = $"Patient/{Pat.id}" };
                 height.code = new code
@@ -4658,7 +4660,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(height);
 
                 weight = new Observation();
-                weight.id = fhir_id++;
+                weight.id = $"{fhir_id++}";
                 weight.status = "final";
                 weight.subject = new subject { reference = $"Patient/{Pat.id}" };
                 weight.code = new code
@@ -4703,7 +4705,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(weight);
 
                 smoke = new Observation();
-                smoke.id = fhir_id++;
+                smoke.id = $"{fhir_id++}";
                 smoke.status = "final";
                 smoke.subject = new subject { reference = $"Patient/{Pat.id}" };
                 smoke.code = new code
@@ -4724,7 +4726,7 @@ namespace FHIR_json.Controllers
 
                 //Observation-btchew
                 btchew = new Observation();
-                btchew.id = fhir_id++;
+                btchew.id = $"{fhir_id++}";
                 btchew.status = "final";
                 //btchew.subject[0].reference = "";//???
                 btchew.subject = new subject { reference = $"Patient/{Pat.id}" };
@@ -4748,7 +4750,7 @@ namespace FHIR_json.Controllers
 
                 //Observation-drinking
                 drinking = new Observation();
-                drinking.id = fhir_id++;
+                drinking.id = $"{fhir_id++}";
                 drinking.status = "final";
                 //btchew.subject[0].reference = "";//???
                 drinking.subject = new subject { reference = $"Patient/{Pat.id}" };
@@ -4772,7 +4774,7 @@ namespace FHIR_json.Controllers
 
                 //Observation-drinking
                 ps = new Observation();
-                ps.id = fhir_id++;
+                ps.id = $"{fhir_id++}";
                 ps.status = "final";
                 //btchew.subject[0].reference = "";//???
                 ps.subject = new subject { reference = $"Patient/{Pat.id}" };
@@ -4796,7 +4798,7 @@ namespace FHIR_json.Controllers
 
                 //Observation-ssf1
                 ssf1 = new Observation();
-                ssf1.id = fhir_id++;
+                ssf1.id = $"{fhir_id++}";
                 ssf1.status = "final";
                 ssf1.subject = new subject { reference = $"Patient/{Pat.id}" };
                 //ssf1.code[0].text = "癌症部位特定因子 1";
@@ -4820,7 +4822,7 @@ namespace FHIR_json.Controllers
 
                 //Observation-ssf2
                 ssf2 = new Observation();
-                ssf2.id = fhir_id++;
+                ssf2.id = $"{fhir_id++}";
                 ssf2.status = "final";
                 ssf2.subject = new subject { reference = $"Patient/{Pat.id}" };
                 //ssf2.subject[0].reference = "";//???
@@ -4845,7 +4847,7 @@ namespace FHIR_json.Controllers
 
                 //Observation-ssf3
                 ssf3 = new Observation();
-                ssf3.id = fhir_id++;
+                ssf3.id = $"{fhir_id++}";
                 ssf3.status = "final";
                 //ssf3.subject[0].reference = "";//???
                 ssf3.subject = new subject { reference = $"Patient/{Pat.id}" };
@@ -4870,7 +4872,7 @@ namespace FHIR_json.Controllers
 
                 //Observation-ssf4
                 ssf4 = new Observation();
-                ssf4.id = fhir_id++;
+                ssf4.id = $"{fhir_id++}";
                 ssf4.status = "final";
                 //Obs.subject[0].reference = "";//???
                 ssf4.subject = new subject { reference = $"Patient/{Pat.id}" };
@@ -4896,7 +4898,7 @@ namespace FHIR_json.Controllers
 
                 //Observation-ssf5
                 ssf5 = new Observation();
-                ssf5.id = fhir_id++;
+                ssf5.id = $"{fhir_id++}";
                 ssf5.status = "final";
                 //ssf5.valueCodeableConcept[0].coding[0].code = CRLF_tag.ssf5;
                 //Obs.subject[0].reference = "";//???
@@ -4920,7 +4922,7 @@ namespace FHIR_json.Controllers
 
                 //ssf6-ssf10
                 ssf6 = new Observation();
-                ssf6.id = fhir_id++;
+                ssf6.id = $"{fhir_id++}";
                 ssf6.status = "final";
                 ssf6.subject = new subject { reference = $"Patient/{Pat.id}" };//???
                 ssf6.code = new code
@@ -4940,7 +4942,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(ssf6);
 
                 ssf7 = new Observation();
-                ssf7.id = fhir_id++;
+                ssf7.id = $"{fhir_id++}";
                 ssf7.status = "final";
                 ssf7.subject = new subject { reference = $"Patient/{Pat.id}" };//???
                 ssf7.code = new code
@@ -4960,7 +4962,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(ssf7);
 
                 ssf8 = new Observation();
-                ssf8.id = fhir_id++;
+                ssf8.id = $"{fhir_id++}";
                 ssf8.status = "final";
                 ssf8.subject = new subject { reference = $"Patient/{Pat.id}" };//???
                 ssf8.code = new code
@@ -4980,7 +4982,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(ssf8);
 
                 ssf9 = new Observation();
-                ssf9.id = fhir_id++;
+                ssf9.id = $"{fhir_id++}";
                 ssf9.status = "final";
                 ssf9.subject = new subject { reference = $"Patient/{Pat.id}" };//???
                 ssf9.code = new code
@@ -5000,7 +5002,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(ssf9);
 
                 ssf10 = new Observation();
-                ssf10.id = fhir_id++;
+                ssf10.id = $"{fhir_id++}";
                 ssf10.status = "final";
                 ssf10.subject = new subject { reference = $"Patient/{Pat.id}" };//???
                 ssf10.code = new code
@@ -5042,9 +5044,18 @@ namespace FHIR_json.Controllers
 
             //var url = "http://localhost:12904/api/Geth/" + Request_Url;
             var url = ConfigurationManager.AppSettings.Get("FHIRAPI");
+            var Username = ConfigurationManager.AppSettings.Get("Username");
+            var Password = ConfigurationManager.AppSettings.Get("Password");
 
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             HttpClient client = new HttpClient();
 
+            //specify to use TLS 1.2 as default connection
+            var byteArray = Encoding.ASCII.GetBytes($"{Username}:{Password}");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+
+            //POST資料
             var response = await client.PostAsync(url, data);
             return JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result);
         }
