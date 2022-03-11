@@ -382,19 +382,15 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                labm_B.method = new List<method>
+                labm_B.method = new method
                 {
-                    new method
-                    {
-                        coding = new List<coding>
+                    coding = new List<coding>
                         {
                             new coding
                             {
                                code=Labm_tag.LABMR3
                             }
                         }
-                    }
-
                 };
                 labm_B.valueQuantity = new valueQuantity
                 {
@@ -648,18 +644,15 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                labd_B.method = new List<method>
+                labd_B.method = new method
                 {
-                    new method
-                    {
-                        coding = new List<coding>
+                    coding = new List<coding>
                         {
                             new coding
                             {
                                 code=Labd_tag.LABDR3
                             }
                         }
-                    }
                 };
                 labd_B.valueQuantity = new valueQuantity
                 {
@@ -3967,11 +3960,9 @@ namespace FHIR_json.Controllers
                 //        }
                 //    }
                 //};
-                TS.method = new List<method>
+                TS.method = new method
                 {
-                    new method
-                    {
-                        coding = new List<coding>
+                    coding = new List<coding>
                         {
                             new coding
                             {
@@ -3979,8 +3970,7 @@ namespace FHIR_json.Controllers
 
                             }
                         },
-                        text="癌症確診方式"
-                    }
+                    text = "癌症確診方式"
                 };
                 //TS.method = new List<method>
                 //{

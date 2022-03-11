@@ -212,8 +212,8 @@ namespace FHIR_json.Controllers
                 //Patient
                 labm_pt = new Patient();
                 labm_pt.id = $"{fhir_id++}";
-                //labm_pt.birthDate = Labm_tag.LABMH10;
-                labm_pt.birthDate = DateTime.Parse(Labm_tag.LABMH10).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                labm_pt.birthDate = Labm_tag.LABMH10;
+                //labm_pt.birthDate = DateTime.Parse(Labm_tag.LABMH10).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 labm_pt.identifier = new List<identifier>
                 {
                     new identifier
@@ -226,8 +226,8 @@ namespace FHIR_json.Controllers
                 //ChargeItem
                 labm_ct = new ChargeItem();
                 labm_ct.id = $"{fhir_id++}";
-                //labm_ct.enteredDate = Labm_tag.LABMH4;
-                labm_ct.enteredDate = DateTime.Parse(Labm_tag.LABMH4).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                labm_ct.enteredDate = Labm_tag.LABMH4;
+                //labm_ct.enteredDate = DateTime.Parse(Labm_tag.LABMH4).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 labm_ct.subject = new subject { reference = $"Patient/{labm_pt.id}" };//? 94
                 labm_ct.status = "billed";
                 labm_ct.code = new code
@@ -343,7 +343,7 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                labm_h.issued = Labm_tag.LABMH22;
+                labm_h.issued =DateTime.Parse(Labm_tag.LABMH22).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 labm_h.effectiveDateTime = DateTime.Parse(Labm_tag.LABMH23).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 labm_h.category = new List<category>
                 {
@@ -379,23 +379,19 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code=Labm_tag.LABMR2
+                            code=Labm_tag.LABMR2 ?? "未知"
                         }
                     }
                 };
-                labm_B.method = new List<method>
+                labm_B.method = new method
                 {
-                    new method
-                    {
-                        coding = new List<coding>
+                    coding = new List<coding>
                         {
                             new coding
                             {
                                code=Labm_tag.LABMR3
                             }
                         }
-                    }
-
                 };
                 labm_B.valueQuantity = new valueQuantity
                 {
@@ -505,8 +501,8 @@ namespace FHIR_json.Controllers
                 //Patient
                 labd_pt = new Patient();
                 labd_pt.id = $"{fhir_id++}";
-                //labd_pt.birthDate = Labd_tag.LABDH10;
-                labd_pt.birthDate = DateTime.Parse(Labd_tag.LABDH10).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                labd_pt.birthDate = Labd_tag.LABDH10;
+                //labd_pt.birthDate = DateTime.Parse(Labd_tag.LABDH10).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 labd_pt.identifier = new List<identifier>
                 {
                     new identifier
@@ -608,7 +604,7 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                labd_h.issued = Labd_tag.LABDH19;
+                labd_h.issued = DateTime.Parse(Labd_tag.LABDH19).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 labd_h.effectiveDateTime = DateTime.Parse(Labd_tag.LABDH20).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 labd_h.category = new List<category>
                 {
@@ -649,18 +645,15 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                labd_B.method = new List<method>
+                labd_B.method = new method
                 {
-                    new method
-                    {
-                        coding = new List<coding>
+                    coding = new List<coding>
                         {
                             new coding
                             {
                                 code=Labd_tag.LABDR3
                             }
                         }
-                    }
                 };
                 labd_B.valueQuantity = new valueQuantity
                 {
@@ -769,8 +762,8 @@ namespace FHIR_json.Controllers
                 //Patient
                 pt = new Patient();
                 pt.id = $"{fhir_id++}";
-               // pt.birthDate = TOTFA_tag.TOTFAD11;
-                pt.birthDate = DateTime.Parse(TOTFA_tag.TOTFAD11).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                pt.birthDate = TOTFA_tag.TOTFAD11;
+                //pt.birthDate = DateTime.Parse(TOTFA_tag.TOTFAD11).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 pt.identifier = new List<identifier>
                 {
                     new identifier
@@ -912,8 +905,8 @@ namespace FHIR_json.Controllers
                 //ChargeItem
                 fa_ct = new ChargeItem();
                 fa_ct.id = $"{fhir_id++}";
-                //fa_ct.enteredDate = TOTFA_tag.TOTFAT3;
-                fa_ct.enteredDate = DateTime.Parse(TOTFA_tag.TOTFAT3).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                fa_ct.enteredDate = TOTFA_tag.TOTFAT3;
+                //fa_ct.enteredDate = DateTime.Parse(TOTFA_tag.TOTFAT3).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 fa_ct.subject = new subject { reference = $"Patient/{pt.id}" };//? 57
                 fa_ct.status = "billed";
                 fa_ct.code = new code
@@ -1683,8 +1676,8 @@ namespace FHIR_json.Controllers
                         value=TOTFB_tag.TOTFBD3
                     }
                 };
-               // fb_pt.birthDate = TOTFB_tag.TOTFBD6;
-                fb_pt.birthDate = DateTime.Parse(TOTFB_tag.TOTFBD6).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                fb_pt.birthDate = TOTFB_tag.TOTFBD6;
+                //fb_pt.birthDate = DateTime.Parse(TOTFB_tag.TOTFBD6).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 patlist.Add(fb_pt);
                 //enc
                 fb_en = new Encounter();
@@ -1905,8 +1898,8 @@ namespace FHIR_json.Controllers
                 //ChargeItem
                 fb_ct = new ChargeItem();
                 fb_ct.id = $"{fhir_id++}";
-                //fb_ct.enteredDate = TOTFB_tag.TOTFBT3;
-                fb_ct.enteredDate = DateTime.Parse(TOTFB_tag.TOTFBT3).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                fb_ct.enteredDate = TOTFB_tag.TOTFBT3;
+                //fb_ct.enteredDate = DateTime.Parse(TOTFB_tag.TOTFBT3).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 fb_ct.subject = new subject { reference = $"Patient/{fb_pt.id}" };//? 72
                 fb_ct.status = "billed";
                 //fb_ct.code.coding[0].code = TOTFB_tag.TOTFBT5
@@ -2692,8 +2685,8 @@ namespace FHIR_json.Controllers
                     }
                 };
                 Pat.gender = CRLF_tag.sex;
-                //Pat.birthDate = CRLF_tag.dbirth;
-                Pat.birthDate = DateTime.Parse(CRLF_tag.dbirth).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                Pat.birthDate = CRLF_tag.dbirth;
+                //Pat.birthDate = DateTime.Parse(CRLF_tag.dbirth).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 Pat.address = new List<address>
                 {
                     new address
@@ -3145,7 +3138,6 @@ namespace FHIR_json.Controllers
                         }
 
                     }
-
                 };
                 Radio1.focalDevice = new List<focalDevice>
                 {
@@ -3390,8 +3382,8 @@ namespace FHIR_json.Controllers
                 //        }
                 //    }
                 //};
-                //Con.recordedDate = CRLF_tag.dcont;
-                Con.recordedDate = DateTime.Parse(CRLF_tag.dcont).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                Con.recordedDate = CRLF_tag.dcont;
+                //Con.recordedDate = DateTime.Parse(CRLF_tag.dcont).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 //Con.extension[0].url = "http://hl7.org/fhir/StructureDefinition/condition-assertedDate";
                 Con.extension = new List<extension>
                 {
@@ -3654,8 +3646,8 @@ namespace FHIR_json.Controllers
                 //condition-SCC
                 SCC = new Condition();
                 SCC.id = $"{fhir_id++}";
-                //SCC.recordedDate = CRLF_tag.drecur;
-                SCC.recordedDate = DateTime.Parse(CRLF_tag.drecur).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                SCC.recordedDate = CRLF_tag.drecur;
+                //SCC.recordedDate = DateTime.Parse(CRLF_tag.drecur).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 SCC.subject = new subject { reference = $"Patient/{Pat.id}" };
                 //SCC.extension[0].url = "http://hl7.org/fhir/StructureDefinition/condition-related";
                 SCC.extension = new List<extension>
@@ -3966,11 +3958,9 @@ namespace FHIR_json.Controllers
                 //        }
                 //    }
                 //};
-                TS.method = new List<method>
+                TS.method = new method
                 {
-                    new method
-                    {
-                        coding = new List<coding>
+                    coding = new List<coding>
                         {
                             new coding
                             {
@@ -3978,8 +3968,7 @@ namespace FHIR_json.Controllers
 
                             }
                         },
-                        text="癌症確診方式"
-                    }
+                    text = "癌症確診方式"
                 };
                 //TS.method = new List<method>
                 //{
@@ -5123,7 +5112,7 @@ namespace FHIR_json.Controllers
 
             var bundlejson = JsonConvert.SerializeObject(bundle, new JsonSerializerSettings
             {
-                NullValueHandling = NullValueHandling.Ignore
+                NullValueHandling = NullValueHandling.Ignore,
             });
 
             return bundlejson;
@@ -5384,8 +5373,20 @@ namespace FHIR_json.Controllers
         {
             var bundlejson = JsonConvert.SerializeObject(bundle, new JsonSerializerSettings
             {
-                NullValueHandling = NullValueHandling.Ignore
+                NullValueHandling = NullValueHandling.Ignore,
             });
+            bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\[{}]", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\[{}]", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @",,", ",");
+
+            //var bundlejson = JsonConvert.SerializeObject(bundle, Formatting.Indented, new JsonSerializerSettings
+            //{
+            //    NullValueHandling = NullValueHandling.Ignore
+            //    //MissingMemberHandling = MissingMemberHandling.Ignore
+            //});
+            //var bundlejson = JsonConvert.SerializeObject(bundle);
+
             return bundlejson;
 
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -56,6 +57,8 @@ namespace FHIR_json.Models
     public class category
     {
         public string text { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public List<coding> coding { get; set; } //1
 
     }
@@ -366,7 +369,7 @@ namespace FHIR_json.Models
         public List<focus> focus { get; set; }
         public List<category> category { get; set; }
         public string effectiveDateTime { get; set; }
-        public List<method> method { get; set; }
+        public method method { get; set; }
         public List<component> component { get; set; }
         public valueCodeableConcept valueCodeableConcept { get; set; }
         public valueQuantity valueQuantity { get; set; }
