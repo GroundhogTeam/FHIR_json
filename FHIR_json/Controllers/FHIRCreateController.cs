@@ -457,6 +457,8 @@ namespace FHIR_json.Controllers
                 obslist.Add(labm_B);
             }
             bundle.entry = new List<entry>();
+            var bundle_distinct = PatOrg_Distinct();
+            var response_json_ditsint = await GetandShare_Block(bundle_distinct);
             var jsonobs = ObservationJSON();
             var jsonorg = OrganizationJSON();
             //var jsonpro = ProcedureJSON();
@@ -717,6 +719,8 @@ namespace FHIR_json.Controllers
                 obslist.Add(labd_B);
             }
             bundle.entry = new List<entry>();
+            var bundle_distinct = PatOrg_Distinct();
+            var response_json_ditsint = await GetandShare_Block(bundle_distinct);
             var jsonobs = ObservationJSON();
             var jsonorg = OrganizationJSON();
             //var jsonpro = ProcedureJSON();
@@ -1625,6 +1629,8 @@ namespace FHIR_json.Controllers
 
             }
             bundle.entry = new List<entry>();
+            var bundle_distinct = PatOrg_Distinct();
+            var response_json_ditsint = await GetandShare_Block(bundle_distinct);
             var jsonobs = ObservationJSON();
             var jsonorg = OrganizationJSON();
             var jsonpro = ProcedureJSON();
@@ -2389,6 +2395,8 @@ namespace FHIR_json.Controllers
 
             }
             bundle.entry = new List<entry>();
+            var bundle_distinct = PatOrg_Distinct();
+            var response_json_ditsint = await GetandShare_Block(bundle_distinct);
 
             var jsonorg = OrganizationJSON();
             var jsonpro = ProcedureJSON();
@@ -2620,6 +2628,8 @@ namespace FHIR_json.Controllers
 
             }
             bundle.entry = new List<entry>();
+            var bundle_distinct = PatOrg_Distinct();
+            var response_json_ditsint = await GetandShare_Block(bundle_distinct);
             var jsonobs = ObservationJSON();
             var jsonorg = OrganizationJSON();
             //var jsonpro = ProcedureJSON();
@@ -4976,6 +4986,8 @@ namespace FHIR_json.Controllers
             }
 
             bundle.entry = new List<entry>();
+            var bundle_distinct = PatOrg_Distinct();
+            var response_json_ditsint = await GetandShare_Block(bundle_distinct);
 
             var jsonobs = ObservationJSON();
             var jsonorg = OrganizationJSON();
@@ -5013,6 +5025,60 @@ namespace FHIR_json.Controllers
             return JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result);
         }
 
+        /// <summary>
+        /// 去除Patient Organization 重複的identifier
+        /// </summary>
+        /// <returns></returns>
+        public string PatOrg_Distinct() 
+        {
+            //去除重複值
+            var pat_distinct_list = patlist.GroupBy(g => g.identifier[0].value).Select(s => s.First()).ToList();
+            var org_distinct_list = orglist.GroupBy(g => g.identifier[0].value).Select(s => s.First()).ToList();
+
+            //建立新bundle 先將Patient Organization傳送到fhir server
+            var bundle_distinct = new Bundle();
+            bundle_distinct.entry = new List<entry>();
+            //Organization
+            foreach (var res in org_distinct_list)
+            {
+                var entry = new entry
+                {
+                    fullUrl = $"{res.resourceType}/{res.id}",
+                    resource = res,
+                    request = new request
+                    {
+                        method = "POST",
+                        url = $"{res.resourceType}",
+                        ifNoneExist = "identifier=" + res.identifier[0].value
+                    }
+                };
+                bundle_distinct.entry.Add(entry);
+            }
+            //Patient
+            foreach (var res in pat_distinct_list)
+            {
+                var entry = new entry
+                {
+                    fullUrl = $"{res.resourceType}/{res.id}",
+                    resource = res,
+                    request = new request
+                    {
+                        method = "POST",
+                        url = $"{res.resourceType}",
+                        ifNoneExist = "identifier=" + res.identifier[0].value
+                    }
+                };
+                bundle_distinct.entry.Add(entry);
+            }
+            
+
+            var bundlejson = JsonConvert.SerializeObject(bundle_distinct, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+
+            return bundlejson;
+        }
 
         //轉成json格式
         public string OrganizationJSON()
