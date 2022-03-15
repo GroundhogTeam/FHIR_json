@@ -465,7 +465,7 @@ namespace FHIR_json.Controllers
             //var jsoncon = ConditionJSON();
             var jsonpat = PatientJSON();
             var jsonenc = EncounterJSON();
-            var bundlejson = BundleJSON();
+            var bundlejson = BundleJSON_labm();
             return await GetandShare_Block(bundlejson);
         }
 
@@ -641,7 +641,7 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code=Labd_tag.LABDR2
+                            code=Labd_tag.LABDR2 ??"未知"
                         }
                     }
                 };
@@ -725,7 +725,7 @@ namespace FHIR_json.Controllers
             //var jsoncon = ConditionJSON();
             var jsonpat = PatientJSON();
             var jsonenc = EncounterJSON();
-            var bundlejson = BundleJSON();
+            var bundlejson = BundleJSON_LABD_JSON();
             return await GetandShare_Block(bundlejson);
         }
 
@@ -1316,12 +1316,9 @@ namespace FHIR_json.Controllers
                         {
                             new doseAndRate
                             {
-                                doseQuantity = new List<doseQuantity>
+                                doseQuantity = new doseQuantity
                                 {
-                                    new doseQuantity
-                                    {
-                                        value =  Convert.ToDouble(TOTFA_tag.TOTFAP5)//資料格式不同
-                                    }
+                                   value =  Convert.ToDouble(TOTFA_tag.TOTFAP5)//資料格式不同
                                 }
                             }
                         },
@@ -1637,7 +1634,8 @@ namespace FHIR_json.Controllers
             var jsonpat = PatientJSON();
             var jsonenc = EncounterJSON();
             var jsonmedrequest = MedicationRequestJSON();
-            var bundlejson = BundleJSON();
+            //var bundlejson = BundleJSON();
+            var bundlejson = BundleJSON_totfa();
             return await GetandShare_Block(bundlejson);
         }
         [HttpPost]
@@ -2122,12 +2120,9 @@ namespace FHIR_json.Controllers
                         {
                             new doseAndRate
                             {
-                                doseQuantity=new List<doseQuantity>
+                                doseQuantity=new doseQuantity
                                 {
-                                    new doseQuantity
-                                    {
-                                        value = Convert.ToDouble(TOTFB_tag.TOTFBP5)
-                                    }
+                                    value = Convert.ToDouble(TOTFB_tag.TOTFBP5)
                                 }
                             }
                         },
@@ -2404,17 +2399,13 @@ namespace FHIR_json.Controllers
             var jsonenc = EncounterJSON();
             var jsonmedrequest = MedicationRequestJSON();
             var jsonobs = ObservationJSON();
-            var bundlejson = BundleJSON();
+            var bundlejson = BundleJSON_totfb();
             return await GetandShare_Block(bundlejson);
         }
         [HttpPost]
         public async Task<dynamic> spe_JSON(List<OriginalJson.spe> spe_tags)
         {
             //讀取檔案
-            //StreamReader r = new StreamReader(@"C:\Users\huang\source\repos\GroundhogTeam\NHIRDB_system\WebApplication3\ReadJSON\雙榮系統測試用個案清單-en.json");
-            //StreamReader r = new StreamReader(@"D:\信華專區\newNHIRDB_system\NHIRDB_system\WebApplication3\ReadJSON\雙榮系統測試用個案清單-en.json");//洛
-                                                                                                                                      //StreamReader r = new StreamReader(@"C:\Users\pin-hua\source\repos\GroundhogTeam\NHIRDB_system\WebApplication3\ReadJSON\雙榮系統測試用個案清單-en.json");
-                                                                                                                                      //StreamReader r = new StreamReader(@"C:\Users\jenny\source\repos\GroundhogTeam\NHIRDB_system\WebApplication3\ReadJSON\雙榮系統測試用個案清單-en.json"); //河
 
             //string jsonString = r.ReadToEnd();
             //var spe_tags = JsonConvert.DeserializeObject<List<OriginalJson.spe>>(jsonString);//將JSON格式轉換成物件
@@ -2638,7 +2629,7 @@ namespace FHIR_json.Controllers
             var jsonpat = PatientJSON();
             var jsonspet = SpecimenJSON();
             var jsonconsent = ConsentJSON();
-            var bundlejson = BundleJSON();
+            var bundlejson = BundleJSON_spe_JSON();
             return await GetandShare_Block(bundlejson);
         }
 
@@ -2694,7 +2685,7 @@ namespace FHIR_json.Controllers
                         postalCode = CRLF_tag.resid
                     }
                 };
-                Pat.deceasedBoolean = CRLF_tag.vstatus;
+                Pat.deceasedBoolean = Boolean.Parse(CRLF_tag.vstatus);
                 patlist.Add(Pat);
 
                 //Procedure
@@ -2931,6 +2922,24 @@ namespace FHIR_json.Controllers
                                 }
                             }
                         }
+                    },
+                    new focalDevice
+                    {
+                        manipulated=new manipulated
+                        {
+                            display = "其他放射治療儀器"
+                        },
+                        action=new action
+                        {
+                            text = "其他放射治療儀器",
+                            coding=new List<coding>
+                            {
+                                new coding
+                                {
+                                    code = CRLF_tag.ort_modal
+                                }
+                            }
+                        }
                     }
                 };
                 Radio1.performedPeriod = new performedPeriod
@@ -2976,65 +2985,55 @@ namespace FHIR_json.Controllers
                 };
                 Radio1.extension = new List<extension>
                 {
-                    new extension
+                    new extension//0
                     {
                         url = "http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-radiotherapy-modality-and-technique",
                         extension1=new List<extension1>
                         {
-                            new extension1
+                            new extension1//00
                             {
                                 url = "http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-radiotherapy-modality",
-                                valueCodeableConcept=new List<valueCodeableConcept>
+                                valueCodeableConcept= new valueCodeableConcept
                                 {
-                                    new valueCodeableConcept
+                                    text = "體外放射治療技術",
+                                    coding=new List<coding>
                                     {
-                                        text = "體外放射治療技術",
-                                        coding=new List<coding>
+                                        new coding
                                         {
-                                            new coding
-                                            {
-                                                code = CRLF_tag.ebrt
-                                            }
+                                            code = CRLF_tag.ebrt
                                         }
                                     }
                                 }
                             }
                         }
                     },
-                    new extension
+                    new extension//1
                     {
                         url = "http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-radiotherapy-dose-delivered-to-volume",
                         extension1=new List<extension1>//*1
                         {
-                            new extension1
+                            new extension1//10
                             {
                                 url = "volume",
-                                valueReference=new List<valueReference>
-                                {
-                                    new valueReference
+                                valueReference=new valueReference
                                     {
                                         display = "最高放射劑量臨床標靶體積",
                                         reference = CRLF_tag.rth
                                     }
-
-                                }
                             },
-                            new extension1
+                            new extension1//11
                             {
                                 url = "totalDoseDelivered",
-                                valueQuantity=new List<valueQuantity>
-                                {
-                                    new valueQuantity
+                                valueQuantity=new valueQuantity
                                     {
                                         system = "最高放射劑量臨床標靶體積劑量",
                                         value = Convert.ToDouble(CRLF_tag.rth_dose)
                                     }
-                                }
                             },
-                            new extension1
+                            new extension1//12
                             {
                                 url = "fractionsDelivered",
-                                valueUnsignedInt=CRLF_tag.rth_nf
+                                valueUnsignedInt= Convert.ToInt32(CRLF_tag.rth_nf)
                             }
 
                         }
@@ -3044,35 +3043,28 @@ namespace FHIR_json.Controllers
                         url = "http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-radiotherapy-dose-delivered-to-volume",
                         extension1=new List<extension1>
                         {
-                            new extension1
+                            new extension1//20
                             {
                                 url = "volume",
-                                valueReference=new List<valueReference>
+                                valueReference=new valueReference
                                 {
-                                    new valueReference
-                                    {
-                                        display = "較低放射劑量臨床標靶體積",
-                                        reference = CRLF_tag.rtl
-                                    }
-
+                                    display = "較低放射劑量臨床標靶體積",
+                                    reference = CRLF_tag.rtl
                                 }
                             },
-                            new extension1
+                            new extension1//21
                             {
                                 url = "totalDoseDelivered",
-                                valueQuantity=new List<valueQuantity>
+                                valueQuantity=new valueQuantity
                                 {
-                                    new valueQuantity
-                                    {
-                                        system = "較低放射劑量臨床標靶體積劑量",
-                                        value = Convert.ToDouble(CRLF_tag.rtl_dose)
-                                    }
+                                    system = "較低放射劑量臨床標靶體積劑量",
+                                    value = Convert.ToDouble(CRLF_tag.rtl_dose)
                                 }
                             },
-                            new extension1
+                            new extension1//22
                             {
                                 url = "fractionsDelivered",
-                                valueUnsignedInt=CRLF_tag.rtl_nf
+                                valueUnsignedInt=Convert.ToInt32(CRLF_tag.rtl_nf)
                             }
                         }
                     },
@@ -3081,20 +3073,17 @@ namespace FHIR_json.Controllers
                         url = "http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-radiotherapy-modality-and-technique",
                         extension1=new List<extension1>
                         {
-                            new extension1
+                            new extension1//30
                             {
                                 url = "http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-radiotherapy-modality",
-                                valueCodeableConcept=new List<valueCodeableConcept>
+                                valueCodeableConcept=new valueCodeableConcept
                                 {
-                                    new valueCodeableConcept
+                                    text = "其他放射治療技術",
+                                    coding=new List<coding>
                                     {
-                                        text = "其他放射治療技術",
-                                        coding=new List<coding>
+                                        new coding
                                         {
-                                            new coding
-                                            {
-                                                code = CRLF_tag.ort_tech
-                                            }
+                                            code = CRLF_tag.ort_tech
                                         }
                                     }
                                 }
@@ -3106,62 +3095,35 @@ namespace FHIR_json.Controllers
                         url = "http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-radiotherapy-dose-delivered-to-volume",
                         extension1=new List<extension1>
                         {
-                            new extension1
+                            new extension1//40
                             {
                                 url = "volume",
-                                valueReference =new List<valueReference>
+                                valueReference =new valueReference
                                 {
-                                    new valueReference
-                                    {
-                                        display = "其他放射治療臨床標靶體積",
-                                        reference = CRLF_tag.ort
-                                    }
+                                    display = "其他放射治療臨床標靶體積",
+                                    reference = CRLF_tag.ort
                                 }
                             },
-                            new extension1
+                            new extension1//41
                             {
                                 url = "totalDoseDelivered",
-                                valueQuantity=new List<valueQuantity>
+                                valueQuantity=new valueQuantity
                                 {
-                                    new valueQuantity
-                                    {
-                                        system = "其他放射治療臨床標靶體積劑量",
-                                        value = Convert.ToDouble(CRLF_tag.ort_dose)
-                                    }
+                                    system = "其他放射治療臨床標靶體積劑量",
+                                    value = Convert.ToDouble(CRLF_tag.ort_dose)
                                 }
                             },
-                            new extension1
+                            new extension1//42
                             {
                                 url = "fractionsDelivered",
-                                valueUnsignedInt= CRLF_tag.ort_nf
+                                valueUnsignedInt= Convert.ToInt32(CRLF_tag.ort_nf)
                             }
                         }
 
-                    }
-                };
-                Radio1.focalDevice = new List<focalDevice>
-                {
-                    new focalDevice
-                    {
-                        manipulated=new manipulated
-                        {
-                            display = "其他放射治療儀器"
-                        },
-                        action=new action
-                        {
-                            text = "其他放射治療儀器",
-                            coding=new List<coding>
-                            {
-                                new coding
-                                {
-                                    code = CRLF_tag.ort_modal
-                                }
-                            }
-                        }
                     }
                 };
                 prolist.Add(Radio1);
-
+                var json = JsonConvert.SerializeObject(Radio1);
 
 
                 //M1
@@ -3655,12 +3617,9 @@ namespace FHIR_json.Controllers
                     new extension
                     {
                         url = "http://hl7.org/fhir/StructureDefinition/condition-related",
-                        valueReference = new List<valueReference>
+                        valueReference = new valueReference
                         {
-                            new valueReference
-                            {
-                                reference = $"Condition/{Con.id}"
-                            }
+                            reference = $"Condition/{Con.id}"
                         }
                     }
                 };
@@ -4002,6 +3961,13 @@ namespace FHIR_json.Controllers
                                 }
                             },
                             text="腫瘤大小"
+                        },
+                        valueQuantity = new valueQuantity
+                        {
+                            system="http://hl7.org/fhir/us/mcode/ValueSet/mcode-tumor-size-units-vs",
+                            code="mm",
+                            unit="mm",
+                            value=Convert.ToDouble(CRLF_tag.size)
                         }
                     }
                 };
@@ -4033,19 +3999,6 @@ namespace FHIR_json.Controllers
 
                 //    }
                 //};
-                TS.component = new List<component>
-                {
-                    new component
-                    {
-                        valueQuantity = new valueQuantity
-                        {
-                            system="http://hl7.org/fhir/us/mcode/ValueSet/mcode-tumor-size-units-vs",
-                            code="mm",
-                            unit="mm",
-                            value=Convert.ToDouble(CRLF_tag.size)
-                        }
-                    }
-                };
                 //TS.component = new List<component>
                 //{
                 //    new component
@@ -5031,7 +4984,7 @@ namespace FHIR_json.Controllers
             var jsonmed = MedicationAdministrationJSON();
             var jsoncon = ConditionJSON();
             var jsonpat = PatientJSON();
-            var bundlejson = BundleJSON();
+            var bundlejson = BundleJSON_CRLF();
             return await GetandShare_Block(bundlejson);
 
         }
@@ -5369,7 +5322,7 @@ namespace FHIR_json.Controllers
             return bundlejson;
 
         }
-        public string BundleJSON()
+        public string BundleJSON_labm()
         {
             var bundlejson = JsonConvert.SerializeObject(bundle, new JsonSerializerSettings
             {
@@ -5378,6 +5331,7 @@ namespace FHIR_json.Controllers
             bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\[{}]", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\[{}]", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
+            //bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{},", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @",,", ",");
 
             //var bundlejson = JsonConvert.SerializeObject(bundle, Formatting.Indented, new JsonSerializerSettings
@@ -5391,5 +5345,118 @@ namespace FHIR_json.Controllers
 
         }
 
+        public string BundleJSON_totfa()
+        {
+            var bundlejson = JsonConvert.SerializeObject(bundle, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+            });
+            //bundlejson = Regex.Replace(bundlejson, @"\""(\w *)\"":\""\""", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\[{}]", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\[{}]", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{},", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\""\""", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\[{}]", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{},", String.Empty);
+
+
+
+            //var bundlejson = JsonConvert.SerializeObject(bundle, Formatting.Indented, new JsonSerializerSettings
+            //{
+            //    NullValueHandling = NullValueHandling.Ignore
+            //    //MissingMemberHandling = MissingMemberHandling.Ignore
+            //});
+            //var bundlejson = JsonConvert.SerializeObject(bundle);
+
+            return bundlejson;
+
+        }
+
+        public string BundleJSON_totfb()
+        {
+            var bundlejson = JsonConvert.SerializeObject(bundle, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+            });
+
+            bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\[{}]", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\[{}]", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
+            //bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{},", String.Empty);
+
+
+
+            //var bundlejson = JsonConvert.SerializeObject(bundle, Formatting.Indented, new JsonSerializerSettings
+            //{
+            //    NullValueHandling = NullValueHandling.Ignore
+            //    //MissingMemberHandling = MissingMemberHandling.Ignore
+            //});
+            //var bundlejson = JsonConvert.SerializeObject(bundle);
+
+            return bundlejson;
+
+        }
+        //
+        
+        public string BundleJSON_spe_JSON()
+        {
+            var bundlejson = JsonConvert.SerializeObject(bundle, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+            });
+            bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\[{}]", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\[{}]", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @",,", ",");
+
+            return bundlejson;
+
+        }
+        public string BundleJSON_LABD_JSON()
+        {
+            var bundlejson = JsonConvert.SerializeObject(bundle, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+            });
+            bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\[{}]", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\[{}]", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @",,", ",");
+
+            return bundlejson;
+
+        }
+        public string BundleJSON_CRLF()
+        {
+            var bundlejson = JsonConvert.SerializeObject(bundle, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Include
+            });
+
+            bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, "extension1", "extension");
+            //bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
+            //bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
+            //bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
+            
+
+
+
+            //var bundlejson = JsonConvert.SerializeObject(bundle, Formatting.Indented, new JsonSerializerSettings
+            //{
+            //    NullValueHandling = NullValueHandling.Ignore
+            //    //MissingMemberHandling = MissingMemberHandling.Ignore
+            //});
+            //var bundlejson = JsonConvert.SerializeObject(bundle);
+
+            return bundlejson;
+
+        }
     }
 }

@@ -1319,12 +1319,9 @@ namespace FHIR_json.Controllers
                         {
                             new doseAndRate
                             {
-                                doseQuantity = new List<doseQuantity>
+                                doseQuantity = new doseQuantity
                                 {
-                                    new doseQuantity
-                                    {
-                                        value =  Convert.ToDouble(TOTFA_tag.TOTFAP5)//資料格式不同
-                                    }
+                                    value =  Convert.ToDouble(TOTFA_tag.TOTFAP5)//資料格式不同
                                 }
                             }
                         },
@@ -2124,12 +2121,9 @@ namespace FHIR_json.Controllers
                         {
                             new doseAndRate
                             {
-                                doseQuantity=new List<doseQuantity>
+                                doseQuantity=new doseQuantity
                                 {
-                                    new doseQuantity
-                                    {
-                                        value = Convert.ToDouble(TOTFB_tag.TOTFBP5)
-                                    }
+                                    value = Convert.ToDouble(TOTFB_tag.TOTFBP5)
                                 }
                             }
                         },
@@ -2695,7 +2689,7 @@ namespace FHIR_json.Controllers
                         postalCode = CRLF_tag.resid
                     }
                 };
-                Pat.deceasedBoolean = CRLF_tag.vstatus;
+                Pat.deceasedBoolean = Boolean.Parse(CRLF_tag.vstatus);
                 patlist.Add(Pat);
 
                 //Procedure
@@ -2932,6 +2926,24 @@ namespace FHIR_json.Controllers
                                 }
                             }
                         }
+                    },
+                    new focalDevice
+                    {
+                        manipulated=new manipulated
+                        {
+                            display = "其他放射治療儀器"
+                        },
+                        action=new action
+                        {
+                            text = "其他放射治療儀器",
+                            coding=new List<coding>
+                            {
+                                new coding
+                                {
+                                    code = CRLF_tag.ort_modal
+                                }
+                            }
+                        }
                     }
                 };
                 Radio1.performedPeriod = new performedPeriod
@@ -2985,17 +2997,14 @@ namespace FHIR_json.Controllers
                             new extension1
                             {
                                 url = "http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-radiotherapy-modality",
-                                valueCodeableConcept=new List<valueCodeableConcept>
+                                valueCodeableConcept=new valueCodeableConcept
                                 {
-                                    new valueCodeableConcept
+                                    text = "體外放射治療技術",
+                                    coding=new List<coding>
                                     {
-                                        text = "體外放射治療技術",
-                                        coding=new List<coding>
+                                        new coding
                                         {
-                                            new coding
-                                            {
-                                                code = CRLF_tag.ebrt
-                                            }
+                                            code = CRLF_tag.ebrt
                                         }
                                     }
                                 }
@@ -3010,32 +3019,25 @@ namespace FHIR_json.Controllers
                             new extension1
                             {
                                 url = "volume",
-                                valueReference=new List<valueReference>
+                                valueReference=new valueReference
                                 {
-                                    new valueReference
-                                    {
-                                        display = "最高放射劑量臨床標靶體積",
-                                        reference = CRLF_tag.rth
-                                    }
-
+                                    display = "最高放射劑量臨床標靶體積",
+                                    reference = CRLF_tag.rth
                                 }
                             },
                             new extension1
                             {
                                 url = "totalDoseDelivered",
-                                valueQuantity=new List<valueQuantity>
+                                valueQuantity=new valueQuantity
                                 {
-                                    new valueQuantity
-                                    {
-                                        system = "最高放射劑量臨床標靶體積劑量",
-                                        value = Convert.ToDouble(CRLF_tag.rth_dose)
-                                    }
+                                    system = "最高放射劑量臨床標靶體積劑量",
+                                    value = Convert.ToDouble(CRLF_tag.rth_dose)
                                 }
                             },
                             new extension1
                             {
                                 url = "fractionsDelivered",
-                                valueUnsignedInt=CRLF_tag.rth_nf
+                                valueUnsignedInt=Convert.ToInt32(CRLF_tag.rth_nf)
                             }
 
                         }
@@ -3048,32 +3050,25 @@ namespace FHIR_json.Controllers
                             new extension1
                             {
                                 url = "volume",
-                                valueReference=new List<valueReference>
+                                valueReference=new valueReference
                                 {
-                                    new valueReference
-                                    {
-                                        display = "較低放射劑量臨床標靶體積",
-                                        reference = CRLF_tag.rtl
-                                    }
-
+                                    display = "較低放射劑量臨床標靶體積",
+                                    reference = CRLF_tag.rtl
                                 }
                             },
                             new extension1
                             {
                                 url = "totalDoseDelivered",
-                                valueQuantity=new List<valueQuantity>
+                                valueQuantity=new valueQuantity
                                 {
-                                    new valueQuantity
-                                    {
-                                        system = "較低放射劑量臨床標靶體積劑量",
-                                        value = Convert.ToDouble(CRLF_tag.rtl_dose)
-                                    }
+                                    system = "較低放射劑量臨床標靶體積劑量",
+                                    value = Convert.ToDouble(CRLF_tag.rtl_dose)
                                 }
                             },
                             new extension1
                             {
                                 url = "fractionsDelivered",
-                                valueUnsignedInt=CRLF_tag.rtl_nf
+                                valueUnsignedInt=Convert.ToInt32(CRLF_tag.rtl_nf)
                             }
                         }
                     },
@@ -3085,17 +3080,14 @@ namespace FHIR_json.Controllers
                             new extension1
                             {
                                 url = "http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-radiotherapy-modality",
-                                valueCodeableConcept=new List<valueCodeableConcept>
+                                valueCodeableConcept=new valueCodeableConcept
                                 {
-                                    new valueCodeableConcept
+                                    text = "其他放射治療技術",
+                                    coding=new List<coding>
                                     {
-                                        text = "其他放射治療技術",
-                                        coding=new List<coding>
+                                        new coding
                                         {
-                                            new coding
-                                            {
-                                                code = CRLF_tag.ort_tech
-                                            }
+                                            code = CRLF_tag.ort_tech
                                         }
                                     }
                                 }
@@ -3110,58 +3102,32 @@ namespace FHIR_json.Controllers
                             new extension1
                             {
                                 url = "volume",
-                                valueReference =new List<valueReference>
+                                valueReference =new valueReference
                                 {
-                                    new valueReference
-                                    {
-                                        display = "其他放射治療臨床標靶體積",
-                                        reference = CRLF_tag.ort
-                                    }
+                                    display = "其他放射治療臨床標靶體積",
+                                    reference = CRLF_tag.ort
                                 }
                             },
                             new extension1
                             {
                                 url = "totalDoseDelivered",
-                                valueQuantity=new List<valueQuantity>
+                                valueQuantity=new valueQuantity
                                 {
-                                    new valueQuantity
-                                    {
-                                        system = "其他放射治療臨床標靶體積劑量",
-                                        value = Convert.ToDouble(CRLF_tag.ort_dose)
-                                    }
+                                    system = "其他放射治療臨床標靶體積劑量",
+                                    value = Convert.ToDouble(CRLF_tag.ort_dose)
                                 }
                             },
                             new extension1
                             {
                                 url = "fractionsDelivered",
-                                valueUnsignedInt= CRLF_tag.ort_nf
+                                valueUnsignedInt= Convert.ToInt32(CRLF_tag.ort_nf)
                             }
                         }
 
                     }
 
                 };
-                Radio1.focalDevice = new List<focalDevice>
-                {
-                    new focalDevice
-                    {
-                        manipulated=new manipulated
-                        {
-                            display = "其他放射治療儀器"
-                        },
-                        action=new action
-                        {
-                            text = "其他放射治療儀器",
-                            coding=new List<coding>
-                            {
-                                new coding
-                                {
-                                    code = CRLF_tag.ort_modal
-                                }
-                            }
-                        }
-                    }
-                };
+                
                 prolist.Add(Radio1);
 
 
@@ -3657,12 +3623,9 @@ namespace FHIR_json.Controllers
                     new extension
                     {
                         url = "http://hl7.org/fhir/StructureDefinition/condition-related",
-                        valueReference = new List<valueReference>
+                        valueReference = new valueReference
                         {
-                            new valueReference
-                            {
-                                reference = $"Condition/{Con.id}"
-                            }
+                            reference = $"Condition/{Con.id}"
                         }
                     }
                 };

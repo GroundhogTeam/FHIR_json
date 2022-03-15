@@ -77,9 +77,7 @@ namespace FHIR_json.Models
         public string url { get; set; }
         public string valueDateTime { get; set; }
         public List<extension1> extension1 { get; set; } //1
-        public List<valueReference> valueReference { get; set; } //1
-
-
+        public valueReference valueReference { get; set; } //1
     }
 
     //public class valueReference
@@ -178,10 +176,10 @@ namespace FHIR_json.Models
     public class extension1
     {
         public string url { get; set; }
-        public List<valueCodeableConcept> valueCodeableConcept { get; set; }
-        public List<valueReference> valueReference { get; set; }
-        public List<valueQuantity> valueQuantity { get; set; }
-        public string valueUnsignedInt { get; set; }
+        public valueCodeableConcept valueCodeableConcept { get; set; }
+        public valueReference valueReference { get; set; }
+        public valueQuantity valueQuantity { get; set; }
+        public int? valueUnsignedInt { get; set; }
 
     }
     public class valueCodeableConcept
@@ -228,7 +226,7 @@ namespace FHIR_json.Models
         public string gender { get; set; }
         public string birthDate { get; set; }
         public List<identifier> identifier { get; set; }
-        public string deceasedBoolean { get; set; }
+        public bool deceasedBoolean { get; set; }
         public List<address> address { get; set; }
 
         //new
@@ -570,7 +568,7 @@ namespace FHIR_json.Models
     //new
     public class doseAndRate
     {
-        public List<doseQuantity> doseQuantity { get; set; }
+        public doseQuantity doseQuantity { get; set; }
     }
     //new
     public class doseQuantity
