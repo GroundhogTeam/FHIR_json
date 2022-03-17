@@ -13,6 +13,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http.Headers;
 using System.Security.Authentication;
+using System.Security.Policy;
+using System.Security.Cryptography;
 
 namespace FHIR_json.Controllers
 {
@@ -187,12 +189,12 @@ namespace FHIR_json.Controllers
         public async Task<dynamic> LABM_JSON(List<OriginalJson.LABM> Labm_tags)
         {
             //開始分類
-            int fhir_id = 0;//FHIR流水號
+            //int fhir_id = 0;//FHIR流水號
             foreach (var Labm_tag in Labm_tags)
             {
                 //organization
                 labm = new Organization();
-                labm.id = $"{fhir_id++}";
+                labm.id = Sha1Hash(Labm_tag.LABMH2);
                 labm.identifier = new List<identifier>
                 {
                     new identifier
@@ -204,7 +206,7 @@ namespace FHIR_json.Controllers
 
                 //Patient
                 labm_pt = new Patient();
-                labm_pt.id = $"{fhir_id++}";
+                labm_pt.id = Sha1Hash(Labm_tag.LABMH9);
                 labm_pt.birthDate = Labm_tag.LABMH10;
                 //labm_pt.birthDate = DateTime.Parse(Labm_tag.LABMH10).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 labm_pt.identifier = new List<identifier>
@@ -218,8 +220,7 @@ namespace FHIR_json.Controllers
 
                 //ChargeItem
                 labm_ct = new ChargeItem();
-                labm_ct.id = $"labm_ct-{Labm_tag.LABMH2}-{Labm_tag.LABMH4}-{Labm_tag.LABMH5}-{Labm_tag.LABMH6}-{Labm_tag.LABMH7}-{Labm_tag.LABMH8}-{Labm_tag.LABMH18}-{Labm_tag.LABMR1}";
-                labm_ct.enteredDate = Labm_tag.LABMH4;
+                labm_ct.id = Sha1Hash($"labm_ct-{Labm_tag.LABMH2}-{Labm_tag.LABMH4}-{Labm_tag.LABMH5}-{Labm_tag.LABMH6}-{Labm_tag.LABMH7}-{Labm_tag.LABMH8}-{Labm_tag.LABMH18}-{Labm_tag.LABMR1}"); labm_ct.enteredDate = Labm_tag.LABMH4;
                 labm_ct.subject = new subject { reference = $"Patient/{labm_pt.id}" };//? 94
                 labm_ct.status = "billed";
                 labm_ct.code = new code
@@ -236,8 +237,7 @@ namespace FHIR_json.Controllers
                 chalist.Add(labm_ct);
                 // enc
                 labm_en = new Encounter();
-                labm_en.id = $"labm_en-{Labm_tag.LABMH2}-{Labm_tag.LABMH4}-{Labm_tag.LABMH5}-{Labm_tag.LABMH6}-{Labm_tag.LABMH7}-{Labm_tag.LABMH8}-{Labm_tag.LABMH18}-{Labm_tag.LABMR1}";
-                labm_en.status = "finished";
+                labm_en.id = Sha1Hash($"labm_en-{Labm_tag.LABMH2}-{Labm_tag.LABMH4}-{Labm_tag.LABMH5}-{Labm_tag.LABMH6}-{Labm_tag.LABMH7}-{Labm_tag.LABMH8}-{Labm_tag.LABMH18}-{Labm_tag.LABMR1}"); labm_en.status = "finished";
                 labm_en.type = new List<type>
                 {
                     new type
@@ -313,8 +313,7 @@ namespace FHIR_json.Controllers
                 enclist.Add(labm_en);
                 //obeser
                 labm_h = new Observation();
-                labm_h.id = $"labm_h-{Labm_tag.LABMH2}-{Labm_tag.LABMH4}-{Labm_tag.LABMH5}-{Labm_tag.LABMH6}-{Labm_tag.LABMH7}-{Labm_tag.LABMH8}-{Labm_tag.LABMH18}-{Labm_tag.LABMR1}";
-                labm_h.status = "final";
+                labm_h.id = Sha1Hash($"labm_h-{Labm_tag.LABMH2}-{Labm_tag.LABMH4}-{Labm_tag.LABMH5}-{Labm_tag.LABMH6}-{Labm_tag.LABMH7}-{Labm_tag.LABMH8}-{Labm_tag.LABMH18}-{Labm_tag.LABMR1}"); labm_h.status = "final";
                 labm_h.subject = new subject { reference = $"Patient/{labm_pt.id}" };//?94
                 labm_h.encounter = new encounter { reference = $"Encounter/{labm_en.id}" };//?91
                 labm_h.identifier = new List<identifier>
@@ -354,8 +353,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(labm_h);
 
                 labm_B = new Observation();
-                labm_B.id = $"labm_B-{Labm_tag.LABMH2}-{Labm_tag.LABMH4}-{Labm_tag.LABMH5}-{Labm_tag.LABMH6}-{Labm_tag.LABMH7}-{Labm_tag.LABMH8}-{Labm_tag.LABMH18}-{Labm_tag.LABMR1}";
-                labm_B.status = "final";
+                labm_B.id = Sha1Hash($"labm_B-{Labm_tag.LABMH2}-{Labm_tag.LABMH4}-{Labm_tag.LABMH5}-{Labm_tag.LABMH6}-{Labm_tag.LABMH7}-{Labm_tag.LABMH8}-{Labm_tag.LABMH18}-{Labm_tag.LABMR1}"); labm_B.status = "final";
                 labm_B.subject = new subject { reference = $"Patient/{labm_pt.id}" };//?94
                 labm_B.encounter = new encounter { reference = $"Encounter/{labm_en.id}" };//?91
                 labm_B.identifier = new List<identifier>
@@ -471,7 +469,7 @@ namespace FHIR_json.Controllers
             {
                 //organization
                 labd = new Organization();
-                labd.id = $"{fhir_id++}";
+                labd.id = Sha1Hash(Labd_tag.LABDH2);
                 labd.identifier = new List<identifier>
                 {
                     new identifier
@@ -483,7 +481,7 @@ namespace FHIR_json.Controllers
 
                 //Patient
                 labd_pt = new Patient();
-                labd_pt.id = $"{fhir_id++}";
+                labd_pt.id = Sha1Hash(Labd_tag.LABDH9);
                 labd_pt.birthDate = Labd_tag.LABDH10;
                 //labd_pt.birthDate = DateTime.Parse(Labd_tag.LABDH10).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 labd_pt.identifier = new List<identifier>
@@ -496,7 +494,7 @@ namespace FHIR_json.Controllers
                 patlist.Add(labd_pt);
                 //enc
                 labd_en = new Encounter();
-                labd_en.id = $"labd_en-{Labd_tag.LABDH2}-{Labd_tag.LABDH4}-{Labd_tag.LABDH5}-{Labd_tag.LABDH6}-{Labd_tag.LABDH7}-{Labd_tag.LABDH15}-{Labd_tag.LABDR1}";
+                labd_en.id = Sha1Hash($"labd_en-{Labd_tag.LABDH2}-{Labd_tag.LABDH4}-{Labd_tag.LABDH6}-{Labd_tag.LABDH7}-{Labd_tag.LABDH15}-{Labd_tag.LABDR1}");
                 labd_en.status = "finished";
                 labd_en.type = new List<type>
                 {
@@ -572,7 +570,7 @@ namespace FHIR_json.Controllers
                 enclist.Add(labd_en);
                 //obeser
                 labd_h = new Observation();
-                labd_h.id = $"labd_h-{Labd_tag.LABDH2}-{Labd_tag.LABDH4}-{Labd_tag.LABDH5}-{Labd_tag.LABDH6}-{Labd_tag.LABDH7}-{Labd_tag.LABDH15}-{Labd_tag.LABDR1}";
+                labd_h.id = Sha1Hash($"labd_h-{Labd_tag.LABDH2}-{Labd_tag.LABDH4}-{Labd_tag.LABDH6}-{Labd_tag.LABDH7}-{Labd_tag.LABDH15}-{Labd_tag.LABDR1}");
                 labd_h.status = "final";
                 labd_h.subject = new subject { reference = $"Patient/{labd_pt.id}" };//?88
                 labd_h.encounter = new encounter { reference = $"Encounter/{labd_en.id}" };//?86
@@ -607,7 +605,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(labd_h);
 
                 labd_B = new Observation();
-                labd_B.id = $"labd_B-{Labd_tag.LABDH2}-{Labd_tag.LABDH4}-{Labd_tag.LABDH5}-{Labd_tag.LABDH6}-{Labd_tag.LABDH7}-{Labd_tag.LABDH15}-{Labd_tag.LABDR1}";
+                labd_B.id = Sha1Hash($"labd_B-{Labd_tag.LABDH2}-{Labd_tag.LABDH4}-{Labd_tag.LABDH6}-{Labd_tag.LABDH7}-{Labd_tag.LABDH15}-{Labd_tag.LABDR1}");
                 labd_B.status = "final";
                 labd_B.subject = new subject { reference = $"Patient/{labd_pt.id}" };//?88
                 labd_B.encounter = new encounter { reference = $"Encounter/{labd_en.id}" };//?86
@@ -730,7 +728,7 @@ namespace FHIR_json.Controllers
             {
                 //organization
                 fa = new Organization();
-                fa.id = $"{fhir_id++}";
+                fa.id = Sha1Hash(TOTFA_tag.TOTFAT2.ToString());
                 fa.identifier = new List<identifier>
                 {
                     new identifier
@@ -742,7 +740,7 @@ namespace FHIR_json.Controllers
 
                 //Patient
                 pt = new Patient();
-                pt.id = $"{fhir_id++}";
+                pt.id = Sha1Hash(TOTFA_tag.TOTFAD3);
                 pt.birthDate = TOTFA_tag.TOTFAD11;
                 pt.identifier = new List<identifier>
                 {
@@ -754,7 +752,7 @@ namespace FHIR_json.Controllers
                 patlist.Add(pt);
                 //enc
                 fa_en = new Encounter();
-                fa_en.id = $"fa_en-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
+                fa_en.id = Sha1Hash($"fa_en-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}");
                 fa_en.status = "finished";
                 fa_en.type = new List<type>
                 {
@@ -806,7 +804,7 @@ namespace FHIR_json.Controllers
 
                 //obeser
                 med_day = new Observation();
-                med_day.id = $"med_day-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
+                med_day.id = Sha1Hash($"med_day-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}");
                 med_day.status = "final";
                 med_day.subject = new subject { reference = $"Patient/{pt.id}" };//?
                 med_day.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//?
@@ -827,7 +825,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(med_day);
 
                 med_type = new Observation();
-                med_type.id = $"med_type-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
+                med_type.id = Sha1Hash($"med_type-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}");
                 med_type.status = "final";
                 med_type.subject = new subject { reference = $"Patient/{pt.id}" };//?
                 med_type.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//?
@@ -849,7 +847,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(med_type);
                 //ChargeItem
                 fa_ct = new ChargeItem();
-                fa_ct.id = $"fa_ct-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
+                fa_ct.id = Sha1Hash($"fa_ct-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}");
                 fa_ct.enteredDate = TOTFA_tag.TOTFAT3;
                 fa_ct.subject = new subject { reference = $"Patient/{pt.id}" };//? 57
                 fa_ct.status = "billed";
@@ -868,7 +866,7 @@ namespace FHIR_json.Controllers
 
                 //procedure
                 fa_p1 = new Procedure();
-                fa_p1.id = $"fa_p1-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
+                fa_p1.id = Sha1Hash($"fa_p1-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}");
                 fa_p1.status = "completed";
                 fa_p1.subject = new subject { reference = $"Patient/{pt.id}" };//57??
                 fa_p1.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//52??
@@ -887,7 +885,7 @@ namespace FHIR_json.Controllers
                 prolist.Add(fa_p1);
 
                 fa_p2 = new Procedure();
-                fa_p2.id = $"fa_p2-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
+                fa_p2.id = Sha1Hash($"fa_p2-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}");
                 fa_p2.status = "completed";
                 fa_p2.subject = new subject { reference = $"Patient/{pt.id}" };//57??
                 fa_p2.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//52??
@@ -906,7 +904,7 @@ namespace FHIR_json.Controllers
                 prolist.Add(fa_p2);
 
                 fa_p3 = new Procedure();
-                fa_p3.id = $"fa_p3-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
+                fa_p3.id = Sha1Hash($"fa_p3-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}");
                 fa_p3.status = "completed";
                 fa_p3.subject = new subject { reference = $"Patient/{pt.id}" };//57??
                 fa_p3.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//52??
@@ -926,7 +924,7 @@ namespace FHIR_json.Controllers
                 prolist.Add(fa_p3);
 
                 fa_p4 = new Procedure();
-                fa_p4.id = $"fa_p4-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
+                fa_p4.id = Sha1Hash($"fa_p4-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}");
                 fa_p4.status = "completed";
                 fa_p4.subject = new subject { reference = $"Patient/{pt.id}" };//57??
                 fa_p4.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//52??
@@ -945,7 +943,7 @@ namespace FHIR_json.Controllers
                 prolist.Add(fa_p4);
 
                 P1 = new Procedure();
-                P1.id = $"P1-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
+                P1.id = Sha1Hash($"P1-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}");
                 P1.status = "completed";
                 P1.subject = new subject { reference = $"Patient/{pt.id}" };//57??
                 P1.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };// 52??
@@ -965,7 +963,7 @@ namespace FHIR_json.Controllers
                 prolist.Add(P1);
 
                 P2 = new Procedure();
-                P2.id = $"P2-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
+                P2.id = Sha1Hash($"P2-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}");
                 P2.status = "completed";
                 P2.subject = new subject { reference = $"Patient/{pt.id}" };//57??
                 P2.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//52??
@@ -984,7 +982,7 @@ namespace FHIR_json.Controllers
                 prolist.Add(P2);
 
                 P3 = new Procedure();
-                P3.id = $"P3-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
+                P3.id = Sha1Hash($"P3-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}");
                 P3.status = "completed";
                 P3.subject = new subject { reference = $"Patient/{pt.id}" };//57??
                 P3.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//52??
@@ -1000,13 +998,13 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-  
+
                 prolist.Add(P3);
 
 
                 //medicationrequest
                 fa_med = new MedicationRequest();
-                fa_med.id = $"fa_med-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
+                fa_med.id = Sha1Hash($"fa_med-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}");
                 fa_med.status = "completed";
                 fa_med.intent = "order";
                 fa_med.subject = new subject { reference = $"Patient/{pt.id}" };//57
@@ -1108,7 +1106,7 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-              
+
                 fa_med.dosageInstruction = new List<dosageInstruction>
                 {
                     new dosageInstruction
@@ -1192,7 +1190,7 @@ namespace FHIR_json.Controllers
 
                 //condition_fa_c1
                 fa_c1 = new Condition();
-                fa_c1.id = $"fa_c1-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
+                fa_c1.id = Sha1Hash($"fa_c1-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}");
                 fa_c1.subject = new subject { reference = $"Patient/{pt.id}" };//57
                 fa_c1.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//?52
                                                                                         //fa_c1.code.text = "主診斷代碼";
@@ -1214,7 +1212,7 @@ namespace FHIR_json.Controllers
 
                 //condition_fa_c2
                 fa_c2 = new Condition();
-                fa_c2.id = $"fa_c2-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
+                fa_c2.id = Sha1Hash($"fa_c2-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}");
                 fa_c2.subject = new subject { reference = $"Patient/{pt.id}" };//? 57
                 fa_c2.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//?52
                                                                                         //fa_c2.code.text = "次診斷代碼(一)";
@@ -1236,7 +1234,7 @@ namespace FHIR_json.Controllers
 
                 //condition_fa_c3
                 fa_c3 = new Condition();
-                fa_c3.id = $"fa_c3-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
+                fa_c3.id = Sha1Hash($"fa_c3-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}");
                 fa_c3.subject = new subject { reference = $"Patient/{pt.id}" };//57
                 fa_c3.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//?52
                                                                                         //fa_c2.code.text = "次診斷代碼(二)";
@@ -1258,7 +1256,7 @@ namespace FHIR_json.Controllers
 
                 //condition_fa_c4
                 fa_c4 = new Condition();
-                fa_c4.id = $"fa_c4-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
+                fa_c4.id = Sha1Hash($"fa_c4-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}");
                 fa_c4.subject = new subject { reference = $"Patient/{pt.id}" };//57
                 fa_c4.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//?52
                                                                                         //fa_c4.code.text = "次診斷代碼(三)";
@@ -1280,7 +1278,7 @@ namespace FHIR_json.Controllers
 
                 //condition_fa_c5
                 fa_c5 = new Condition();
-                fa_c5.id = $"fa_c5-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
+                fa_c5.id = Sha1Hash($"fa_c5-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}");
                 fa_c5.subject = new subject { reference = $"Patient/{pt.id}" };//57
                 fa_c5.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//?52
                                                                                         //fa_c5.code.text = "次診斷代碼(四)";
@@ -1319,6 +1317,7 @@ namespace FHIR_json.Controllers
             var bundlejson = BundleJSON_totfa();
             return await GetandShare_Block(bundlejson);
         }
+
         [HttpPost]
         public async Task<dynamic> TOTFB_JSON(List<OriginalJson.TOTFB> TOTFB_tags)
         {
@@ -1328,7 +1327,7 @@ namespace FHIR_json.Controllers
             {
                 //organization
                 fb = new Organization();
-                fb.id = $"{fhir_id++}";
+                fb.id = Sha1Hash(TOTFB_tag.TOTFBT2.ToString());
                 fb.identifier = new List<identifier>
                 {
                     new identifier
@@ -1340,7 +1339,7 @@ namespace FHIR_json.Controllers
 
                 //Patient
                 fb_pt = new Patient();
-                fb_pt.id = $"{fhir_id++}";
+                fb_pt.id = Sha1Hash(TOTFB_tag.TOTFBD3);
                 fb_pt.identifier = new List<identifier>
                 {
                     new identifier
@@ -1352,7 +1351,7 @@ namespace FHIR_json.Controllers
                 patlist.Add(fb_pt);
                 //enc
                 fb_en = new Encounter();
-                fb_en.id = $"fb_en-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
+                fb_en.id = Sha1Hash($"fb_en-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}");
                 fb_en.status = "finished";
                 fb_en.type = new List<type>
                 {
@@ -1440,7 +1439,7 @@ namespace FHIR_json.Controllers
 
                 //obeser
                 fb_e_bed = new Observation();
-                fb_e_bed.id = $"fb_e_bed-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
+                fb_e_bed.id = Sha1Hash($"fb_e_bed-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}");
                 fb_e_bed.status = "final";
                 fb_e_bed.subject = new subject { reference = $"Patient/{fb_pt.id}" };//?
                 fb_e_bed.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//?
@@ -1458,7 +1457,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(fb_e_bed);
 
                 fb_s_bed = new Observation();
-                fb_s_bed.id = $"fb_s_bed-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
+                fb_s_bed.id = Sha1Hash($"fb_s_bed-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}");
                 fb_s_bed.status = "final";
                 fb_s_bed.subject = new subject { reference = $"Patient/{fb_pt.id}" };//?
                 fb_s_bed.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//?
@@ -1477,7 +1476,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(fb_s_bed);
                 //ChargeItem
                 fb_ct = new ChargeItem();
-                fb_ct.id = $"fb_ct-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
+                fb_ct.id = Sha1Hash($"fb_ct-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}");
                 fb_ct.enteredDate = TOTFB_tag.TOTFBT3;
                 //fb_ct.enteredDate = DateTime.Parse(TOTFB_tag.TOTFBT3).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 fb_ct.subject = new subject { reference = $"Patient/{fb_pt.id}" };//? 72
@@ -1498,7 +1497,7 @@ namespace FHIR_json.Controllers
 
                 //procedure
                 fb_p1 = new Procedure();
-                fb_p1.id = $"fb_p1-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
+                fb_p1.id = Sha1Hash($"fb_p1-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}");
                 fb_p1.status = "completed";
                 fb_p1.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_p1.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
@@ -1516,7 +1515,7 @@ namespace FHIR_json.Controllers
                 prolist.Add(fb_p1);
 
                 fb_p2 = new Procedure();
-                fb_p2.id = $"fb_p2-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
+                fb_p2.id = Sha1Hash($"fb_p2-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}");
                 fb_p2.status = "completed";
                 fb_p2.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_p2.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
@@ -1534,7 +1533,7 @@ namespace FHIR_json.Controllers
                 prolist.Add(fb_p2);
 
                 fb_p3 = new Procedure();
-                fb_p3.id = $"fb_p3-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
+                fb_p3.id = Sha1Hash($"fb_p3-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}");
                 fb_p3.status = "completed";
                 fb_p3.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_p3.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
@@ -1552,7 +1551,7 @@ namespace FHIR_json.Controllers
                 prolist.Add(fb_p3);
 
                 fb_p4 = new Procedure();
-                fb_p4.id = $"fb_p4-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
+                fb_p4.id = Sha1Hash($"fb_p4-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}");
                 fb_p4.status = "completed";
                 fb_p4.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_p4.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
@@ -1570,7 +1569,7 @@ namespace FHIR_json.Controllers
                 prolist.Add(fb_p4);
 
                 fb_p5 = new Procedure();
-                fb_p5.id = $"fb_p5-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
+                fb_p5.id = Sha1Hash($"fb_p5-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}");
                 fb_p5.status = "completed";
                 fb_p5.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_p5.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
@@ -1590,7 +1589,7 @@ namespace FHIR_json.Controllers
 
                 // Medcation---------------------------------//
                 fb_med = new MedicationRequest();
-                fb_med.id = $"fb_med-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
+                fb_med.id = Sha1Hash($"fb_med-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}");
                 fb_med.status = "completed";
                 fb_med.intent = "order";
                 fb_med.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
@@ -1695,7 +1694,7 @@ namespace FHIR_json.Controllers
 
                 //condition_fb_c1
                 fb_c1 = new Condition();
-                fb_c1.id = $"fb_c1-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
+                fb_c1.id = Sha1Hash($"fb_c1-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}");
                 fb_c1.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_c1.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
                 fb_c1.code = new code
@@ -1713,7 +1712,7 @@ namespace FHIR_json.Controllers
 
                 //condition_fb_c2
                 fb_c2 = new Condition();
-                fb_c2.id = $"fb_c2-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
+                fb_c2.id = Sha1Hash($"fb_c2-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}");
                 fb_c2.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_c2.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
                                                                                         //fb_c2.code.text = "次診斷代碼(一)";
@@ -1732,7 +1731,7 @@ namespace FHIR_json.Controllers
 
                 //condition_fb_c3
                 fb_c3 = new Condition();
-                fb_c3.id = $"fb_c3-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
+                fb_c3.id = Sha1Hash($"fb_c3-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}");
                 fb_c3.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_c3.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
                                                                                         //fb_c3.code.text = "次診斷代碼(二)";
@@ -1751,7 +1750,7 @@ namespace FHIR_json.Controllers
 
                 //condition_fb_c4
                 fb_c4 = new Condition();
-                fb_c4.id = $"fb_c4-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
+                fb_c4.id = Sha1Hash($"fb_c4-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}");
                 fb_c4.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_c4.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
                                                                                         //fb_c4.code.text = "次診斷代碼(三)";
@@ -1770,7 +1769,7 @@ namespace FHIR_json.Controllers
 
                 //condition_fb_c5
                 fb_c5 = new Condition();
-                fb_c5.id = $"fb_c5-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
+                fb_c5.id = Sha1Hash($"fb_c5-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}");
                 fb_c5.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_c5.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
                                                                                         //fb_c5.code.text = "次診斷代碼(四)";
@@ -1804,17 +1803,18 @@ namespace FHIR_json.Controllers
             var bundlejson = BundleJSON_totfb();
             return await GetandShare_Block(bundlejson);
         }
+
         [HttpPost]
         public async Task<dynamic> spe_JSON(List<OriginalJson.spe> spe_tags)
         {
             //ViewBag.spe_tags = spe_tags;
             //開始分類
-            int fhir_id = 0;//FHIR流水號
+            //int fhir_id = 0;//FHIR流水號
             foreach (var spe_tag in spe_tags)
             {
                 //Patient
                 CPat = new Patient();
-                CPat.id = $"{fhir_id++}";
+                CPat.id = Sha1Hash(spe_tag.biobankid.ToString());
                 CPat.identifier = new List<identifier>
                 {
                     new identifier
@@ -1828,7 +1828,7 @@ namespace FHIR_json.Controllers
 
                 //organization
                 sp_og = new Organization();
-                sp_og.id = $"{fhir_id++}";
+                sp_og.id = Sha1Hash(spe_tag.org);
                 sp_og.identifier = new List<identifier>
                 {
                     new identifier
@@ -1840,7 +1840,7 @@ namespace FHIR_json.Controllers
 
                 //Specimen
                 Sp = new Specimen();
-                Sp.id = $"Sp-{spe_tag.biobankid}-{spe_tag.speid}";
+                Sp.id = Sha1Hash($"Sp-{spe_tag.biobankid}-{spe_tag.speid}");
                 Sp.accessionIdentifier = new accessionIdentifier
                 {
                     value = spe_tag.speid
@@ -1895,7 +1895,7 @@ namespace FHIR_json.Controllers
 
                 //Consent
                 Consent = new Consent();
-                Consent.id = $"Consent-{spe_tag.biobankid}-{spe_tag.speid}";
+                Consent.id = Sha1Hash($"Consent-{spe_tag.biobankid}-{spe_tag.speid}");
                 Consent.dateTime = DateTime.Parse(spe_tag.agreedate).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 Consent.status = "active";
                 Consent.category = new List<category>
@@ -1945,7 +1945,7 @@ namespace FHIR_json.Controllers
 
                 //obeser
                 sp_age = new Observation();
-                sp_age.id = $"sp_age-{spe_tag.biobankid}-{spe_tag.speid}";
+                sp_age.id = Sha1Hash($"sp_age-{spe_tag.biobankid}-{spe_tag.speid}");
                 sp_age.status = "final";
                 sp_age.subject = new subject { reference = $"Patient/{CPat.id}" };//559
                 sp_age.performer = new List<performer> { new performer { reference = $"Organization/{sp_og.id}" } };//562
@@ -1967,7 +1967,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(sp_age);
                 //
                 sp_height = new Observation();
-                sp_height.id = $"sp_height-{spe_tag.biobankid}-{spe_tag.speid}";
+                sp_height.id = Sha1Hash($"sp_height-{spe_tag.biobankid}-{spe_tag.speid}");
                 sp_height.status = "final";
                 sp_height.subject = new subject { reference = $"Patient/{CPat.id}" };//559
                 sp_height.performer = new List<performer> { new performer { reference = $"Organization/{sp_og.id}" } };//562
@@ -1992,7 +1992,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(sp_height);
                 //
                 sp_weight = new Observation();
-                sp_weight.id = $"sp_weight-{spe_tag.biobankid}-{spe_tag.speid}";
+                sp_weight.id = Sha1Hash($"sp_weight-{spe_tag.biobankid}-{spe_tag.speid}");
                 sp_weight.status = "final";
                 sp_weight.subject = new subject { reference = $"Patient/{CPat.id}" };//559
                 sp_weight.performer = new List<performer> { new performer { reference = $"Organization/{sp_og.id}" } };//562
@@ -2046,7 +2046,7 @@ namespace FHIR_json.Controllers
             {
                 //org
                 OG = new Organization();
-                OG.id = $"{fhir_id++}";
+                OG.id = Sha1Hash(CRLF_tag.hospid);
                 //OG.identifier[0].value = CRLF_tag.hospid;
                 OG.identifier = new List<identifier>
                 {
@@ -2062,7 +2062,7 @@ namespace FHIR_json.Controllers
 
                 //Patient
                 Pat = new Patient();
-                Pat.id = $"{fhir_id++}";
+                Pat.id = Sha1Hash(CRLF_tag.id);
                 Pat.identifier = new List<identifier>
                 {
                     new identifier
@@ -2085,7 +2085,7 @@ namespace FHIR_json.Controllers
                 //Procedure
                 //diag
                 diag = new Procedure();
-                diag.id = $"diag-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                diag.id = Sha1Hash($"diag-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 diag.status = "completed";
                 diag.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                                                                                //diag.performedDateTime = CRLF_tag.dsdiag;
@@ -2129,7 +2129,7 @@ namespace FHIR_json.Controllers
 
                 //P1
                 P1 = new Procedure();
-                P1.id = $"P1-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                P1.id = Sha1Hash($"P1-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 P1.status = "completed";
                 P1.subject = new subject { reference = $"Patient/{Pat.id}" };
                 if (CRLF_tag.dop_mds == null)
@@ -2212,7 +2212,7 @@ namespace FHIR_json.Controllers
 
                 //P2
                 P2 = new Procedure();
-                P2.id = $"P2-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                P2.id = Sha1Hash($"P2-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 P2.status = "completed";
                 P2.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 P2.reasonCode = new List<reasonCode>
@@ -2247,7 +2247,7 @@ namespace FHIR_json.Controllers
 
                 //P3
                 P3 = new Procedure();
-                P3.id = $"P3-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                P3.id = Sha1Hash($"P3-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 P3.status = "completed";
                 P3.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 P3.reasonCode = new List<reasonCode>
@@ -2281,7 +2281,7 @@ namespace FHIR_json.Controllers
 
                 //Radio1
                 Radio1 = new Procedure();
-                Radio1.id = $"Radio1-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                Radio1.id = Sha1Hash($"Radio1-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 Radio1.status = "completed";
                 Radio1.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 Radio1.outcome = new outcome
@@ -2520,7 +2520,7 @@ namespace FHIR_json.Controllers
 
                 //M1
                 M1 = new Procedure();
-                M1.id = $"M1-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                M1.id = Sha1Hash($"M1-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 M1.status = "completed";
                 M1.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 if (CRLF_tag.dsyt == null || CRLF_tag.dchem == null)
@@ -2568,7 +2568,7 @@ namespace FHIR_json.Controllers
 
                 //m4
                 m4 = new Procedure();
-                m4.id = $"m4-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                m4.id = Sha1Hash($"m4-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 m4.status = "completed";
                 m4.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 m4.code = new code
@@ -2588,7 +2588,7 @@ namespace FHIR_json.Controllers
 
                 //m7
                 m7 = new Procedure();
-                m7.id = $"m7-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                m7.id = Sha1Hash($"m7-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 m7.status = "completed";
                 m7.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 m7.code = new code
@@ -2607,7 +2607,7 @@ namespace FHIR_json.Controllers
 
                 //condition_Con
                 Con = new Condition();
-                Con.id = $"Con-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                Con.id = Sha1Hash($"Con-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 Con.subject = new subject { reference = $"Patient/{Pat.id}" };
                 Con.onsetAge = new onsetAge
                 {
@@ -2765,7 +2765,7 @@ namespace FHIR_json.Controllers
 
                 //condition-SCC
                 SCC = new Condition();
-                SCC.id = $"SCC-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                SCC.id = Sha1Hash($"SCC-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 SCC.recordedDate = CRLF_tag.drecur;
                 SCC.subject = new subject { reference = $"Patient/{Pat.id}" };
                 SCC.extension = new List<extension>
@@ -2794,7 +2794,7 @@ namespace FHIR_json.Controllers
 
                 //chargeitem
                 m6 = new ChargeItem();
-                m6.id = $"m6-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                m6.id = Sha1Hash($"m6-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 m6.status = "billed";
                 m6.subject = new subject { reference = $"Patient/{Pat.id}" };
                 m6.code = new code
@@ -2813,7 +2813,7 @@ namespace FHIR_json.Controllers
 
                 //MedicationAdministration-m2
                 m2 = new MedicationAdministration();
-                m2.id = $"m2-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                m2.id = Sha1Hash($"m2-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 m2.status = "completed";
                 m2.subject = new subject { reference = $"Patient/{Pat.id}" };
                 m2.reasonCode = new List<reasonCode>
@@ -2851,7 +2851,7 @@ namespace FHIR_json.Controllers
 
                 //MedicationAdministration-m3
                 m3 = new MedicationAdministration();
-                m3.id = $"m3-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                m3.id = Sha1Hash($"m3-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 m3.status = "completed";
                 m3.subject = new subject { reference = $"Patient/{Pat.id}" };
                 //m3.reasonCode[0].text = "外院免疫治療";
@@ -2890,7 +2890,7 @@ namespace FHIR_json.Controllers
 
                 //MedicationAdministration-m5
                 m5 = new MedicationAdministration();
-                m5.id = $"m5-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                m5.id = Sha1Hash($"m5-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 m5.status = "completed";//重複了
                 m5.subject = new subject { reference = $"Patient/{Pat.id}" };
                 m5.reasonCode = new List<reasonCode>
@@ -2927,7 +2927,7 @@ namespace FHIR_json.Controllers
 
                 //Observation
                 TS = new Observation();
-                TS.id = $"TS-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                TS.id = Sha1Hash($"TS-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 TS.subject = new subject { reference = $"Patient/{Pat.id}" };
                 TS.status = "final";
                 TS.code = new code
@@ -2990,7 +2990,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(TS);
                 //
                 pni = new Observation();
-                pni.id = $"pni-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                pni.id = Sha1Hash($"pni-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 pni.subject = new subject { reference = $"Patient/{Pat.id}" };
                 pni.status = "final";
                 pni.code = new code
@@ -3010,7 +3010,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(pni);
 
                 lvi = new Observation();
-                lvi.id = $"lvi-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                lvi.id = Sha1Hash($"lvi-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 lvi.subject = new subject { reference = $"Patient/{Pat.id}" };
                 lvi.status = "final";
                 lvi.code = new code
@@ -3030,7 +3030,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(lvi);
 
                 nexam = new Observation();
-                nexam.id = $"nexam-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                nexam.id = Sha1Hash($"nexam-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 nexam.status = "final";
                 nexam.subject = new subject { reference = $"Patient/{Pat.id}" };
                 nexam.code = new code
@@ -3050,7 +3050,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(nexam);
 
                 nposit = new Observation();
-                nposit.id = $"nposit-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                nposit.id = Sha1Hash($"nposit-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 nposit.status = "final";
                 nposit.subject = new subject { reference = $"Patient/{Pat.id}" };
                 nposit.code = new code
@@ -3070,7 +3070,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(nposit);
 
                 clinical_T = new Observation();
-                clinical_T.id = $"clinical_T-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                clinical_T.id = Sha1Hash($"clinical_T-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 clinical_T.status = "final";
                 clinical_T.subject = new subject { reference = $"Patient/{Pat.id}" };
                 clinical_T.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -3091,7 +3091,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(clinical_T);
 
                 clinical_N = new Observation();
-                clinical_N.id = $"clinical_N-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                clinical_N.id = Sha1Hash($"clinical_N-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 clinical_N.status = "final";
                 clinical_N.subject = new subject { reference = $"Patient/{Pat.id}" };
                 clinical_N.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -3112,7 +3112,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(clinical_N);
 
                 clinical_M = new Observation();
-                clinical_M.id = $"clinical_M-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                clinical_M.id = Sha1Hash($"clinical_M-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 clinical_M.status = "final";
                 clinical_M.subject = new subject { reference = $"Patient/{Pat.id}" };
                 clinical_M.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -3133,7 +3133,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(clinical_M);
 
                 CG_clinical = new Observation();
-                CG_clinical.id = $"CG_clinical-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                CG_clinical.id = Sha1Hash($"CG_clinical-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 CG_clinical.status = "final";
                 CG_clinical.subject = new subject { reference = $"Patient/{Pat.id}" };
                 CG_clinical.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -3190,7 +3190,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(CG_clinical);
 
                 pathology_T = new Observation();
-                pathology_T.id = $"pathology_T-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                pathology_T.id = Sha1Hash($"pathology_T-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 pathology_T.status = "final";
                 pathology_T.subject = new subject { reference = $"Patient/{Pat.id}" };
                 pathology_T.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -3225,7 +3225,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(pathology_T);
 
                 pathology_N = new Observation();
-                pathology_N.id = $"pathology_N-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                pathology_N.id = Sha1Hash($"pathology_N-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 pathology_N.status = "final";
                 pathology_N.subject = new subject { reference = $"Patient/{Pat.id}" };
                 pathology_N.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -3261,7 +3261,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(pathology_N);
 
                 pathology_M = new Observation();
-                pathology_M.id = $"pathology_M-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                pathology_M.id = Sha1Hash($"pathology_M-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 pathology_M.status = "final";
                 pathology_M.subject = new subject { reference = $"Patient/{Pat.id}" };
                 pathology_M.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -3296,7 +3296,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(pathology_M);
 
                 CG_pathology = new Observation();
-                CG_pathology.id = $"CG_pathology-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                CG_pathology.id = Sha1Hash($"CG_pathology-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 CG_pathology.status = "final";
                 CG_pathology.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
                 CG_pathology.subject = new subject { reference = $"Patient/{Pat.id}" };
@@ -3354,7 +3354,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(CG_pathology);
 
                 CG_OtherC = new Observation();
-                CG_OtherC.id = $"CG_OtherC-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                CG_OtherC.id = Sha1Hash($"CG_OtherC-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 CG_OtherC.code = new code
                 {
                     text = "其他分期系統",
@@ -3382,7 +3382,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(CG_OtherC);
 
                 CG_OtherP = new Observation();
-                CG_OtherP.id = $"CG_OtherP-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                CG_OtherP.id = Sha1Hash($"CG_OtherP-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 CG_OtherP.code = new code
                 {
                     text = "其他分期系統",
@@ -3411,7 +3411,7 @@ namespace FHIR_json.Controllers
 
 
                 height = new Observation();
-                height.id = $"height-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                height.id = Sha1Hash($"height-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 height.status = "final";
                 height.subject = new subject { reference = $"Patient/{Pat.id}" };
                 height.code = new code
@@ -3435,7 +3435,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(height);
 
                 weight = new Observation();
-                weight.id = $"weight-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                weight.id = Sha1Hash($"weight-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 weight.status = "final";
                 weight.subject = new subject { reference = $"Patient/{Pat.id}" };
                 weight.code = new code
@@ -3459,7 +3459,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(weight);
 
                 smoke = new Observation();
-                smoke.id = $"smoke-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                smoke.id = Sha1Hash($"smoke-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 smoke.status = "final";
                 smoke.subject = new subject { reference = $"Patient/{Pat.id}" };
                 smoke.code = new code
@@ -3480,7 +3480,7 @@ namespace FHIR_json.Controllers
 
                 //Observation-btchew
                 btchew = new Observation();
-                btchew.id = $"btchew-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                btchew.id = Sha1Hash($"btchew-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 btchew.status = "final";
                 btchew.subject = new subject { reference = $"Patient/{Pat.id}" };
                 btchew.code = new code
@@ -3501,7 +3501,7 @@ namespace FHIR_json.Controllers
 
                 //Observation-drinking
                 drinking = new Observation();
-                drinking.id = $"drinking-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                drinking.id = Sha1Hash($"drinking-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 drinking.status = "final";
                 drinking.subject = new subject { reference = $"Patient/{Pat.id}" };
                 drinking.code = new code
@@ -3523,7 +3523,7 @@ namespace FHIR_json.Controllers
 
                 //Observation-drinking
                 ps = new Observation();
-                ps.id = $"ps-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                ps.id = Sha1Hash($"ps-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 ps.status = "final";
                 ps.subject = new subject { reference = $"Patient/{Pat.id}" };
                 //btchew.code[0].text = "嚼檳榔行為";
@@ -3545,7 +3545,7 @@ namespace FHIR_json.Controllers
 
                 //Observation-ssf1
                 ssf1 = new Observation();
-                ssf1.id = $"ssf1-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                ssf1.id = Sha1Hash($"ssf1-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 ssf1.status = "final";
                 ssf1.subject = new subject { reference = $"Patient/{Pat.id}" };
                 ssf1.code = new code
@@ -3567,7 +3567,7 @@ namespace FHIR_json.Controllers
 
                 //Observation-ssf2
                 ssf2 = new Observation();
-                ssf2.id = $"ssf2-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                ssf2.id = Sha1Hash($"ssf2-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 ssf2.status = "final";
                 ssf2.subject = new subject { reference = $"Patient/{Pat.id}" };
                 ssf2.code = new code
@@ -3589,7 +3589,7 @@ namespace FHIR_json.Controllers
 
                 //Observation-ssf3
                 ssf3 = new Observation();
-                ssf3.id = $"ssf3-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                ssf3.id = Sha1Hash($"ssf3-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 ssf3.status = "final";
                 ssf3.subject = new subject { reference = $"Patient/{Pat.id}" };
                 ssf3.code = new code
@@ -3611,7 +3611,7 @@ namespace FHIR_json.Controllers
 
                 //Observation-ssf4
                 ssf4 = new Observation();
-                ssf4.id = $"ssf4-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                ssf4.id = Sha1Hash($"ssf4-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 ssf4.status = "final";
                 ssf4.subject = new subject { reference = $"Patient/{Pat.id}" };
                 ssf4.code = new code
@@ -3634,7 +3634,7 @@ namespace FHIR_json.Controllers
 
                 //Observation-ssf5
                 ssf5 = new Observation();
-                ssf5.id = $"ssf5-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                ssf5.id = Sha1Hash($"ssf5-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 ssf5.status = "final";
                 ssf5.code = new code
                 {
@@ -3655,7 +3655,7 @@ namespace FHIR_json.Controllers
 
                 //ssf6-ssf10
                 ssf6 = new Observation();
-                ssf6.id = $"ssf6-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                ssf6.id = Sha1Hash($"ssf6-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 ssf6.status = "final";
                 ssf6.subject = new subject { reference = $"Patient/{Pat.id}" };//???
                 ssf6.code = new code
@@ -3675,7 +3675,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(ssf6);
 
                 ssf7 = new Observation();
-                ssf7.id = $"ssf7-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                ssf7.id = Sha1Hash($"ssf7-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 ssf7.status = "final";
                 ssf7.subject = new subject { reference = $"Patient/{Pat.id}" };//???
                 ssf7.code = new code
@@ -3695,7 +3695,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(ssf7);
 
                 ssf8 = new Observation();
-                ssf8.id = $"ssf8-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                ssf8.id = Sha1Hash($"ssf8-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 ssf8.status = "final";
                 ssf8.subject = new subject { reference = $"Patient/{Pat.id}" };//???
                 ssf8.code = new code
@@ -3715,7 +3715,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(ssf8);
 
                 ssf9 = new Observation();
-                ssf9.id = $"ssf9-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                ssf9.id = Sha1Hash($"ssf9-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 ssf9.status = "final";
                 ssf9.subject = new subject { reference = $"Patient/{Pat.id}" };//???
                 ssf9.code = new code
@@ -3735,7 +3735,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(ssf9);
 
                 ssf10 = new Observation();
-                ssf10.id = $"ssf10-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
+                ssf10.id = Sha1Hash($"ssf10-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 ssf10.status = "final";
                 ssf10.subject = new subject { reference = $"Patient/{Pat.id}" };//???
                 ssf10.code = new code
@@ -4300,6 +4300,30 @@ namespace FHIR_json.Controllers
 
             return bundlejson;
 
+        }
+
+        /// <summary>
+        /// SHA1加密
+        /// </summary>
+        /// <param name="content">待加密的字串</param>
+        /// <param name="encode">編碼方式</param>
+        /// <returns></returns>
+        public static String Sha1Hash(String content)
+        {
+            try
+            {
+                SHA1 sha1 = new SHA1CryptoServiceProvider();//建立SHA1物件
+                byte[] bytes_in = Encoding.UTF8.GetBytes(content);//將待加密字串轉為byte型別
+                byte[] bytes_out = sha1.ComputeHash(bytes_in);//Hash運算
+                sha1.Dispose();//釋放當前例項使用的所有資源
+                String result = BitConverter.ToString(bytes_out);//將運算結果轉為string型別
+                result = result.Replace("-", "").ToUpper();//替換並轉為大寫
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
     }
 }
