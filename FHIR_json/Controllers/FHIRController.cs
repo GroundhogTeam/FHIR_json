@@ -2671,7 +2671,7 @@ namespace FHIR_json.Controllers
 
                 //Patient
                 Pat = new Patient();
-                Pat.id = $"{fhir_id++}";
+                Pat.id = $"Pat-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 Pat.identifier = new List<identifier>
                 {
                     new identifier
@@ -2695,7 +2695,7 @@ namespace FHIR_json.Controllers
                 //Procedure
                 //diag
                 diag = new Procedure();
-                diag.id = $"{fhir_id++}";
+                diag.id = $"diag-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 diag.status = "completed";
                 diag.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 //diag.performedDateTime = CRLF_tag.dsdiag;
@@ -2739,7 +2739,7 @@ namespace FHIR_json.Controllers
 
                 //P1
                 P1 = new Procedure();
-                P1.id = $"{fhir_id++}";
+                P1.id = $"P1-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 P1.status = "completed";
                 P1.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 // P1.performedDateTime = CRLF_tag.dop_mds; 
@@ -2824,7 +2824,7 @@ namespace FHIR_json.Controllers
 
                 //P2
                 P2 = new Procedure();
-                P2.id = $"{fhir_id++}";
+                P2.id = $"P2-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 P2.status = "completed";
                 P2.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 P2.reasonCode = new List<reasonCode>
@@ -2859,7 +2859,7 @@ namespace FHIR_json.Controllers
 
                 //P3
                 P3 = new Procedure();
-                P3.id = $"{fhir_id++}";
+                P3.id = $"P3-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 P3.status = "completed";
                 P3.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 P3.reasonCode = new List<reasonCode>
@@ -2893,7 +2893,7 @@ namespace FHIR_json.Controllers
 
                 //Radio1
                 Radio1 = new Procedure();
-                Radio1.id = $"{fhir_id++}";
+                Radio1.id = $"Radio1-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 Radio1.status = "completed";
                 Radio1.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 Radio1.outcome = new outcome
@@ -3127,14 +3127,14 @@ namespace FHIR_json.Controllers
                     }
 
                 };
-                
+
                 prolist.Add(Radio1);
 
 
 
                 //M1
                 M1 = new Procedure();
-                M1.id = $"{fhir_id++}";
+                M1.id = $"M1-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 M1.status = "completed";
                 M1.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 if (CRLF_tag.dsyt == null || CRLF_tag.dchem == null)
@@ -3182,7 +3182,7 @@ namespace FHIR_json.Controllers
 
                 //m4
                 m4 = new Procedure();
-                m4.id = $"{fhir_id++}";
+                m4.id = $"m4-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 m4.status = "completed";
                 m4.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 m4.code = new code
@@ -3202,7 +3202,7 @@ namespace FHIR_json.Controllers
 
                 //m7
                 m7 = new Procedure();
-                m7.id = $"{fhir_id++}";
+                m7.id = $"m7-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 m7.status = "completed";
                 m7.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 m7.code = new code
@@ -3221,7 +3221,7 @@ namespace FHIR_json.Controllers
 
                 //condition_Con
                 Con = new Condition();
-                Con.id = $"{fhir_id++}";
+                Con.id = $"Con-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 //Con.subject[0].reference = Pat1.identifier[0].value;
                 Con.subject = new subject { reference = $"Patient/{Pat.id}" };
                 //Con.onsetAge[0].unit = "years";
@@ -3359,7 +3359,7 @@ namespace FHIR_json.Controllers
                     {
                         url = "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
                         valueDateTime =  DateTime.Parse(CRLF_tag.didiag).ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
-            }
+                    }
                 };
                 ////Con.extension[0].valueDateTime = CRLF_tag.didiag;
                 //Con.extension = new List<extension>
@@ -3613,7 +3613,7 @@ namespace FHIR_json.Controllers
 
                 //condition-SCC
                 SCC = new Condition();
-                SCC.id = $"{fhir_id++}";
+                SCC.id = $"SCC-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 //SCC.recordedDate = CRLF_tag.drecur;
                 SCC.recordedDate = DateTime.Parse(CRLF_tag.drecur).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 SCC.subject = new subject { reference = $"Patient/{Pat.id}" };
@@ -3670,7 +3670,7 @@ namespace FHIR_json.Controllers
 
                 //chargeitem
                 m6 = new ChargeItem();
-                m6.id = $"{fhir_id++}";
+                m6.id = $"m6-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 m6.status = "billed";
                 m6.subject = new subject { reference = $"Patient/{Pat.id}" };
                 //m6.code[0].text = "申報醫院緩和照護";
@@ -3701,7 +3701,7 @@ namespace FHIR_json.Controllers
 
                 //MedicationAdministration-m2
                 m2 = new MedicationAdministration();
-                m2.id = $"{fhir_id++}";
+                m2.id = $"m2-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 //List<medicationCodeableConce> a = new List<medicationCodeableConce>();
                 m2.status = "completed";
                 m2.subject = new subject { reference = $"Patient/{Pat.id}" };
@@ -3768,7 +3768,7 @@ namespace FHIR_json.Controllers
 
                 //MedicationAdministration-m3
                 m3 = new MedicationAdministration();
-                m3.id = $"{fhir_id++}";
+                m3.id = $"m3-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 m3.status = "completed";
                 m3.subject = new subject { reference = $"Patient/{Pat.id}" };
                 //m3.reasonCode[0].text = "外院免疫治療";
@@ -3834,7 +3834,7 @@ namespace FHIR_json.Controllers
 
                 //MedicationAdministration-m5
                 m5 = new MedicationAdministration();
-                m5.id = $"{fhir_id++}";
+                m5.id = $"m5-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 m5.status = "completed";//重複了
                 m5.subject = new subject { reference = $"Patient/{Pat.id}" };
                 //m5.reasonCode[0].text = "外院標靶治療";
@@ -3899,7 +3899,7 @@ namespace FHIR_json.Controllers
 
                 //Observation
                 TS = new Observation();
-                TS.id = $"{fhir_id++}";
+                TS.id = $"TS-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 TS.subject = new subject { reference = $"Patient/{Pat.id}" };
                 TS.status = "final";
                 TS.code = new code
@@ -4044,7 +4044,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(TS);
                 //
                 pni = new Observation();
-                pni.id = $"{fhir_id++}";
+                pni.id = $"pni-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 pni.subject = new subject { reference = $"Patient/{Pat.id}" };
                 pni.status = "final";
                 pni.code = new code
@@ -4064,7 +4064,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(pni);
 
                 lvi = new Observation();
-                lvi.id = $"{fhir_id++}";
+                lvi.id = $"lvi-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 lvi.subject = new subject { reference = $"Patient/{Pat.id}" };
                 lvi.status = "final";
                 lvi.code = new code
@@ -4084,7 +4084,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(lvi);
 
                 nexam = new Observation();
-                nexam.id = $"{fhir_id++}";
+                nexam.id = $"nexam-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 nexam.status = "final";
                 nexam.subject = new subject { reference = $"Patient/{Pat.id}" };
                 nexam.code = new code
@@ -4104,7 +4104,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(nexam);
 
                 nposit = new Observation();
-                nposit.id = $"{fhir_id++}";
+                nposit.id = $"nposit-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 nposit.status = "final";
                 nposit.subject = new subject { reference = $"Patient/{Pat.id}" };
                 nposit.code = new code
@@ -4124,7 +4124,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(nposit);
 
                 clinical_T = new Observation();
-                clinical_T.id = $"{fhir_id++}";
+                clinical_T.id = $"clinical_T-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 clinical_T.status = "final";
                 clinical_T.subject = new subject { reference = $"Patient/{Pat.id}" };
                 clinical_T.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -4146,7 +4146,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(clinical_T);
 
                 clinical_N = new Observation();
-                clinical_N.id = $"{fhir_id++}";
+                clinical_N.id = $"clinical_N-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 clinical_N.status = "final";
                 clinical_N.subject = new subject { reference = $"Patient/{Pat.id}" };
                 clinical_N.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -4167,7 +4167,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(clinical_N);
 
                 clinical_M = new Observation();
-                clinical_M.id = $"{fhir_id++}";
+                clinical_M.id = $"clinical_M-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 clinical_M.status = "final";
                 clinical_M.subject = new subject { reference = $"Patient/{Pat.id}" };
                 clinical_M.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -4188,7 +4188,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(clinical_M);
 
                 CG_clinical = new Observation();
-                CG_clinical.id = $"{fhir_id++}";
+                CG_clinical.id = $"CG_clinical-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 CG_clinical.status = "final";
                 CG_clinical.subject = new subject { reference = $"Patient/{Pat.id}" };
                 CG_clinical.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -4264,7 +4264,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(CG_clinical);
 
                 pathology_T = new Observation();
-                pathology_T.id = $"{fhir_id++}";
+                pathology_T.id = $"pathology_T-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 pathology_T.status = "final";
                 pathology_T.subject = new subject { reference = $"Patient/{Pat.id}" };
                 pathology_T.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -4312,7 +4312,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(pathology_T);
 
                 pathology_N = new Observation();
-                pathology_N.id = $"{fhir_id++}";
+                pathology_N.id = $"pathology_N-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 pathology_N.status = "final";
                 pathology_N.subject = new subject { reference = $"Patient/{Pat.id}" };
                 pathology_N.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -4361,7 +4361,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(pathology_N);
 
                 pathology_M = new Observation();
-                pathology_M.id = $"{fhir_id++}";
+                pathology_M.id = $"pathology_M-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 pathology_M.status = "final";
                 pathology_M.subject = new subject { reference = $"Patient/{Pat.id}" };
                 pathology_M.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -4409,7 +4409,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(pathology_M);
 
                 CG_pathology = new Observation();
-                CG_pathology.id = $"{fhir_id++}";
+                CG_pathology.id = $"CG_pathology-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";   //$"{fhir_id++}";
                 CG_pathology.status = "final";
                 CG_pathology.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
                 CG_pathology.subject = new subject { reference = $"Patient/{Pat.id}" };
@@ -4486,7 +4486,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(CG_pathology);
 
                 CG_OtherC = new Observation();
-                CG_OtherC.id = $"{fhir_id++}";
+                CG_OtherC.id = $"CG_OtherC-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 CG_OtherC.code = new code
                 {
                     text = "其他分期系統",
@@ -4534,7 +4534,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(CG_OtherC);
 
                 CG_OtherP = new Observation();
-                CG_OtherP.id = $"{fhir_id++}";
+                CG_OtherP.id = $"CG_OtherP-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 CG_OtherP.code = new code
                 {
                     text = "其他分期系統",
@@ -4583,7 +4583,7 @@ namespace FHIR_json.Controllers
 
 
                 height = new Observation();
-                height.id = $"{fhir_id++}";
+                height.id = $"height-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 height.status = "final";
                 height.subject = new subject { reference = $"Patient/{Pat.id}" };
                 height.code = new code
@@ -4625,7 +4625,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(height);
 
                 weight = new Observation();
-                weight.id = $"{fhir_id++}";
+                weight.id = $"weight-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 weight.status = "final";
                 weight.subject = new subject { reference = $"Patient/{Pat.id}" };
                 weight.code = new code
@@ -4670,7 +4670,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(weight);
 
                 smoke = new Observation();
-                smoke.id = $"{fhir_id++}";
+                smoke.id = $"smoke-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 smoke.status = "final";
                 smoke.subject = new subject { reference = $"Patient/{Pat.id}" };
                 smoke.code = new code
@@ -4691,7 +4691,7 @@ namespace FHIR_json.Controllers
 
                 //Observation-btchew
                 btchew = new Observation();
-                btchew.id = $"{fhir_id++}";
+                btchew.id = $"btchew-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 btchew.status = "final";
                 //btchew.subject[0].reference = "";//???
                 btchew.subject = new subject { reference = $"Patient/{Pat.id}" };
@@ -4715,7 +4715,7 @@ namespace FHIR_json.Controllers
 
                 //Observation-drinking
                 drinking = new Observation();
-                drinking.id = $"{fhir_id++}";
+                drinking.id = $"drinking-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 drinking.status = "final";
                 //btchew.subject[0].reference = "";//???
                 drinking.subject = new subject { reference = $"Patient/{Pat.id}" };
@@ -4739,7 +4739,7 @@ namespace FHIR_json.Controllers
 
                 //Observation-drinking
                 ps = new Observation();
-                ps.id = $"{fhir_id++}";
+                ps.id = $"ps-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 ps.status = "final";
                 //btchew.subject[0].reference = "";//???
                 ps.subject = new subject { reference = $"Patient/{Pat.id}" };
@@ -4763,7 +4763,7 @@ namespace FHIR_json.Controllers
 
                 //Observation-ssf1
                 ssf1 = new Observation();
-                ssf1.id = $"{fhir_id++}";
+                ssf1.id = $"ssf1-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 ssf1.status = "final";
                 ssf1.subject = new subject { reference = $"Patient/{Pat.id}" };
                 //ssf1.code[0].text = "癌症部位特定因子 1";
@@ -4787,7 +4787,7 @@ namespace FHIR_json.Controllers
 
                 //Observation-ssf2
                 ssf2 = new Observation();
-                ssf2.id = $"{fhir_id++}";
+                ssf2.id = $"ssf2-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 ssf2.status = "final";
                 ssf2.subject = new subject { reference = $"Patient/{Pat.id}" };
                 //ssf2.subject[0].reference = "";//???
@@ -4812,7 +4812,7 @@ namespace FHIR_json.Controllers
 
                 //Observation-ssf3
                 ssf3 = new Observation();
-                ssf3.id = $"{fhir_id++}";
+                ssf3.id = $"ssf3-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 ssf3.status = "final";
                 //ssf3.subject[0].reference = "";//???
                 ssf3.subject = new subject { reference = $"Patient/{Pat.id}" };
@@ -4837,7 +4837,7 @@ namespace FHIR_json.Controllers
 
                 //Observation-ssf4
                 ssf4 = new Observation();
-                ssf4.id = $"{fhir_id++}";
+                ssf4.id = $"ssf4-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 ssf4.status = "final";
                 //Obs.subject[0].reference = "";//???
                 ssf4.subject = new subject { reference = $"Patient/{Pat.id}" };
@@ -4863,7 +4863,7 @@ namespace FHIR_json.Controllers
 
                 //Observation-ssf5
                 ssf5 = new Observation();
-                ssf5.id = $"{fhir_id++}";
+                ssf5.id = $"ssf5-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 ssf5.status = "final";
                 //ssf5.valueCodeableConcept[0].coding[0].code = CRLF_tag.ssf5;
                 //Obs.subject[0].reference = "";//???
@@ -4887,7 +4887,7 @@ namespace FHIR_json.Controllers
 
                 //ssf6-ssf10
                 ssf6 = new Observation();
-                ssf6.id = $"{fhir_id++}";
+                ssf6.id = $"ssf6-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 ssf6.status = "final";
                 ssf6.subject = new subject { reference = $"Patient/{Pat.id}" };//???
                 ssf6.code = new code
@@ -4907,7 +4907,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(ssf6);
 
                 ssf7 = new Observation();
-                ssf7.id = $"{fhir_id++}";
+                ssf7.id = $"ssf7-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 ssf7.status = "final";
                 ssf7.subject = new subject { reference = $"Patient/{Pat.id}" };//???
                 ssf7.code = new code
@@ -4927,7 +4927,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(ssf7);
 
                 ssf8 = new Observation();
-                ssf8.id = $"{fhir_id++}";
+                ssf8.id = $"ssf8-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 ssf8.status = "final";
                 ssf8.subject = new subject { reference = $"Patient/{Pat.id}" };//???
                 ssf8.code = new code
@@ -4947,7 +4947,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(ssf8);
 
                 ssf9 = new Observation();
-                ssf9.id = $"{fhir_id++}";
+                ssf9.id = $"ssf9-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 ssf9.status = "final";
                 ssf9.subject = new subject { reference = $"Patient/{Pat.id}" };//???
                 ssf9.code = new code
@@ -4967,7 +4967,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(ssf9);
 
                 ssf10 = new Observation();
-                ssf10.id = $"{fhir_id++}";
+                ssf10.id = $"ssf10-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dbirth}-{CRLF_tag.dcont}";
                 ssf10.status = "final";
                 ssf10.subject = new subject { reference = $"Patient/{Pat.id}" };//???
                 ssf10.code = new code
@@ -5015,8 +5015,8 @@ namespace FHIR_json.Controllers
                     resource = res,
                     request = new request
                     {
-                        method = "POST",
-                        url = $"{res.resourceType}",
+                        method = "PUT",
+                        url = $"{res.resourceType}/{res.id}",
                         ifNoneExist = "identifier=" + res.identifier[0].value
                     }
                 };
@@ -5210,8 +5210,8 @@ namespace FHIR_json.Controllers
                     resource = res,
                     request = new request
                     {
-                        method = "POST",
-                        url = $"{res.resourceType}",
+                        method = "PUT",
+                        url = $"{res.resourceType}/{res.id}",
                         //ifNoneExist = "identifier="+res.identifier[0].value
                     }
                 };
@@ -5238,8 +5238,8 @@ namespace FHIR_json.Controllers
                     resource = res,
                     request = new request
                     {
-                        method = "POST",
-                        url = $"{res.resourceType}",
+                        method = "PUT",
+                        url = $"{res.resourceType}/{res.id}",
                         //ifNoneExist = "identifier="+res.identifier[0].value
                     }
                 };
@@ -5266,8 +5266,8 @@ namespace FHIR_json.Controllers
                     resource = res,
                     request = new request
                     {
-                        method = "POST",
-                        url = $"{res.resourceType}",
+                        method = "PUT",
+                        url = $"{res.resourceType}/{res.id}",
                         //ifNoneExist = "identifier="+res.identifier[0].value
                     }
                 };
@@ -5294,8 +5294,8 @@ namespace FHIR_json.Controllers
                     resource = res,
                     request = new request
                     {
-                        method = "POST",
-                        url = $"{res.resourceType}",
+                        method = "PUT",
+                        url = $"{res.resourceType}/{res.id}",
                         //ifNoneExist = "identifier="+res.identifier[0].value
                     }
                 };

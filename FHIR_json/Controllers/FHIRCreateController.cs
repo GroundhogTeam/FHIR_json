@@ -186,13 +186,6 @@ namespace FHIR_json.Controllers
         [HttpPost]
         public async Task<dynamic> LABM_JSON(List<OriginalJson.LABM> Labm_tags)
         {
-            //StreamReader r = new StreamReader(@"C:\Users\huang\source\repos\GroundhogTeam\NHIRDB_system\WebApplication3\ReadJSON\202112221134197LABM_B+_col_刪除中文結果值.json");
-            //StreamReader r = new StreamReader(@"D:\信華專區\newNHIRDB_system\NHIRDB_system\WebApplication3\ReadJSON\202112221134197LABM_B+_col_刪除中文結果值.json");
-            //StreamReader r = new StreamReader(@"C:\Users\pin-hua\source\repos\GroundhogTeam\NHIRDB_system\WebApplication3\ReadJSON\202112221134197LABM_B+_col_刪除中文結果值.json");
-            //StreamReader r = new StreamReader(@"C:\Users\jenny\source\repos\GroundhogTeam\NHIRDB_system\WebApplication3\ReadJSON\202112221134197LABM_B+_col_刪除中文結果值.json"); //河
-            //string jsonString = r.ReadToEnd();
-            //var Labm_tags = JsonConvert.DeserializeObject<List<OriginalJson.LABM>>(jsonString);//將JSON格式轉換成物件
-            //ViewBag.Labm_tags = Labm_tags;
             //開始分類
             int fhir_id = 0;//FHIR流水號
             foreach (var Labm_tag in Labm_tags)
@@ -204,7 +197,7 @@ namespace FHIR_json.Controllers
                 {
                     new identifier
                     {
-                                value = Labm_tag.LABMH2
+                        value = Labm_tag.LABMH2
                     }
                 };
                 orglist.Add(labm);
@@ -225,9 +218,8 @@ namespace FHIR_json.Controllers
 
                 //ChargeItem
                 labm_ct = new ChargeItem();
-                labm_ct.id = $"{fhir_id++}";
+                labm_ct.id = $"labm_ct-{Labm_tag.LABMH2}-{Labm_tag.LABMH4}-{Labm_tag.LABMH5}-{Labm_tag.LABMH6}-{Labm_tag.LABMH7}-{Labm_tag.LABMH8}-{Labm_tag.LABMH18}-{Labm_tag.LABMR1}";
                 labm_ct.enteredDate = Labm_tag.LABMH4;
-                //labm_ct.enteredDate = DateTime.Parse(Labm_tag.LABMH4).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 labm_ct.subject = new subject { reference = $"Patient/{labm_pt.id}" };//? 94
                 labm_ct.status = "billed";
                 labm_ct.code = new code
@@ -244,7 +236,7 @@ namespace FHIR_json.Controllers
                 chalist.Add(labm_ct);
                 // enc
                 labm_en = new Encounter();
-                labm_en.id = $"{fhir_id++}";
+                labm_en.id = $"labm_en-{Labm_tag.LABMH2}-{Labm_tag.LABMH4}-{Labm_tag.LABMH5}-{Labm_tag.LABMH6}-{Labm_tag.LABMH7}-{Labm_tag.LABMH8}-{Labm_tag.LABMH18}-{Labm_tag.LABMR1}";
                 labm_en.status = "finished";
                 labm_en.type = new List<type>
                 {
@@ -321,7 +313,7 @@ namespace FHIR_json.Controllers
                 enclist.Add(labm_en);
                 //obeser
                 labm_h = new Observation();
-                labm_h.id = $"{fhir_id++}";
+                labm_h.id = $"labm_h-{Labm_tag.LABMH2}-{Labm_tag.LABMH4}-{Labm_tag.LABMH5}-{Labm_tag.LABMH6}-{Labm_tag.LABMH7}-{Labm_tag.LABMH8}-{Labm_tag.LABMH18}-{Labm_tag.LABMR1}";
                 labm_h.status = "final";
                 labm_h.subject = new subject { reference = $"Patient/{labm_pt.id}" };//?94
                 labm_h.encounter = new encounter { reference = $"Encounter/{labm_en.id}" };//?91
@@ -343,7 +335,7 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                labm_h.issued =DateTime.Parse(Labm_tag.LABMH22).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                labm_h.issued = DateTime.Parse(Labm_tag.LABMH22).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 labm_h.effectiveDateTime = DateTime.Parse(Labm_tag.LABMH23).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 labm_h.category = new List<category>
                 {
@@ -362,7 +354,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(labm_h);
 
                 labm_B = new Observation();
-                labm_B.id = $"{fhir_id++}";
+                labm_B.id = $"labm_B-{Labm_tag.LABMH2}-{Labm_tag.LABMH4}-{Labm_tag.LABMH5}-{Labm_tag.LABMH6}-{Labm_tag.LABMH7}-{Labm_tag.LABMH8}-{Labm_tag.LABMH18}-{Labm_tag.LABMR1}";
                 labm_B.status = "final";
                 labm_B.subject = new subject { reference = $"Patient/{labm_pt.id}" };//?94
                 labm_B.encounter = new encounter { reference = $"Encounter/{labm_en.id}" };//?91
@@ -452,7 +444,6 @@ namespace FHIR_json.Controllers
                         }
                     },
                 };
-                //labm_B.effectiveDateTime = Labm_tag.LABMR10;
                 labm_B.effectiveDateTime = DateTime.Parse(Labm_tag.LABMR10).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 obslist.Add(labm_B);
             }
@@ -474,16 +465,6 @@ namespace FHIR_json.Controllers
         [HttpPost]
         public async Task<dynamic> LABD_JSON(List<OriginalJson.LABD> Labd_tags) //Bundle
         {
-            //var a = Request.Files.Count;
-            //StreamReader r = new StreamReader(@"C:\Users\huang\source\repos\GroundhogTeam\NHIRDB_system\WebApplication3\ReadJSON\202112221134261LABD_B+_col.json");
-            //StreamReader r = new StreamReader(@"D:\信華專區\newNHIRDB_system\NHIRDB_system\WebApplication3\ReadJSON\202112221134261LABD_B+_col.json");
-            //StreamReader r = new StreamReader(@"C:\Users\pin-hua\source\repos\GroundhogTeam\NHIRDB_system\WebApplication3\ReadJSON\202112221134261LABD_B+_col.json");
-            //StreamReader r = new StreamReader(@"C:\Users\jenny\source\repos\GroundhogTeam\NHIRDB_system\WebApplication3\ReadJSON\202112221134261LABD_B+_col.json"); //河
-
-            //var Labd_tags = jsonString;
-            //string jsonString = r.ReadToEnd();
-            //var Labd_tags = JsonConvert.DeserializeObject<List<OriginalJson.LABD>>(jsonString);//將JSON格式轉換成物件
-            //ViewBag.Labd_tags = Labd_tags;
             //開始分類
             int fhir_id = 0;//FHIR流水號
             foreach (var Labd_tag in Labd_tags)
@@ -495,7 +476,7 @@ namespace FHIR_json.Controllers
                 {
                     new identifier
                     {
-                                value = Labd_tag.LABDH2
+                        value = Labd_tag.LABDH2
                     }
                 };
                 orglist.Add(labd);
@@ -515,7 +496,7 @@ namespace FHIR_json.Controllers
                 patlist.Add(labd_pt);
                 //enc
                 labd_en = new Encounter();
-                labd_en.id = $"{fhir_id++}";
+                labd_en.id = $"labd_en-{Labd_tag.LABDH2}-{Labd_tag.LABDH4}-{Labd_tag.LABDH5}-{Labd_tag.LABDH6}-{Labd_tag.LABDH7}-{Labd_tag.LABDH15}-{Labd_tag.LABDR1}";
                 labd_en.status = "finished";
                 labd_en.type = new List<type>
                 {
@@ -591,7 +572,7 @@ namespace FHIR_json.Controllers
                 enclist.Add(labd_en);
                 //obeser
                 labd_h = new Observation();
-                labd_h.id = $"{fhir_id++}";
+                labd_h.id = $"labd_h-{Labd_tag.LABDH2}-{Labd_tag.LABDH4}-{Labd_tag.LABDH5}-{Labd_tag.LABDH6}-{Labd_tag.LABDH7}-{Labd_tag.LABDH15}-{Labd_tag.LABDR1}";
                 labd_h.status = "final";
                 labd_h.subject = new subject { reference = $"Patient/{labd_pt.id}" };//?88
                 labd_h.encounter = new encounter { reference = $"Encounter/{labd_en.id}" };//?86
@@ -626,7 +607,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(labd_h);
 
                 labd_B = new Observation();
-                labd_B.id = $"{fhir_id++}";
+                labd_B.id = $"labd_B-{Labd_tag.LABDH2}-{Labd_tag.LABDH4}-{Labd_tag.LABDH5}-{Labd_tag.LABDH6}-{Labd_tag.LABDH7}-{Labd_tag.LABDH15}-{Labd_tag.LABDR1}";
                 labd_B.status = "final";
                 labd_B.subject = new subject { reference = $"Patient/{labd_pt.id}" };//?88
                 labd_B.encounter = new encounter { reference = $"Encounter/{labd_en.id}" };//?86
@@ -737,13 +718,9 @@ namespace FHIR_json.Controllers
         [HttpPost]
         public async Task<dynamic> TOTFA_JSON(List<OriginalJson.TOTFA> TOTFA_tags)
         {
-
-
             //StreamReader r = new StreamReader(@"C:\Users\huang\source\repos\GroundhogTeam\NHIRDB_system\WebApplication3\ReadJSON\totfae_merge_col.json");
             //StreamReader r = new StreamReader(@"D:\信華專區\newNHIRDB_system\NHIRDB_system\WebApplication3\ReadJSON\totfae_merge_col.json");
             //StreamReader r = new StreamReader(@"C:\Users\pin-hua\source\repos\GroundhogTeam\NHIRDB_system\WebApplication3\ReadJSON\totfae_merge_col.json");
-
-
             //string jsonString = r.ReadToEnd();
             //var TOTFA_tags = JsonConvert.DeserializeObject<List<OriginalJson.TOTFA>>(jsonString);//將JSON格式轉換成物件
             //ViewBag.TOTFA_tags = TOTFA_tags;
@@ -758,7 +735,7 @@ namespace FHIR_json.Controllers
                 {
                     new identifier
                     {
-                                value = TOTFA_tag.TOTFAT2.ToString()
+                        value = TOTFA_tag.TOTFAT2.ToString()
                     }
                 };
                 orglist.Add(fa);
@@ -767,7 +744,6 @@ namespace FHIR_json.Controllers
                 pt = new Patient();
                 pt.id = $"{fhir_id++}";
                 pt.birthDate = TOTFA_tag.TOTFAD11;
-                //pt.birthDate = DateTime.Parse(TOTFA_tag.TOTFAD11).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 pt.identifier = new List<identifier>
                 {
                     new identifier
@@ -778,7 +754,7 @@ namespace FHIR_json.Controllers
                 patlist.Add(pt);
                 //enc
                 fa_en = new Encounter();
-                fa_en.id = $"{fhir_id++}";
+                fa_en.id = $"fa_en-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
                 fa_en.status = "finished";
                 fa_en.type = new List<type>
                 {
@@ -801,27 +777,6 @@ namespace FHIR_json.Controllers
                     code = "AMB",
                     display = "ambulatory"
                 };
-                //fa_en.@class = new @class
-                //{
-                //    code = "AMB"
-                //};
-                //fa_en.@class = new @class
-                //{
-                //    display = "ambulatory"
-                //};
-                //fa_en.type = new List<type>
-                //{
-                //    new type
-                //    {
-                //        coding=new List<coding>
-                //        {
-                //            new coding
-                //            {
-                //                code=TOTFA_tag.TOTFAD1.ToString()
-                //            }
-                //        }
-                //    }
-                //};
                 fa_en.identifier = new List<identifier>
                 {
                     new identifier
@@ -841,31 +796,17 @@ namespace FHIR_json.Controllers
                             }
                         }
                 };
-                //fa_en.serviceType = new serviceType
-                //{
-                //    coding = new List<coding>
-                //        {
-                //            new coding
-                //            {
-                //                code=TOTFA_tag.TOTFAD8.ToString()
-                //            }
-                //        }
-                //};
                 fa_en.period = new period
                 {
                     start = TOTFA_tag.TOTFAD9,
                     end = TOTFA_tag.TOTFAD10
                 };
-                //fa_en.period = new period
-                //{
-                //    end = TOTFA_tag.TOTFAD10
-                //};
 
                 enclist.Add(fa_en);
 
                 //obeser
                 med_day = new Observation();
-                med_day.id = $"{fhir_id++}";
+                med_day.id = $"med_day-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
                 med_day.status = "final";
                 med_day.subject = new subject { reference = $"Patient/{pt.id}" };//?
                 med_day.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//?
@@ -886,7 +827,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(med_day);
 
                 med_type = new Observation();
-                med_type.id = $"{fhir_id++}";
+                med_type.id = $"med_type-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
                 med_type.status = "final";
                 med_type.subject = new subject { reference = $"Patient/{pt.id}" };//?
                 med_type.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//?
@@ -908,9 +849,8 @@ namespace FHIR_json.Controllers
                 obslist.Add(med_type);
                 //ChargeItem
                 fa_ct = new ChargeItem();
-                fa_ct.id = $"{fhir_id++}";
+                fa_ct.id = $"fa_ct-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
                 fa_ct.enteredDate = TOTFA_tag.TOTFAT3;
-                //fa_ct.enteredDate = DateTime.Parse(TOTFA_tag.TOTFAT3).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 fa_ct.subject = new subject { reference = $"Patient/{pt.id}" };//? 57
                 fa_ct.status = "billed";
                 fa_ct.code = new code
@@ -924,12 +864,11 @@ namespace FHIR_json.Controllers
                         }
                 };
                 fa_ct.occurrenceDateTime = DateTime.Parse(TOTFA_tag.TOTFAT6).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
-                //fa_ct.occurrenceDateTime = TOTFA_tag.TOTFAT6;
                 chalist.Add(fa_ct);
 
                 //procedure
                 fa_p1 = new Procedure();
-                fa_p1.id = $"{fhir_id++}";
+                fa_p1.id = $"fa_p1-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
                 fa_p1.status = "completed";
                 fa_p1.subject = new subject { reference = $"Patient/{pt.id}" };//57??
                 fa_p1.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//52??
@@ -945,21 +884,10 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                ////fa_c1.code.coding[0].code = TOTFA_tag.TOTFAD4;
-                //fa_p1.code = new code
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code = TOTFA_tag.TOTFAD4
-                //        }
-                //    }
-                //};
                 prolist.Add(fa_p1);
 
                 fa_p2 = new Procedure();
-                fa_p2.id = $"{fhir_id++}";
+                fa_p2.id = $"fa_p2-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
                 fa_p2.status = "completed";
                 fa_p2.subject = new subject { reference = $"Patient/{pt.id}" };//57??
                 fa_p2.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//52??
@@ -975,21 +903,10 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                ////fa_c2.code.coding[0].code = TOTFA_tag.TOTFAD5;
-                //fa_p2.code = new code
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code = TOTFA_tag.TOTFAD5
-                //        }
-                //    }
-                //};
                 prolist.Add(fa_p2);
 
                 fa_p3 = new Procedure();
-                fa_p3.id = $"{fhir_id++}";
+                fa_p3.id = $"fa_p3-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
                 fa_p3.status = "completed";
                 fa_p3.subject = new subject { reference = $"Patient/{pt.id}" };//57??
                 fa_p3.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//52??
@@ -1006,21 +923,10 @@ namespace FHIR_json.Controllers
                     }
 
                 };
-                ////fa_c3.code.coding[0].code = TOTFA_tag.TOTFAD6;
-                //fa_p3.code = new code
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code = TOTFA_tag.TOTFAD6
-                //        }
-                //    }
-                //};
                 prolist.Add(fa_p3);
 
                 fa_p4 = new Procedure();
-                fa_p4.id = $"{fhir_id++}";
+                fa_p4.id = $"fa_p4-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
                 fa_p4.status = "completed";
                 fa_p4.subject = new subject { reference = $"Patient/{pt.id}" };//57??
                 fa_p4.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//52??
@@ -1036,21 +942,10 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                ////fa_c4.code.coding[0].code = TOTFA_tag.TOTFAD7;
-                //fa_p4.code = new code
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code = TOTFA_tag.TOTFAD7
-                //        }
-                //    }
-                //};
                 prolist.Add(fa_p4);
 
                 P1 = new Procedure();
-                P1.id = $"{fhir_id++}";
+                P1.id = $"P1-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
                 P1.status = "completed";
                 P1.subject = new subject { reference = $"Patient/{pt.id}" };//57??
                 P1.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };// 52??
@@ -1067,21 +962,10 @@ namespace FHIR_json.Controllers
                     }
 
                 };
-                ////P1.code.coding[0].code = TOTFA_tag.TOTFAD24;
-                //P1.code = new code
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code = TOTFA_tag.TOTFAD24
-                //        }
-                //    }
-                //};
                 prolist.Add(P1);
 
                 P2 = new Procedure();
-                P2.id = $"{fhir_id++}";
+                P2.id = $"P2-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
                 P2.status = "completed";
                 P2.subject = new subject { reference = $"Patient/{pt.id}" };//57??
                 P2.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//52??
@@ -1097,21 +981,10 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                ////P2.code.coding[0].code = TOTFA_tag.TOTFAD25;
-                //P2.code = new code
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code = TOTFA_tag.TOTFAD25
-                //        }
-                //    }
-                //};
                 prolist.Add(P2);
 
                 P3 = new Procedure();
-                P3.id = $"{fhir_id++}";
+                P3.id = $"P3-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
                 P3.status = "completed";
                 P3.subject = new subject { reference = $"Patient/{pt.id}" };//57??
                 P3.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//52??
@@ -1127,23 +1000,13 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                ////P3.code.coding[0].code = TOTFA_tag.TOTFAD26;
-                //P3.code = new code
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code = TOTFA_tag.TOTFAD26
-                //        }
-                //    }
-                //};
+  
                 prolist.Add(P3);
 
 
                 //medicationrequest
                 fa_med = new MedicationRequest();
-                fa_med.id = $"{fhir_id++}";
+                fa_med.id = $"fa_med-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
                 fa_med.status = "completed";
                 fa_med.intent = "order";
                 fa_med.subject = new subject { reference = $"Patient/{pt.id}" };//57
@@ -1196,33 +1059,6 @@ namespace FHIR_json.Controllers
                     };
                 }
 
-
-
-                ////fa_med.dispenseRequest.expectedSupplyDuration.system = "http://unitsofmeasure.org";
-                //fa_med.dispenseRequest = new dispenseRequest
-                //{
-                //    expectedSupplyDuration = new expectedSupplyDuration
-                //    {
-                //        system = "http://unitsofmeasure.org"
-                //    }
-                //};
-                ////fa_med.dispenseRequest.expectedSupplyDuration.code = "d";
-                //fa_med.dispenseRequest = new dispenseRequest
-                //{
-                //    expectedSupplyDuration = new expectedSupplyDuration
-                //    {
-                //        code = "d"
-                //    }
-                //};
-                ////fa_med.dispenseRequest.expectedSupplyDuration.value = TOTFA_tag.TOTFAP1;
-                //fa_med.dispenseRequest = new dispenseRequest
-                //{
-                //    expectedSupplyDuration = new expectedSupplyDuration
-                //    {
-                //        value = TOTFA_tag.TOTFAP1
-                //    }
-                //};
-                //fa_med.category[0].text = "醫令調劑方式";
                 fa_med.category = new List<category>
                 {
                     new category
@@ -1261,45 +1097,6 @@ namespace FHIR_json.Controllers
                      }
 
                 };
-                ////fa_med.category[0].coding[0].code = TOTFA_tag.TOTFAP2.ToString();//資料格式不同
-                //fa_med.category = new List<category>
-                //{
-                //    new category
-                //    {
-                //        coding = new List<coding>
-                //        {
-                //            new coding
-                //            {
-                //                code = TOTFA_tag.TOTFAP2.ToString()//資料格式不同
-                //}
-                //        }
-                //    }
-                //};
-                ////fa_med.category[1].text = "醫令類別";
-                //fa_med.category = new List<category>
-                //{
-                //    new category
-                //    {
-
-                //                text = "醫令類別"
-
-                //    }
-                //};
-                //    //fa_med.category[1].coding[0].code = TOTFA_tag.TOTFAP3.ToString();//資料格式不同
-                //    fa_med.category = new List<category>
-                //    {
-                //        new category
-                //        {
-                //            coding = new List<coding>
-                //            {
-                //                new coding
-                //                {
-                //                    code = TOTFA_tag.TOTFAP3.ToString()//資料格式不同
-                //}
-                //            }
-                //        }
-                //    };
-                //fa_med.medicationCodeableConcept[0].coding[0].code = TOTFA_tag.TOTFAP4;
                 fa_med.medicationCodeableConcept = new medicationCodeableConcept
                 {
                     coding = new List<coding>
@@ -1311,7 +1108,7 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //fa_med.dosageInstruction[0].doseAndRate[0].doseQuantity[0].value = Convert.ToDouble(TOTFA_tag.TOTFAP5);//資料格式不同
+              
                 fa_med.dosageInstruction = new List<dosageInstruction>
                 {
                     new dosageInstruction
@@ -1360,7 +1157,6 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //fa_med.reasonCode[0].text = "診療之部位";
                 fa_med.reasonCode = new List<reasonCode>
                 {
                     new reasonCode
@@ -1375,89 +1171,6 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                ////fa_med.reasonCode[0].coding[0].code = TOTFA_tag.TOTFAP6;
-                //fa_med.reasonCode = new List<reasonCode>
-                //{
-                //    new reasonCode
-                //    {
-                //        coding = new List<coding>
-                //        {
-                //            new coding
-                //            {
-                //                code = TOTFA_tag.TOTFAP6
-
-                //            }
-                //        }
-                //    }
-                //};
-                ////fa_med.dosageInstruction[0].timing.code.coding[0].code = TOTFA_tag.TOTFAP7;
-                //fa_med.dosageInstruction = new List<dosageInstruction>
-                //{
-                //    new dosageInstruction
-                //    {
-                //        timing = new timing
-                //        {
-
-
-                //            code = new code
-                //            {
-                //                coding = new List<coding>
-
-                //                {
-
-                //                    new coding
-
-                //                    {
-
-                //                        code = TOTFA_tag.TOTFAP7
-
-                //                    }
-
-                //                }
-
-
-                //            }
-
-                //        }
-                //    }
-                //};
-                ////fa_med.dosageInstruction[0].site.coding[0].code = TOTFA_tag.TOTFAP9;
-                //fa_med.dosageInstruction = new List<dosageInstruction>
-                //{
-                //    new dosageInstruction
-                //    {
-                //        site = new site
-                //        {
-
-
-                //            coding = new List<coding>
-
-                //            {
-
-                //                new coding
-
-                //                {
-
-                //                    code = TOTFA_tag.TOTFAP9
-
-                //                }
-
-                //            }
-
-                //        }
-                //    }
-                //};
-                ////fa_med.dispenseRequest.quantity.value = TOTFA_tag.TOTFAP10;
-                //fa_med.dispenseRequest = new dispenseRequest
-                //{
-                //    quantity = new quantity
-
-                //    {
-                //        value = TOTFA_tag.TOTFAP10
-                //    }
-
-                //};
-                //fa_med.identifier[0].value = TOTFA_tag.TOTFAP13.ToString();//資料格式不同
                 fa_med.identifier = new List<identifier>
                 {
                     new identifier
@@ -1467,30 +1180,6 @@ namespace FHIR_json.Controllers
 
                     }
                 };
-                ////fa_med.dispenseRequest.validityPeriod.start = TOTFA_tag.TOTFAP14;
-                //fa_med.dispenseRequest = new dispenseRequest
-                //{
-
-                //    validityPeriod = new validityPeriod
-                //    {
-                //        start = TOTFA_tag.TOTFAP14
-
-                //    }
-
-                //};
-
-                ////fa_med.dispenseRequest.validityPeriod.end = TOTFA_tag.TOTFAP15;
-                //fa_med.dispenseRequest = new dispenseRequest
-                //{
-
-                //    validityPeriod = new validityPeriod
-                //    {
-                //        end = TOTFA_tag.TOTFAP15
-
-                //    }
-
-                //};
-                //fa_med.category[0].text = "慢性病連續處方箋、同一療程及排程檢查案件註記";
                 fa_med.category = new List<category>
                 {
                     new category
@@ -1498,26 +1187,12 @@ namespace FHIR_json.Controllers
                         text="慢性病連續處方箋、同一療程及排程檢查案件註記"
                     }
                 };
-                ////fa_med.category[3].coding[0].code = TOTFA_tag.TOTFAP17;
-                //fa_med.category = new List<category>
-                //{
-                //    new category
-                //    {
-                //        coding = new List<coding>
-                //        {
-                //            new coding
-                //            {
-                //                code = TOTFA_tag.TOTFAP17
-                //            }
-                //        }
-                //    }
-                //};
                 medrequestlist.Add(fa_med);
 
 
                 //condition_fa_c1
                 fa_c1 = new Condition();
-                fa_c1.id = $"{fhir_id++}";
+                fa_c1.id = $"fa_c1-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
                 fa_c1.subject = new subject { reference = $"Patient/{pt.id}" };//57
                 fa_c1.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//?52
                                                                                         //fa_c1.code.text = "主診斷代碼";
@@ -1539,7 +1214,7 @@ namespace FHIR_json.Controllers
 
                 //condition_fa_c2
                 fa_c2 = new Condition();
-                fa_c2.id = $"{fhir_id++}";
+                fa_c2.id = $"fa_c2-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
                 fa_c2.subject = new subject { reference = $"Patient/{pt.id}" };//? 57
                 fa_c2.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//?52
                                                                                         //fa_c2.code.text = "次診斷代碼(一)";
@@ -1561,7 +1236,7 @@ namespace FHIR_json.Controllers
 
                 //condition_fa_c3
                 fa_c3 = new Condition();
-                fa_c3.id = $"{fhir_id++}";
+                fa_c3.id = $"fa_c3-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
                 fa_c3.subject = new subject { reference = $"Patient/{pt.id}" };//57
                 fa_c3.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//?52
                                                                                         //fa_c2.code.text = "次診斷代碼(二)";
@@ -1583,7 +1258,7 @@ namespace FHIR_json.Controllers
 
                 //condition_fa_c4
                 fa_c4 = new Condition();
-                fa_c4.id = $"{fhir_id++}";
+                fa_c4.id = $"fa_c4-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
                 fa_c4.subject = new subject { reference = $"Patient/{pt.id}" };//57
                 fa_c4.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//?52
                                                                                         //fa_c4.code.text = "次診斷代碼(三)";
@@ -1605,7 +1280,7 @@ namespace FHIR_json.Controllers
 
                 //condition_fa_c5
                 fa_c5 = new Condition();
-                fa_c5.id = $"{fhir_id++}";
+                fa_c5.id = $"fa_c5-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}";
                 fa_c5.subject = new subject { reference = $"Patient/{pt.id}" };//57
                 fa_c5.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//?52
                                                                                         //fa_c5.code.text = "次診斷代碼(四)";
@@ -1647,13 +1322,6 @@ namespace FHIR_json.Controllers
         [HttpPost]
         public async Task<dynamic> TOTFB_JSON(List<OriginalJson.TOTFB> TOTFB_tags)
         {
-            //StreamReader r = new StreamReader(@"C:\Users\huang\source\repos\GroundhogTeam\NHIRDB_system\WebApplication3\ReadJSON\totfbe_merge_col.json");
-            //StreamReader r = new StreamReader(@"D:\信華專區\newNHIRDB_system\NHIRDB_system\WebApplication3\ReadJSON\totfbe_merge_col.json");
-            //StreamReader r = new StreamReader(@"C:\Users\pin-hua\source\repos\GroundhogTeam\NHIRDB_system\WebApplication3\ReadJSON\totfbe_merge_col.json");
-
-            //string jsonString = r.ReadToEnd();
-            //var TOTFB_tags = JsonConvert.DeserializeObject<List<OriginalJson.TOTFB>>(jsonString);//將JSON格式轉換成物件
-            //ViewBag.TOTFB_tags = TOTFB_tags;
             //開始分類
             int fhir_id = 0;//FHIR流水號
             foreach (var TOTFB_tag in TOTFB_tags)
@@ -1681,11 +1349,10 @@ namespace FHIR_json.Controllers
                     }
                 };
                 fb_pt.birthDate = TOTFB_tag.TOTFBD6;
-                //fb_pt.birthDate = DateTime.Parse(TOTFB_tag.TOTFBD6).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 patlist.Add(fb_pt);
                 //enc
                 fb_en = new Encounter();
-                fb_en.id = $"{fhir_id++}";
+                fb_en.id = $"fb_en-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
                 fb_en.status = "finished";
                 fb_en.type = new List<type>
                 {
@@ -1730,19 +1397,6 @@ namespace FHIR_json.Controllers
                     code = "IMP",
                     display = "inpatient encounter"
                 };
-                //fb_en.type = new List<type>
-                //{
-                //    new type
-                //    {
-                //        coding=new List<coding>
-                //        {
-                //            new coding
-                //            {
-                //                code=TOTFB_tag.TOTFBD1.ToString()
-                //            }
-                //        }
-                //    }
-                //};
                 fb_en.identifier = new List<identifier>
                 {
                     new identifier
@@ -1762,51 +1416,11 @@ namespace FHIR_json.Controllers
                             }
                         }
                 };
-                //fb_en.serviceType = new serviceType
-                //{
-                //    coding = new List<coding>
-                //        {
-                //            new coding
-                //            {
-                //                code=TOTFB_tag.TOTFBD9
-                //            }
-                //        }
-                //};
                 fb_en.period = new period
                 {
                     start = DateTime.Parse(TOTFB_tag.TOTFBD10).ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
                     end = DateTime.Parse(TOTFB_tag.TOTFBD11).ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
                 };
-                //fb_en.period = new period
-                //{
-                //    end = TOTFB_tag.TOTFBD10
-                //};
-                //fb_en.type = new List<type>
-                //{
-                //    new type
-                //    {
-                //        coding=new List<coding>
-                //        {
-                //            new coding
-                //            {
-                //                code=TOTFB_tag.TOTFBD18.ToString()
-                //            }
-                //        }
-                //    }
-                //};
-                //fb_en.type = new List<type>
-                //{
-                //    new type
-                //    {
-                //        coding=new List<coding>
-                //        {
-                //            new coding
-                //            {
-                //                code=TOTFB_tag.TOTFBD21
-                //            }
-                //        }
-                //    }
-                //};
                 fb_en.hospitalization = new hospitalization
                 {
                     dischargeDisposition = new dischargeDisposition
@@ -1822,25 +1436,11 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //fb_en.hospitalization = new hospitalization
-                //{
-                //    dischargeDisposition = new dischargeDisposition
-                //    {
-                //        coding = new List<coding>
-                //        {
-                //            new coding
-                //            {
-                //                code=TOTFB_tag.TOTFBD24
-                //            }
-
-                //        }
-                //    }
-                //};
                 enclist.Add(fb_en);
 
                 //obeser
                 fb_e_bed = new Observation();
-                fb_e_bed.id = $"{fhir_id++}";
+                fb_e_bed.id = $"fb_e_bed-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
                 fb_e_bed.status = "final";
                 fb_e_bed.subject = new subject { reference = $"Patient/{fb_pt.id}" };//?
                 fb_e_bed.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//?
@@ -1855,22 +1455,10 @@ namespace FHIR_json.Controllers
                     code = "d",
                     value = TOTFB_tag.TOTFBD14
                 };
-                //fb_e_bed.valueQuantity = new valueQuantity
-                //{
-                //    system="http://unitsofmeasure.org"
-                //};
-                //fb_e_bed.valueQuantity = new valueQuantity
-                //{
-                //    code="d"
-                //};
-                //fb_e_bed.valueQuantity = new valueQuantity
-                //{
-                //    value=TOTFB_tag.TOTFBD14
-                //};
                 obslist.Add(fb_e_bed);
 
                 fb_s_bed = new Observation();
-                fb_s_bed.id = $"{fhir_id++}";
+                fb_s_bed.id = $"fb_s_bed-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
                 fb_s_bed.status = "final";
                 fb_s_bed.subject = new subject { reference = $"Patient/{fb_pt.id}" };//?
                 fb_s_bed.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//?
@@ -1885,23 +1473,11 @@ namespace FHIR_json.Controllers
                     code = "d",
                     value = Convert.ToDouble(TOTFB_tag.TOTFBD15)
                 };
-                //fb_s_bed.valueQuantity = new valueQuantity
-                //{
-                //     system="http://unitsofmeasure.org"
-                //};
-                //fb_s_bed.valueQuantity = new valueQuantity
-                //{
-                //     code="d"
-                //};
-                //fb_s_bed.valueQuantity = new valueQuantity
-                //{
-                //    value=Convert.ToDouble(TOTFB_tag.TOTFBD15)
-                //};
 
                 obslist.Add(fb_s_bed);
                 //ChargeItem
                 fb_ct = new ChargeItem();
-                fb_ct.id = $"{fhir_id++}";
+                fb_ct.id = $"fb_ct-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
                 fb_ct.enteredDate = TOTFB_tag.TOTFBT3;
                 //fb_ct.enteredDate = DateTime.Parse(TOTFB_tag.TOTFBT3).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 fb_ct.subject = new subject { reference = $"Patient/{fb_pt.id}" };//? 72
@@ -1922,7 +1498,7 @@ namespace FHIR_json.Controllers
 
                 //procedure
                 fb_p1 = new Procedure();
-                fb_p1.id = $"{fhir_id++}";
+                fb_p1.id = $"fb_p1-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
                 fb_p1.status = "completed";
                 fb_p1.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_p1.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
@@ -1937,20 +1513,10 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //fb_p1.code = new code
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code = TOTFB_tag.TOTFBD45
-                //        }
-                //    }
-                //};
                 prolist.Add(fb_p1);
 
                 fb_p2 = new Procedure();
-                fb_p2.id = $"{fhir_id++}";
+                fb_p2.id = $"fb_p2-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
                 fb_p2.status = "completed";
                 fb_p2.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_p2.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
@@ -1965,20 +1531,10 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //fb_p2.code = new code
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code = TOTFB_tag.TOTFBD46
-                //        }
-                //    }
-                //};
                 prolist.Add(fb_p2);
 
                 fb_p3 = new Procedure();
-                fb_p3.id = $"{fhir_id++}";
+                fb_p3.id = $"fb_p3-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
                 fb_p3.status = "completed";
                 fb_p3.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_p3.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
@@ -1993,20 +1549,10 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //fb_p3.code = new code
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code = TOTFB_tag.TOTFBD47
-                //        }
-                //    }
-                //};
                 prolist.Add(fb_p3);
 
                 fb_p4 = new Procedure();
-                fb_p4.id = $"{fhir_id++}";
+                fb_p4.id = $"fb_p4-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
                 fb_p4.status = "completed";
                 fb_p4.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_p4.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
@@ -2021,20 +1567,10 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //fb_p4.code = new code
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code = TOTFB_tag.TOTFBD48
-                //        }
-                //    }
-                //};
                 prolist.Add(fb_p4);
 
                 fb_p5 = new Procedure();
-                fb_p5.id = $"{fhir_id++}";
+                fb_p5.id = $"fb_p5-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
                 fb_p5.status = "completed";
                 fb_p5.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_p5.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
@@ -2049,22 +1585,12 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //fb_p5.code = new code
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code = TOTFB_tag.TOTFBD49
-                //        }
-                //    }
-                //};
                 prolist.Add(fb_p5);
 
 
                 // Medcation---------------------------------//
                 fb_med = new MedicationRequest();
-                fb_med.id = $"{fhir_id++}";
+                fb_med.id = $"fb_med-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
                 fb_med.status = "completed";
                 fb_med.intent = "order";
                 fb_med.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
@@ -2077,7 +1603,6 @@ namespace FHIR_json.Controllers
                         value = TOTFB_tag.TOTFBP1.ToString()
                     }
                 };
-                //fb_med.category[0].text = "醫令類別";
                 fb_med.category = new List<category>
                 {
                     new category
@@ -2092,21 +1617,6 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //fb_med.category[0].coding[0].code = TOTFB_tag.TOTFBP2.ToString();
-                //fb_med.category = new List<category>
-                //{
-                //    new category
-                //    {
-                //        coding=new List<coding>
-                //        {
-                //            new coding
-                //            {
-                //                code = TOTFB_tag.TOTFBP2.ToString()
-                //            }
-                //        }
-                //    }
-                //};
-                //fb_med.medicationCodeableConcept[0].coding[0].code = TOTFB_tag.TOTFBP3.ToString();
                 fb_med.medicationCodeableConcept = new medicationCodeableConcept
                 {
                     coding = new List<coding>
@@ -2157,44 +1667,6 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //fb_med.dosageInstruction[0].timing.code.coding[0].code = TOTFB_tag.TOTFBP6.ToString();
-                //fb_med.dosageInstruction = new List<dosageInstruction>
-                //{
-                //    new dosageInstruction
-                //    {
-                //        timing=new timing
-                //        {
-                //            code=new code
-                //            {
-                //                coding=new List<coding>
-                //                {
-                //                    new coding
-                //                    {
-                //                        code= TOTFB_tag.TOTFBP6
-                //                    }
-                //                }
-                //            }
-                //        }
-                //    }
-                //};
-                //fb_med.dosageInstruction[0].site.coding[0].code = TOTFB_tag.TOTFBP7.ToString();
-                //fb_med.dosageInstruction = new List<dosageInstruction>
-                //{
-                //    new dosageInstruction
-                //    {
-                //        site=new site
-                //        {
-                //            coding=new List<coding>
-                //            {
-                //                new coding
-                //                {
-                //                    code = TOTFB_tag.TOTFBP7
-                //                }
-                //            }
-                //        }
-                //    }
-                //};
-                //fb_med.performerType.text = "-----------";//沒text
                 fb_med.performerType = new performerType
                 {
                     text = "會診科別",
@@ -2206,18 +1678,6 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //fb_med.performerType.coding[0].code = TOTFB_tag.TOTFBP8.ToString();
-                //fb_med.performerType = new performerType
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code = TOTFB_tag.TOTFBP8
-                //        }
-                //    }
-                //};
-                //fb_med.dispenseRequest.validityPeriod.start = TOTFB_tag.TOTFBP14.ToString();
                 fb_med.dispenseRequest = new dispenseRequest
                 {
                     validityPeriod = new validityPeriod
@@ -2230,28 +1690,12 @@ namespace FHIR_json.Controllers
                         value = Convert.ToDouble(TOTFB_tag.TOTFBP16)
                     }
                 };
-                //fb_med.dispenseRequest.validityPeriod.end = TOTFB_tag.TOTFBP15.ToString();
-                //fb_med.dispenseRequest = new dispenseRequest
-                //{
-                //    validityPeriod = new validityPeriod
-                //    {
-                //        end = TOTFB_tag.TOTFBP15
-                //    }
-                //};
-                //fb_med.dispenseRequest.quantity.value = Convert.ToDouble(TOTFB_tag.TOTFBP16);
-                //fb_med.dispenseRequest = new dispenseRequest
-                //{
-                //    quantity = new quantity
-                //    {
-                //        value = Convert.ToDouble(TOTFB_tag.TOTFBP16)
-                //    }
-                //};
                 medrequestlist.Add(fb_med);
 
 
                 //condition_fb_c1
                 fb_c1 = new Condition();
-                fb_c1.id = $"{fhir_id++}";
+                fb_c1.id = $"fb_c1-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
                 fb_c1.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_c1.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
                 fb_c1.code = new code
@@ -2265,21 +1709,11 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //fb_c1.code = new code
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code = TOTFB_tag.TOTFBD25
-                //        }
-                //    }
-                //};
                 conlist.Add(fb_c1);
 
                 //condition_fb_c2
                 fb_c2 = new Condition();
-                fb_c2.id = $"{fhir_id++}";
+                fb_c2.id = $"fb_c2-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
                 fb_c2.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_c2.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
                                                                                         //fb_c2.code.text = "次診斷代碼(一)";
@@ -2294,21 +1728,11 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //fb_c2.code = new code
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code = TOTFB_tag.TOTFBD26
-                //        }
-                //    }
-                //};
                 conlist.Add(fb_c2);
 
                 //condition_fb_c3
                 fb_c3 = new Condition();
-                fb_c3.id = $"{fhir_id++}";
+                fb_c3.id = $"fb_c3-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
                 fb_c3.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_c3.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
                                                                                         //fb_c3.code.text = "次診斷代碼(二)";
@@ -2323,21 +1747,11 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //fb_c3.code = new code
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code = TOTFB_tag.TOTFBD27
-                //        }
-                //    }
-                //};
                 conlist.Add(fb_c3);
 
                 //condition_fb_c4
                 fb_c4 = new Condition();
-                fb_c4.id = $"{fhir_id++}";
+                fb_c4.id = $"fb_c4-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
                 fb_c4.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_c4.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
                                                                                         //fb_c4.code.text = "次診斷代碼(三)";
@@ -2352,21 +1766,11 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //fb_c4.code = new code
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code = TOTFB_tag.TOTFBD28
-                //        }
-                //    }
-                //};
                 conlist.Add(fb_c4);
 
                 //condition_fb_c5
                 fb_c5 = new Condition();
-                fb_c5.id = $"{fhir_id++}";
+                fb_c5.id = $"fb_c5-{TOTFB_tag.TOTFBT2}-{TOTFB_tag.TOTFBT3}-{TOTFB_tag.TOTFBD1}-{TOTFB_tag.TOTFBD2}-{TOTFB_tag.TOTFBP1}";
                 fb_c5.subject = new subject { reference = $"Patient/{fb_pt.id}" };//72
                 fb_c5.encounter = new encounter { reference = $"Encounter/{fb_en.id}" };//71
                                                                                         //fb_c5.code.text = "次診斷代碼(四)";
@@ -2381,16 +1785,6 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //fb_c5.code = new code
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code = TOTFB_tag.TOTFBD29
-                //        }
-                //    }
-                //};
                 conlist.Add(fb_c5);
 
             }
@@ -2413,10 +1807,6 @@ namespace FHIR_json.Controllers
         [HttpPost]
         public async Task<dynamic> spe_JSON(List<OriginalJson.spe> spe_tags)
         {
-            //讀取檔案
-
-            //string jsonString = r.ReadToEnd();
-            //var spe_tags = JsonConvert.DeserializeObject<List<OriginalJson.spe>>(jsonString);//將JSON格式轉換成物件
             //ViewBag.spe_tags = spe_tags;
             //開始分類
             int fhir_id = 0;//FHIR流水號
@@ -2450,7 +1840,7 @@ namespace FHIR_json.Controllers
 
                 //Specimen
                 Sp = new Specimen();
-                Sp.id = $"{fhir_id++}";
+                Sp.id = $"Sp-{spe_tag.biobankid}-{spe_tag.speid}";
                 Sp.accessionIdentifier = new accessionIdentifier
                 {
                     value = spe_tag.speid
@@ -2505,7 +1895,7 @@ namespace FHIR_json.Controllers
 
                 //Consent
                 Consent = new Consent();
-                Consent.id = $"{fhir_id++}";
+                Consent.id = $"Consent-{spe_tag.biobankid}-{spe_tag.speid}";
                 Consent.dateTime = DateTime.Parse(spe_tag.agreedate).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 Consent.status = "active";
                 Consent.category = new List<category>
@@ -2555,7 +1945,7 @@ namespace FHIR_json.Controllers
 
                 //obeser
                 sp_age = new Observation();
-                sp_age.id = $"{fhir_id++}";
+                sp_age.id = $"sp_age-{spe_tag.biobankid}-{spe_tag.speid}";
                 sp_age.status = "final";
                 sp_age.subject = new subject { reference = $"Patient/{CPat.id}" };//559
                 sp_age.performer = new List<performer> { new performer { reference = $"Organization/{sp_og.id}" } };//562
@@ -2577,7 +1967,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(sp_age);
                 //
                 sp_height = new Observation();
-                sp_height.id = $"{fhir_id++}";
+                sp_height.id = $"sp_height-{spe_tag.biobankid}-{spe_tag.speid}";
                 sp_height.status = "final";
                 sp_height.subject = new subject { reference = $"Patient/{CPat.id}" };//559
                 sp_height.performer = new List<performer> { new performer { reference = $"Organization/{sp_og.id}" } };//562
@@ -2602,7 +1992,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(sp_height);
                 //
                 sp_weight = new Observation();
-                sp_weight.id = $"{fhir_id++}";
+                sp_weight.id = $"sp_weight-{spe_tag.biobankid}-{spe_tag.speid}";
                 sp_weight.status = "final";
                 sp_weight.subject = new subject { reference = $"Patient/{CPat.id}" };//559
                 sp_weight.performer = new List<performer> { new performer { reference = $"Organization/{sp_og.id}" } };//562
@@ -2645,13 +2035,8 @@ namespace FHIR_json.Controllers
 
 
         [HttpPost]
-        public async Task<dynamic> CRLF_JSON(List<OriginalJson.CRLF>  CRLF_tags)
+        public async Task<dynamic> CRLF_JSON(List<OriginalJson.CRLF> CRLF_tags)
         {
-            //讀取檔案
-            //StreamReader r = new StreamReader(@"C:\Users\huang\source\repos\GroundhogTeam\NHIRDB_system\WebApplication3\ReadJSON\CRLF.json");//庭
-            //StreamReader r = new StreamReader(@"D:\信華專區\newNHIRDB_system\NHIRDB_system\WebApplication3\ReadJSON\CRLF.json");//洛
-            //StreamReader r = new StreamReader(@"D:\NTUNHS\fhir\fhir_all\NHIRDB_system\WebApplication3\ReadJSON\CRLF.json");
-
             //string jsonString = r.ReadToEnd();
             //var CRLF_tags = JsonConvert.DeserializeObject<List<OriginalJson.CRLF>>(jsonString);//將JSON格式轉換成物件
             //ViewBag.CRLF_tags = CRLF_tags;
@@ -2687,7 +2072,6 @@ namespace FHIR_json.Controllers
                 };
                 Pat.gender = CRLF_tag.sex;
                 Pat.birthDate = CRLF_tag.dbirth;
-                //Pat.birthDate = DateTime.Parse(CRLF_tag.dbirth).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 Pat.address = new List<address>
                 {
                     new address
@@ -2701,7 +2085,7 @@ namespace FHIR_json.Controllers
                 //Procedure
                 //diag
                 diag = new Procedure();
-                diag.id = $"{fhir_id++}";
+                diag.id = $"diag-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 diag.status = "completed";
                 diag.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                                                                                //diag.performedDateTime = CRLF_tag.dsdiag;
@@ -2745,11 +2129,9 @@ namespace FHIR_json.Controllers
 
                 //P1
                 P1 = new Procedure();
-                P1.id = $"{fhir_id++}";
+                P1.id = $"P1-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 P1.status = "completed";
-                P1.subject = new subject { reference = $"Patient/{Pat.id}" };//?
-                                                                             // P1.performedDateTime = CRLF_tag.dop_mds; 
-                                                                             //P1.performedDateTime = DateTime.Parse(CRLF_tag.dop_mds).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                P1.subject = new subject { reference = $"Patient/{Pat.id}" };
                 if (CRLF_tag.dop_mds == null)
                 {
                     P1.performedDateTime = CRLF_tag.dop_mds;
@@ -2830,7 +2212,7 @@ namespace FHIR_json.Controllers
 
                 //P2
                 P2 = new Procedure();
-                P2.id = $"{fhir_id++}";
+                P2.id = $"P2-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 P2.status = "completed";
                 P2.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 P2.reasonCode = new List<reasonCode>
@@ -2865,7 +2247,7 @@ namespace FHIR_json.Controllers
 
                 //P3
                 P3 = new Procedure();
-                P3.id = $"{fhir_id++}";
+                P3.id = $"P3-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 P3.status = "completed";
                 P3.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 P3.reasonCode = new List<reasonCode>
@@ -2899,7 +2281,7 @@ namespace FHIR_json.Controllers
 
                 //Radio1
                 Radio1 = new Procedure();
-                Radio1.id = $"{fhir_id++}";
+                Radio1.id = $"Radio1-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 Radio1.status = "completed";
                 Radio1.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 Radio1.outcome = new outcome
@@ -3138,7 +2520,7 @@ namespace FHIR_json.Controllers
 
                 //M1
                 M1 = new Procedure();
-                M1.id = $"{fhir_id++}";
+                M1.id = $"M1-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 M1.status = "completed";
                 M1.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 if (CRLF_tag.dsyt == null || CRLF_tag.dchem == null)
@@ -3186,7 +2568,7 @@ namespace FHIR_json.Controllers
 
                 //m4
                 m4 = new Procedure();
-                m4.id = $"{fhir_id++}";
+                m4.id = $"m4-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 m4.status = "completed";
                 m4.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 m4.code = new code
@@ -3206,7 +2588,7 @@ namespace FHIR_json.Controllers
 
                 //m7
                 m7 = new Procedure();
-                m7.id = $"{fhir_id++}";
+                m7.id = $"m7-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 m7.status = "completed";
                 m7.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 m7.code = new code
@@ -3225,10 +2607,8 @@ namespace FHIR_json.Controllers
 
                 //condition_Con
                 Con = new Condition();
-                Con.id = $"{fhir_id++}";
-                //Con.subject[0].reference = Pat1.identifier[0].value;
+                Con.id = $"Con-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 Con.subject = new subject { reference = $"Patient/{Pat.id}" };
-                //Con.onsetAge[0].unit = "years";
                 Con.onsetAge = new onsetAge
                 {
                     unit = "years",
@@ -3236,22 +2616,7 @@ namespace FHIR_json.Controllers
                     code = "a",
                     value = Convert.ToDouble(CRLF_tag.age)
                 };
-                ////Con.onsetAge[0].system = "http://unitsofmeasure.org";
-                //Con.onsetAge = new onsetAge
-                //{
-                //    system = "http://unitsofmeasure.org"
-                //};
-                ////Con.onsetAge[0].code = "a";
-                //Con.onsetAge = new onsetAge
-                //{
-                //    code = "a"
-                //};
-                ////Con.onsetAge[0].value = CRLF_tag.age;
-                //Con.onsetAge = new onsetAge
-                //{
-                //    value = Convert.ToDouble(CRLF_tag.age)
-                //};
-                //Con.identifier[0].value = CRLF_tag.sequence;
+
                 Con.identifier = new List<identifier>
                 {
                     new identifier
@@ -3259,7 +2624,6 @@ namespace FHIR_json.Controllers
                         value = CRLF_tag.sequence
                     }
                 };
-                //Con.category[0].text = "個案分類";
                 Con.category = new List<category>
                 {
                     new category
@@ -3296,67 +2660,7 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                ////Con.category[0].coding[0].code = CRLF_tag.@class;
-                //Con.category = new List<category>
-                //{
-                //    new category
-                //    {
-                //        coding = new List<coding>
-                //        {
-                //            new coding
-                //            {
-                //                code = CRLF_tag.@class
-                //            }
-                //        }
-                //    }
-                //};
-                ////Con.category[1].text = "診斷狀態分類";
-                //Con.category = new List<category>
-                //{
-                //    new category
-                //    {
-                //        text = "診斷狀態分類"
-                //    }
-                //};
-                ////Con.category[1].coding[0].code = CRLF_tag.class_d;
-                //Con.category = new List<category>
-                //{
-                //    new category
-                //    {
-                //        coding = new List<coding>
-                //        {
-                //            new coding
-                //            {
-                //                code = CRLF_tag.class_d
-                //            }
-                //        }
-                //    }
-                //};
-                ////Con.category[2].text = "治療狀態分類";
-                //Con.category = new List<category>
-                //{
-                //    new category
-                //    {
-                //        text = "治療狀態分類"
-                //    }
-                //};
-                ////Con.category[2].coding[0].code = CRLF_tag.class_t;
-                //Con.category = new List<category>
-                //{
-                //    new category
-                //    {
-                //        coding = new List<coding>
-                //        {
-                //            new coding
-                //            {
-                //                code = CRLF_tag.class_t
-                //            }
-                //        }
-                //    }
-                //};
                 Con.recordedDate = CRLF_tag.dcont;
-                //Con.recordedDate = DateTime.Parse(CRLF_tag.dcont).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
-                //Con.extension[0].url = "http://hl7.org/fhir/StructureDefinition/condition-assertedDate";
                 Con.extension = new List<extension>
                 {
                     new extension
@@ -3365,15 +2669,6 @@ namespace FHIR_json.Controllers
                         valueDateTime =  DateTime.Parse(CRLF_tag.didiag).ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
             }
                 };
-                ////Con.extension[0].valueDateTime = CRLF_tag.didiag;
-                //Con.extension = new List<extension>
-                //{
-                //    new extension
-                //    {
-                //        valueDateTime = CRLF_tag.didiag
-                //    }
-                //};
-                //Con.code[0].text = "原發部位";
                 Con.code = new code
                 {
                     text = "原發部位",
@@ -3385,18 +2680,6 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                ////Con.code[0].coding[0].code = CRLF_tag.site;
-                //Con.code = new code
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code = CRLF_tag.site
-                //        }
-                //    }
-                //};
-                //Con.bodySite[0].text = "測性";
                 Con.bodySite = new List<bodySite>
                 {
                     new bodySite
@@ -3411,21 +2694,6 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                ////Con.bodySite[0].coding[0].code = CRLF_tag.lateral;
-                //Con.bodySite = new List<bodySite>
-                //{
-                //    new bodySite
-                //    {
-                //        coding = new List<coding>
-                //        {
-                //            new coding
-                //            {
-                //                code = CRLF_tag.lateral
-                //            }
-                //        }
-                //    }
-                //};
-                //Con.evidence[0].code[0].text = "組織類型";
                 Con.evidence = new List<evidence>
                 {
                     new evidence
@@ -3459,71 +2727,6 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                ////Con.evidence[0].code[0].coding[0].code = CRLF_tag.hist;
-                //Con.evidence = new List<evidence>
-                //{
-                //    new evidence
-                //    {
-                //        code = new List<code>
-                //        {
-                //            new code
-                //            {
-                //                coding=new List<coding>
-                //                {
-                //                    new coding
-                //                    {
-                //                        code = CRLF_tag.hist
-
-                //                    }
-                //                }
-                //            }
-                //        }
-                //    }
-                //};
-                ////Con.evidence[0].code[1].text = "性態碼";
-                //Con.evidence = new List<evidence>
-                //{
-                //    new evidence
-                //    {
-                //        code = new List<code>
-                //        {
-                //            new code
-                //            {
-                //                text = "性態碼",
-                //                coding=new List<coding>
-                //                {
-                //                    new coding
-                //                    {
-                //                        code = CRLF_tag.behavior
-
-                //                    }
-                //                }
-                //            }
-                //        }
-                //    }
-                //};
-                ////Con.evidence[0].code[1].coding[0].code = CRLF_tag.behavior;
-                //Con.evidence = new List<evidence>
-                //{
-                //    new evidence
-                //    {
-                //        code = new List<code>
-                //        {
-                //            new code
-                //            {
-                //                coding=new List<coding>
-                //                {
-                //                    new coding
-                //                    {
-                //                        code = CRLF_tag.behavior
-
-                //                    }
-                //                }
-                //            }
-                //        }
-                //    }
-                //};
-                //Con.stage[0].summary[0].text = "臨床分級/分化";
                 Con.stage = new List<stage>
                 {
                     new stage
@@ -3557,71 +2760,14 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                ////Con.stage[0].summary[0].coding[0].code = CRLF_tag.grade_c;
-                //Con.stage = new List<stage>
-                //{
-                //    new stage
-                //    {
-                //        summary = new summary
-                //        {
-                //            coding=new List<coding>
-                //            {
-                //                new coding
-                //                {
-                //                    code = CRLF_tag.grade_c
-
-                //                }
-                //            }
-                //            }
-                //        }
-                //};
-                ////Con.stage[1].summary[0].text = "病理分級/分化";
-                //Con.stage = new List<stage>
-                //{
-                //    new stage
-                //    {
-                //        summary = new summary
-                //        {
-                //           text = "病理分級/分化",
-                //           coding=new List<coding>
-                //            {
-                //                new coding
-                //                {
-                //                    code = CRLF_tag.grade_p
-
-                //                }
-                //            }
-                //        }
-                //    }
-                //};
-                ////Con.stage[1].summary[0].coding[0].code = CRLF_tag.grade_p;
-                //Con.stage = new List<stage>
-                //{
-                //    new stage
-                //    {
-                //        summary = new summary
-                //        {
-                //            coding=new List<coding>
-                //            {
-                //                new coding
-                //                {
-                //                    code = CRLF_tag.grade_p
-
-                //                }
-                //            }
-                //        }
-                //    }
-                //};
                 conlist.Add(Con);
 
 
                 //condition-SCC
                 SCC = new Condition();
-                SCC.id = $"{fhir_id++}";
+                SCC.id = $"SCC-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 SCC.recordedDate = CRLF_tag.drecur;
-                //SCC.recordedDate = DateTime.Parse(CRLF_tag.drecur).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 SCC.subject = new subject { reference = $"Patient/{Pat.id}" };
-                //SCC.extension[0].url = "http://hl7.org/fhir/StructureDefinition/condition-related";
                 SCC.extension = new List<extension>
                 {
                     new extension
@@ -3633,20 +2779,6 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                ////SCC.extension[0].valueReference[0].reference = "3";///????
-                //SCC.extension = new List<extension>
-                //{
-                //    new extension
-                //    {
-                //        valueReference = new List<valueReference>
-                //        {
-                //            new valueReference
-                //            {
-                //                reference = $"Condition/{Con.id}"
-                //            }
-                //        }
-                //    }
-                //};
                 SCC.code = new code
                 {
                     text = "首次復發型式",
@@ -3658,26 +2790,13 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                ////SCC.code[0].text = "首次復發型式";
-                ////SCC.code[0].coding[0].code = CRLF_tag.recur;
-                //SCC.code = new code
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code = CRLF_tag.recur
-                //        }
-                //    }
-                //};
                 conlist.Add(SCC);
 
                 //chargeitem
                 m6 = new ChargeItem();
-                m6.id = $"{fhir_id++}";
+                m6.id = $"m6-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 m6.status = "billed";
                 m6.subject = new subject { reference = $"Patient/{Pat.id}" };
-                //m6.code[0].text = "申報醫院緩和照護";
                 m6.code = new code
                 {
                     text = "申報醫院緩和照護",
@@ -3689,27 +2808,14 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                ////m6.code[0].coding[0].code = CRLF_tag.palli_h;
-                //m6.code = new code
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code = CRLF_tag.palli_h
-                //        }
-                //    }
-                //};
                 chalist.Add(m6);
                 //chalist.add(m6)之後
 
                 //MedicationAdministration-m2
                 m2 = new MedicationAdministration();
-                m2.id = $"{fhir_id++}";
-                //List<medicationCodeableConce> a = new List<medicationCodeableConce>();
+                m2.id = $"m2-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 m2.status = "completed";
                 m2.subject = new subject { reference = $"Patient/{Pat.id}" };
-                //m2.reasonCode[0].text = "外院荷爾蒙/類固醇治療";
                 m2.reasonCode = new List<reasonCode>
                 {
                     new reasonCode
@@ -3724,21 +2830,6 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                ////m2.reasonCode[0].coding[0].code = CRLF_tag.horm_o;
-                //m2.reasonCode = new List<reasonCode>
-                //{
-                //    new reasonCode
-                //    {
-                //        coding = new List<coding>
-                //        {
-                //            new coding
-                //            {
-                //                code = CRLF_tag.horm_o
-                //            }
-                //        }
-                //    }
-                //};
-                //m2.category[0].text = "申報醫院荷爾蒙/類固醇治療";
                 m2.category = new category
                 {
                     text = "申報醫院荷爾蒙/類固醇治療",
@@ -3750,18 +2841,6 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                ////m2.category[0].coding[0].code = CRLF_tag.horm_h;
-                //m2.category = new category
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code = CRLF_tag.horm_h
-                //        }
-                //    }
-                //};
-                //m2.medicationCodeableConce[0].text = "荷爾蒙/類固醇";
                 m2.medicationCodeableConcept = new medicationCodeableConcept
                 {
                     text = "荷爾蒙/類固醇"
@@ -3772,7 +2851,7 @@ namespace FHIR_json.Controllers
 
                 //MedicationAdministration-m3
                 m3 = new MedicationAdministration();
-                m3.id = $"{fhir_id++}";
+                m3.id = $"m3-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 m3.status = "completed";
                 m3.subject = new subject { reference = $"Patient/{Pat.id}" };
                 //m3.reasonCode[0].text = "外院免疫治療";
@@ -3790,21 +2869,6 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                ////m3.reasonCode[0].coding[0].code = CRLF_tag.immu_o;
-                //m3.reasonCode = new List<reasonCode>
-                //{
-                //    new reasonCode
-                //    {
-                //        coding = new List<coding>
-                //        {
-                //            new coding
-                //            {
-                //                code = CRLF_tag.immu_o
-                //            }
-                //        }
-                //    }
-                //};
-                //m3.category[0].text = "申報醫院免疫治療";
                 m3.category = new category
                 {
                     text = "申報醫院免疫治療",
@@ -3816,18 +2880,6 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                ////m3.category[0].coding[0].code = CRLF_tag.immu_h;
-                //m3.category = new category
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code = CRLF_tag.immu_h
-                //        }
-                //    }
-                //};
-                //m3.medicationCodeableConce[0].text = "免疫治療";
                 m3.medicationCodeableConcept = new medicationCodeableConcept
                 {
                     text = "免疫治療"
@@ -3838,10 +2890,9 @@ namespace FHIR_json.Controllers
 
                 //MedicationAdministration-m5
                 m5 = new MedicationAdministration();
-                m5.id = $"{fhir_id++}";
+                m5.id = $"m5-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 m5.status = "completed";//重複了
                 m5.subject = new subject { reference = $"Patient/{Pat.id}" };
-                //m5.reasonCode[0].text = "外院標靶治療";
                 m5.reasonCode = new List<reasonCode>
                 {
                     new reasonCode
@@ -3856,21 +2907,6 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                ////m5.reasonCode[0].coding[0].code = CRLF_tag.target_o;
-                //m5.reasonCode = new List<reasonCode>
-                //{
-                //    new reasonCode
-                //    {
-                //        coding = new List<coding>
-                //        {
-                //            new coding
-                //            {
-                //                code = CRLF_tag.target_o
-                //            }
-                //        }
-                //    }
-                //};
-                //m5.category[0].text = "申報醫院標靶治療";
                 m5.category = new category
                 {
                     text = "申報醫院標靶治療",
@@ -3882,18 +2918,6 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                ////m5.category[0].coding[0].code = CRLF_tag.target_h;
-                //m5.category = new category
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code = CRLF_tag.target_h
-                //        }
-                //    }
-                //};
-                //m5.medicationCodeableConce[0].text = "標靶治療";
                 m5.medicationCodeableConcept = new medicationCodeableConcept
                 {
                     text = "標靶治療"
@@ -3903,7 +2927,7 @@ namespace FHIR_json.Controllers
 
                 //Observation
                 TS = new Observation();
-                TS.id = $"{fhir_id++}";
+                TS.id = $"TS-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 TS.subject = new subject { reference = $"Patient/{Pat.id}" };
                 TS.status = "final";
                 TS.code = new code
@@ -3917,16 +2941,6 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //TS.code = new code
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code="21889-1"
-                //        }
-                //    }
-                //};
                 TS.method = new method
                 {
                     coding = new List<coding>
@@ -3939,13 +2953,6 @@ namespace FHIR_json.Controllers
                         },
                     text = "癌症確診方式"
                 };
-                //TS.method = new List<method>
-                //{
-                //    new method
-                //    {
-                //        text="癌症確診方式"
-                //    }
-                //};
                 if (CRLF_tag.dmconf == null)
                 {
                     TS.effectiveDateTime = CRLF_tag.dmconf;
@@ -3955,7 +2962,6 @@ namespace FHIR_json.Controllers
                     TS.effectiveDateTime = DateTime.Parse(CRLF_tag.dmconf).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
 
                 }
-                //TS.effectiveDateTime = DateTime.Parse(CRLF_tag.dmconf).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 TS.component = new List<component>
                 {
                     new component
@@ -3981,68 +2987,10 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //TS.component = new List<component>
-                //{
-                //    new component
-                //    {
-                //        code = new code
-                //        {
-                //            coding= new List<coding>
-                //            {
-                //                new coding
-                //                {
-                //                    system="http://loinc.org"
-                //                }
-                //            }
-
-                //        }
-                //    }
-                //};
-                //TS.component = new List<component>
-                //{
-                //    new component
-                //    {
-                //        code = new code
-                //        {
-                //            text="腫瘤大小"
-                //        }
-
-                //    }
-                //};
-                //TS.component = new List<component>
-                //{
-                //    new component
-                //    {
-                //        valueQuantity = new valueQuantity
-                //        {
-                //                code="mm"
-                //        }
-                //    }
-                //};
-                //TS.component = new List<component>
-                //{
-                //    new component
-                //    {
-                //        valueQuantity = new valueQuantity
-                //        {
-                //                unit="mm"
-                //        }
-                //    }
-                //};
-                //TS.component = new List<component>
-                //{
-                //    new component
-                //    {
-                //        valueQuantity = new valueQuantity
-                //        {
-                //             value=Convert.ToDouble(CRLF_tag.size)
-                //        }
-                //    }
-                //};
                 obslist.Add(TS);
                 //
                 pni = new Observation();
-                pni.id = $"{fhir_id++}";
+                pni.id = $"pni-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 pni.subject = new subject { reference = $"Patient/{Pat.id}" };
                 pni.status = "final";
                 pni.code = new code
@@ -4062,7 +3010,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(pni);
 
                 lvi = new Observation();
-                lvi.id = $"{fhir_id++}";
+                lvi.id = $"lvi-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 lvi.subject = new subject { reference = $"Patient/{Pat.id}" };
                 lvi.status = "final";
                 lvi.code = new code
@@ -4082,7 +3030,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(lvi);
 
                 nexam = new Observation();
-                nexam.id = $"{fhir_id++}";
+                nexam.id = $"nexam-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 nexam.status = "final";
                 nexam.subject = new subject { reference = $"Patient/{Pat.id}" };
                 nexam.code = new code
@@ -4102,7 +3050,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(nexam);
 
                 nposit = new Observation();
-                nposit.id = $"{fhir_id++}";
+                nposit.id = $"nposit-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 nposit.status = "final";
                 nposit.subject = new subject { reference = $"Patient/{Pat.id}" };
                 nposit.code = new code
@@ -4122,7 +3070,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(nposit);
 
                 clinical_T = new Observation();
-                clinical_T.id = $"{fhir_id++}";
+                clinical_T.id = $"clinical_T-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 clinical_T.status = "final";
                 clinical_T.subject = new subject { reference = $"Patient/{Pat.id}" };
                 clinical_T.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -4140,11 +3088,10 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //clinical_T.valueCodeableConcept[0].coding[0].code = CRLF_tag.ct;
                 obslist.Add(clinical_T);
 
                 clinical_N = new Observation();
-                clinical_N.id = $"{fhir_id++}";
+                clinical_N.id = $"clinical_N-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 clinical_N.status = "final";
                 clinical_N.subject = new subject { reference = $"Patient/{Pat.id}" };
                 clinical_N.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -4165,7 +3112,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(clinical_N);
 
                 clinical_M = new Observation();
-                clinical_M.id = $"{fhir_id++}";
+                clinical_M.id = $"clinical_M-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 clinical_M.status = "final";
                 clinical_M.subject = new subject { reference = $"Patient/{Pat.id}" };
                 clinical_M.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -4186,7 +3133,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(clinical_M);
 
                 CG_clinical = new Observation();
-                CG_clinical.id = $"{fhir_id++}";
+                CG_clinical.id = $"CG_clinical-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 CG_clinical.status = "final";
                 CG_clinical.subject = new subject { reference = $"Patient/{Pat.id}" };
                 CG_clinical.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -4205,9 +3152,6 @@ namespace FHIR_json.Controllers
                         reference=$"Observation/{clinical_M.id}"
                     }
                 };
-                //CG_clinical.hasMember = new List<hasMember> { new hasMember { reference = $"Observation/{clinical_T.id}" } };
-                //CG_clinical.hasMember = new List<hasMember> { new hasMember { reference = $"Observation/{clinical_N.id}" } };
-                //CG_clinical.hasMember = new List<hasMember> { new hasMember { reference = $"Observation/{clinical_M.id}" } };
                 CG_clinical.code = new code
                 {
                     text = "臨床期別組合"
@@ -4243,26 +3187,10 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //CG_clinical.component = new List<component>
-                //{
-                //    new component
-                //    {
-                //        valueCodeableConcept = new valueCodeableConcept
-                //        {
-                //            coding=new List<coding>
-                //            {
-                //                new coding
-                //                {
-                //                    code=CRLF_tag.cdescr
-                //                }
-                //            }
-                //        }
-                //    }
-                //};
                 obslist.Add(CG_clinical);
 
                 pathology_T = new Observation();
-                pathology_T.id = $"{fhir_id++}";
+                pathology_T.id = $"pathology_T-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 pathology_T.status = "final";
                 pathology_T.subject = new subject { reference = $"Patient/{Pat.id}" };
                 pathology_T.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -4294,23 +3222,10 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //pathology_T.category = new List<category>
-                //{
-                //    new category
-                //    {
-                //        coding=new List<coding>
-                //        {
-                //            new coding
-                //            {
-                //                code=CRLF_tag.ajcc_ed
-                //            }
-                //        }
-                //    }
-                //};
                 obslist.Add(pathology_T);
 
                 pathology_N = new Observation();
-                pathology_N.id = $"{fhir_id++}";
+                pathology_N.id = $"pathology_N-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 pathology_N.status = "final";
                 pathology_N.subject = new subject { reference = $"Patient/{Pat.id}" };
                 pathology_N.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -4343,23 +3258,10 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //pathology_N.category = new List<category>
-                //{
-                //    new category
-                //    {
-                //        coding=new List<coding>
-                //        {
-                //            new coding
-                //            {
-                //                code=CRLF_tag.ajcc_ed
-                //            }
-                //        }
-                //    }
-                //};
                 obslist.Add(pathology_N);
 
                 pathology_M = new Observation();
-                pathology_M.id = $"{fhir_id++}";
+                pathology_M.id = $"pathology_M-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 pathology_M.status = "final";
                 pathology_M.subject = new subject { reference = $"Patient/{Pat.id}" };
                 pathology_M.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -4391,23 +3293,10 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //pathology_M.category = new List<category>
-                //{
-                //    new category
-                //    {
-                //        coding=new List<coding>
-                //        {
-                //            new coding
-                //            {
-                //                code=CRLF_tag.ajcc_ed
-                //            }
-                //        }
-                //    }
-                //};
                 obslist.Add(pathology_M);
 
                 CG_pathology = new Observation();
-                CG_pathology.id = $"{fhir_id++}";
+                CG_pathology.id = $"CG_pathology-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 CG_pathology.status = "final";
                 CG_pathology.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
                 CG_pathology.subject = new subject { reference = $"Patient/{Pat.id}" };
@@ -4427,9 +3316,6 @@ namespace FHIR_json.Controllers
                     }
 
                 };
-                //CG_pathology.hasMember = new List<hasMember> { new hasMember { reference = $"Observation/{pathology_T.id}" } };
-                //CG_pathology.hasMember = new List<hasMember> { new hasMember { reference = $"Observation/{pathology_N.id}" } };
-                //CG_pathology.hasMember = new List<hasMember> { new hasMember { reference = $"Observation/{pathology_M.id}" } };
                 CG_pathology.code = new code
                 {
                     text = "病理期別組合"
@@ -4465,26 +3351,10 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //CG_pathology.component = new List<component>
-                //{
-                //    new component
-                //    {
-                //        valueCodeableConcept = new valueCodeableConcept
-                //        {
-                //            coding=new List<coding>
-                //            {
-                //                new coding
-                //                {
-                //                    code=CRLF_tag.pdescr
-                //                }
-                //            }
-                //        }
-                //    }
-                //};
                 obslist.Add(CG_pathology);
 
                 CG_OtherC = new Observation();
-                CG_OtherC.id = $"{fhir_id++}";
+                CG_OtherC.id = $"CG_OtherC-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 CG_OtherC.code = new code
                 {
                     text = "其他分期系統",
@@ -4496,16 +3366,6 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //CG_OtherC.code = new code
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code=CRLF_tag.ostage
-                //        }
-                //    }
-                //};
                 CG_OtherC.status = "final";
                 CG_OtherC.subject = new subject { reference = $"Patient/{Pat.id}" };
                 CG_OtherC.valueCodeableConcept = new valueCodeableConcept
@@ -4519,20 +3379,10 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //CG_OtherC.valueCodeableConcept = new valueCodeableConcept
-                //{
-                //    coding=new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code=CRLF_tag.ostagec
-                //        }
-                //    }
-                //};
                 obslist.Add(CG_OtherC);
 
                 CG_OtherP = new Observation();
-                CG_OtherP.id = $"{fhir_id++}";
+                CG_OtherP.id = $"CG_OtherP-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 CG_OtherP.code = new code
                 {
                     text = "其他分期系統",
@@ -4544,16 +3394,6 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //CG_OtherP.code = new code
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code=CRLF_tag.ostage
-                //        }
-                //    }
-                //};
                 CG_OtherP.status = "final";
                 CG_OtherP.subject = new subject { reference = $"Patient/{Pat.id}" };
                 CG_OtherP.valueCodeableConcept = new valueCodeableConcept
@@ -4567,21 +3407,11 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //CG_OtherP.valueCodeableConcept = new valueCodeableConcept
-                //{
-                //    coding=new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code=CRLF_tag.ostagep
-                //        }
-                //    }
-                //};
                 obslist.Add(CG_OtherP);
 
 
                 height = new Observation();
-                height.id = $"{fhir_id++}";
+                height.id = $"height-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 height.status = "final";
                 height.subject = new subject { reference = $"Patient/{Pat.id}" };
                 height.code = new code
@@ -4595,16 +3425,6 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //height.code = new code
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code="8302-2"
-                //        }
-                //    }
-                //};
                 height.valueQuantity = new valueQuantity
                 {
                     system = "http://unitsofmeasure.org",
@@ -4612,18 +3432,10 @@ namespace FHIR_json.Controllers
                     unit = "cm",
                     value = Convert.ToDouble(CRLF_tag.height)
                 };
-                //height.valueQuantity = new valueQuantity
-                //{
-                //    code="cm"
-                //};
-                //height.valueQuantity = new valueQuantity
-                //{
-                //    value=Convert.ToDouble(CRLF_tag.height)
-                //};
                 obslist.Add(height);
 
                 weight = new Observation();
-                weight.id = $"{fhir_id++}";
+                weight.id = $"weight-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 weight.status = "final";
                 weight.subject = new subject { reference = $"Patient/{Pat.id}" };
                 weight.code = new code
@@ -4637,16 +3449,6 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                //weight.code = new code
-                //{
-                //    coding = new List<coding>
-                //    {
-                //        new coding
-                //        {
-                //            code="29463-7"
-                //        }
-                //    }
-                //};
                 weight.valueQuantity = new valueQuantity
                 {
                     system = "http://unitsofmeasure.org",
@@ -4654,21 +3456,10 @@ namespace FHIR_json.Controllers
                     unit = "kg",
                     value = Convert.ToDouble(CRLF_tag.weight)
                 };
-                //weight.valueQuantity = new valueQuantity
-                //{
-                //    code="kg"
-                //};
-                //weight.valueQuantity = new valueQuantity
-                //{
-                //     value=Convert.ToDouble(CRLF_tag.weight)
-                //};
-                //weight.valueQuantity[1].code = "kg";
-                //weight.valueQuantity[2].unit = "kg";
-                //weight.valueQuantity[1].value = CRLF_tag.weight;
                 obslist.Add(weight);
 
                 smoke = new Observation();
-                smoke.id = $"{fhir_id++}";
+                smoke.id = $"smoke-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 smoke.status = "final";
                 smoke.subject = new subject { reference = $"Patient/{Pat.id}" };
                 smoke.code = new code
@@ -4689,16 +3480,13 @@ namespace FHIR_json.Controllers
 
                 //Observation-btchew
                 btchew = new Observation();
-                btchew.id = $"{fhir_id++}";
+                btchew.id = $"btchew-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 btchew.status = "final";
-                //btchew.subject[0].reference = "";//???
                 btchew.subject = new subject { reference = $"Patient/{Pat.id}" };
-                //btchew.code[0].text = "嚼檳榔行為";
                 btchew.code = new code
                 {
                     text = "嚼檳榔行為"
                 };
-                //btchew.valueCodeableConcept[0].coding[0].code = CRLF_tag.btchew;
                 btchew.valueCodeableConcept = new valueCodeableConcept
                 {
                     coding = new List<coding>
@@ -4713,11 +3501,9 @@ namespace FHIR_json.Controllers
 
                 //Observation-drinking
                 drinking = new Observation();
-                drinking.id = $"{fhir_id++}";
+                drinking.id = $"drinking-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 drinking.status = "final";
-                //btchew.subject[0].reference = "";//???
                 drinking.subject = new subject { reference = $"Patient/{Pat.id}" };
-                //btchew.code[0].text = "嚼檳榔行為";
                 drinking.code = new code
                 {
                     text = "喝酒行為"
@@ -4737,16 +3523,14 @@ namespace FHIR_json.Controllers
 
                 //Observation-drinking
                 ps = new Observation();
-                ps.id = $"{fhir_id++}";
+                ps.id = $"ps-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 ps.status = "final";
-                //btchew.subject[0].reference = "";//???
                 ps.subject = new subject { reference = $"Patient/{Pat.id}" };
                 //btchew.code[0].text = "嚼檳榔行為";
                 ps.code = new code
                 {
                     text = "首次治療前生活功能狀態評估"
                 };
-                //btchew.valueCodeableConcept[0].coding[0].code = CRLF_tag.btchew;
                 ps.valueCodeableConcept = new valueCodeableConcept
                 {
                     coding = new List<coding>
@@ -4761,15 +3545,13 @@ namespace FHIR_json.Controllers
 
                 //Observation-ssf1
                 ssf1 = new Observation();
-                ssf1.id = $"{fhir_id++}";
+                ssf1.id = $"ssf1-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 ssf1.status = "final";
                 ssf1.subject = new subject { reference = $"Patient/{Pat.id}" };
-                //ssf1.code[0].text = "癌症部位特定因子 1";
                 ssf1.code = new code
                 {
                     text = "癌症部位特定因子 1"
                 };
-                //ssf1.valueCodeableConcept[0].coding[0].code = CRLF_tag.ssf1;
                 ssf1.valueCodeableConcept = new valueCodeableConcept
                 {
                     coding = new List<coding>
@@ -4785,16 +3567,13 @@ namespace FHIR_json.Controllers
 
                 //Observation-ssf2
                 ssf2 = new Observation();
-                ssf2.id = $"{fhir_id++}";
+                ssf2.id = $"ssf2-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 ssf2.status = "final";
                 ssf2.subject = new subject { reference = $"Patient/{Pat.id}" };
-                //ssf2.subject[0].reference = "";//???
-                //ssf2.code[0].text = "癌症部位特定因子 2";
                 ssf2.code = new code
                 {
                     text = "癌症部位特定因子 2"
                 };
-                //ssf2.valueCodeableConcept[0].coding[0].code = CRLF_tag.ssf2;
                 ssf2.valueCodeableConcept = new valueCodeableConcept
                 {
                     coding = new List<coding>
@@ -4810,16 +3589,13 @@ namespace FHIR_json.Controllers
 
                 //Observation-ssf3
                 ssf3 = new Observation();
-                ssf3.id = $"{fhir_id++}";
+                ssf3.id = $"ssf3-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 ssf3.status = "final";
-                //ssf3.subject[0].reference = "";//???
                 ssf3.subject = new subject { reference = $"Patient/{Pat.id}" };
-                //ssf3.code[0].text = "癌症部位特定因子 3";
                 ssf3.code = new code
                 {
                     text = "癌症部位特定因子 3"
                 };
-                //ssf3.valueCodeableConcept[0].coding[0].code = CRLF_tag.ssf3;
                 ssf3.valueCodeableConcept = new valueCodeableConcept
                 {
                     coding = new List<coding>
@@ -4835,16 +3611,13 @@ namespace FHIR_json.Controllers
 
                 //Observation-ssf4
                 ssf4 = new Observation();
-                ssf4.id = $"{fhir_id++}";
+                ssf4.id = $"ssf4-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 ssf4.status = "final";
-                //Obs.subject[0].reference = "";//???
                 ssf4.subject = new subject { reference = $"Patient/{Pat.id}" };
-                //Obs.code[0].text = "癌症部位特定因子 4";
                 ssf4.code = new code
                 {
                     text = "癌症部位特定因子 4"
                 };
-                //ssf4.valueCodeableConcept[0].coding[0].code = CRLF_tag.ssf4;
                 ssf4.valueCodeableConcept = new valueCodeableConcept
                 {
 
@@ -4861,11 +3634,8 @@ namespace FHIR_json.Controllers
 
                 //Observation-ssf5
                 ssf5 = new Observation();
-                ssf5.id = $"{fhir_id++}";
+                ssf5.id = $"ssf5-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 ssf5.status = "final";
-                //ssf5.valueCodeableConcept[0].coding[0].code = CRLF_tag.ssf5;
-                //Obs.subject[0].reference = "";//???
-                //ssf5.code[0].text = "癌症部位特定因子 5";
                 ssf5.code = new code
                 {
                     text = "癌症部位特定因子 5"
@@ -4885,7 +3655,7 @@ namespace FHIR_json.Controllers
 
                 //ssf6-ssf10
                 ssf6 = new Observation();
-                ssf6.id = $"{fhir_id++}";
+                ssf6.id = $"ssf6-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 ssf6.status = "final";
                 ssf6.subject = new subject { reference = $"Patient/{Pat.id}" };//???
                 ssf6.code = new code
@@ -4905,7 +3675,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(ssf6);
 
                 ssf7 = new Observation();
-                ssf7.id = $"{fhir_id++}";
+                ssf7.id = $"ssf7-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 ssf7.status = "final";
                 ssf7.subject = new subject { reference = $"Patient/{Pat.id}" };//???
                 ssf7.code = new code
@@ -4925,7 +3695,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(ssf7);
 
                 ssf8 = new Observation();
-                ssf8.id = $"{fhir_id++}";
+                ssf8.id = $"ssf8-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 ssf8.status = "final";
                 ssf8.subject = new subject { reference = $"Patient/{Pat.id}" };//???
                 ssf8.code = new code
@@ -4945,7 +3715,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(ssf8);
 
                 ssf9 = new Observation();
-                ssf9.id = $"{fhir_id++}";
+                ssf9.id = $"ssf9-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 ssf9.status = "final";
                 ssf9.subject = new subject { reference = $"Patient/{Pat.id}" };//???
                 ssf9.code = new code
@@ -4965,7 +3735,7 @@ namespace FHIR_json.Controllers
                 obslist.Add(ssf9);
 
                 ssf10 = new Observation();
-                ssf10.id = $"{fhir_id++}";
+                ssf10.id = $"ssf10-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}";
                 ssf10.status = "final";
                 ssf10.subject = new subject { reference = $"Patient/{Pat.id}" };//???
                 ssf10.code = new code
@@ -5047,9 +3817,10 @@ namespace FHIR_json.Controllers
                     resource = res,
                     request = new request
                     {
-                        method = "POST",
-                        url = $"{res.resourceType}",
+                        method = "PUT",
+                        url = $"{res.resourceType}/{res.id}",
                         ifNoneExist = "identifier=" + res.identifier[0].value
+                        
                     }
                 };
                 bundle_distinct.entry.Add(entry);
@@ -5063,8 +3834,8 @@ namespace FHIR_json.Controllers
                     resource = res,
                     request = new request
                     {
-                        method = "POST",
-                        url = $"{res.resourceType}",
+                        method = "PUT",
+                        url = $"{res.resourceType}/{res.id}",
                         ifNoneExist = "identifier=" + res.identifier[0].value
                     }
                 };
@@ -5093,9 +3864,9 @@ namespace FHIR_json.Controllers
                     resource = res,
                     request = new request
                     {
-                        method = "POST",
-                        url = $"{res.resourceType}",
-                        ifNoneExist = "identifier=" + res.identifier[0].value
+                        method = "PUT",
+                        url = $"{res.resourceType}/{res.id}",
+                        ifNoneExist = "identifier=" + res.identifier[0].value  //ifNoneExist
                     }
                 };
                 bundle.entry.Add(entry);
@@ -5121,8 +3892,8 @@ namespace FHIR_json.Controllers
                     resource = res,
                     request = new request
                     {
-                        method = "POST",
-                        url = $"{res.resourceType}",
+                        method = "PUT",
+                        url = $"{res.resourceType}/{res.id}",
                         //ifNoneExist = "identifier="+res.identifier[0].value
                     }
                 };
@@ -5148,8 +3919,8 @@ namespace FHIR_json.Controllers
                     resource = res,
                     request = new request
                     {
-                        method = "POST",
-                        url = $"{res.resourceType}",
+                        method = "PUT",
+                        url = $"{res.resourceType}/{res.id}",
                         //ifNoneExist = "identifier="+res.identifier[0].value
                     }
                 };
@@ -5176,8 +3947,8 @@ namespace FHIR_json.Controllers
                     resource = res,
                     request = new request
                     {
-                        method = "POST",
-                        url = $"{res.resourceType}",
+                        method = "PUT",
+                        url = $"{res.resourceType}/{res.id}",
                         //ifNoneExist = "identifier="+res.identifier[0].value
                     }
                 };
@@ -5204,8 +3975,8 @@ namespace FHIR_json.Controllers
                     resource = res,
                     request = new request
                     {
-                        method = "POST",
-                        url = $"{res.resourceType}",
+                        method = "PUT",
+                        url = $"{res.resourceType}/{res.id}",
                         //ifNoneExist = "identifier="+res.identifier[0].value
                     }
                 };
@@ -5232,8 +4003,8 @@ namespace FHIR_json.Controllers
                     resource = res,
                     request = new request
                     {
-                        method = "POST",
-                        url = $"{res.resourceType}",
+                        method = "PUT",
+                        url = $"{res.resourceType}/{res.id}",
                         //ifNoneExist = "identifier="+res.identifier[0].value
                     }
                 };
@@ -5260,8 +4031,8 @@ namespace FHIR_json.Controllers
                     resource = res,
                     request = new request
                     {
-                        method = "POST",
-                        url = $"{res.resourceType}",
+                        method = "PUT",
+                        url = $"{res.resourceType}/{res.id}",
                         ifNoneExist = "identifier=" + res.identifier[0].value
                     }
                 };
@@ -5288,8 +4059,8 @@ namespace FHIR_json.Controllers
                     resource = res,
                     request = new request
                     {
-                        method = "POST",
-                        url = $"{res.resourceType}",
+                        method = "PUT",
+                        url = $"{res.resourceType}/{res.id}",
                         //ifNoneExist = "identifier="+res.identifier[0].value
                     }
                 };
@@ -5316,8 +4087,8 @@ namespace FHIR_json.Controllers
                     resource = res,
                     request = new request
                     {
-                        method = "POST",
-                        url = $"{res.resourceType}",
+                        method = "PUT",
+                        url = $"{res.resourceType}/{res.id}",
                         //ifNoneExist = "identifier="+res.identifier[0].value
                     }
                 };
@@ -5344,8 +4115,8 @@ namespace FHIR_json.Controllers
                     resource = res,
                     request = new request
                     {
-                        method = "POST",
-                        url = $"{res.resourceType}",
+                        method = "PUT",
+                        url = $"{res.resourceType}/{res.id}",
                         //ifNoneExist = "identifier="+res.identifier[0].value
                     }
                 };
@@ -5372,8 +4143,8 @@ namespace FHIR_json.Controllers
                     resource = res,
                     request = new request
                     {
-                        method = "POST",
-                        url = $"{res.resourceType}",
+                        method = "PUT",
+                        url = $"{res.resourceType}/{res.id}",
                         //ifNoneExist = "identifier="+res.identifier[0].value
                     }
                 };
@@ -5399,6 +4170,7 @@ namespace FHIR_json.Controllers
             bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
             //bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{},", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @",,", ",");
+            bundlejson = Regex.Replace(bundlejson, "_", "");
 
             //var bundlejson = JsonConvert.SerializeObject(bundle, Formatting.Indented, new JsonSerializerSettings
             //{
@@ -5427,6 +4199,7 @@ namespace FHIR_json.Controllers
             bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\""\""", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\[{}]", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{},", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, "_", "");
 
 
 
@@ -5453,6 +4226,7 @@ namespace FHIR_json.Controllers
             bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, "_", "");
             //bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{},", String.Empty);
 
 
@@ -5479,6 +4253,7 @@ namespace FHIR_json.Controllers
             bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\[{}]", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @",,", ",");
+            bundlejson = Regex.Replace(bundlejson, "_", "");
 
             return bundlejson;
 
@@ -5493,6 +4268,7 @@ namespace FHIR_json.Controllers
             bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\[{}]", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @",,", ",");
+            bundlejson = Regex.Replace(bundlejson, "_", "");
 
             return bundlejson;
 
@@ -5507,10 +4283,11 @@ namespace FHIR_json.Controllers
 
             bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
             bundlejson = Regex.Replace(bundlejson, "extension1", "extension");
+            bundlejson = Regex.Replace(bundlejson, "_", "");
             //bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
             //bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
             //bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
-            
+
 
 
 
