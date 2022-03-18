@@ -235,7 +235,7 @@ namespace FHIR_json.Controllers
                 };
                 labm_ct.occurrenceDateTime = DateTime.Parse(Labm_tag.LABMH6).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 chalist.Add(labm_ct);
-                // enc
+                //enc
                 labm_en = new Encounter();
                 labm_en.id = Sha1Hash($"labm_en-{Labm_tag.LABMH2}-{Labm_tag.LABMH4}-{Labm_tag.LABMH5}-{Labm_tag.LABMH6}-{Labm_tag.LABMH7}-{Labm_tag.LABMH8}-{Labm_tag.LABMH18}-{Labm_tag.LABMR1}"); labm_en.status = "finished";
                 labm_en.type = new List<type>
@@ -313,7 +313,8 @@ namespace FHIR_json.Controllers
                 enclist.Add(labm_en);
                 //obeser
                 labm_h = new Observation();
-                labm_h.id = Sha1Hash($"labm_h-{Labm_tag.LABMH2}-{Labm_tag.LABMH4}-{Labm_tag.LABMH5}-{Labm_tag.LABMH6}-{Labm_tag.LABMH7}-{Labm_tag.LABMH8}-{Labm_tag.LABMH18}-{Labm_tag.LABMR1}"); labm_h.status = "final";
+                labm_h.id = Sha1Hash($"labm_h-{Labm_tag.LABMH2}-{Labm_tag.LABMH4}-{Labm_tag.LABMH5}-{Labm_tag.LABMH6}-{Labm_tag.LABMH7}-{Labm_tag.LABMH8}-{Labm_tag.LABMH18}-{Labm_tag.LABMR1}"); 
+                labm_h.status = "final";
                 labm_h.subject = new subject { reference = $"Patient/{labm_pt.id}" };//?94
                 labm_h.encounter = new encounter { reference = $"Encounter/{labm_en.id}" };//?91
                 labm_h.identifier = new List<identifier>
@@ -353,7 +354,8 @@ namespace FHIR_json.Controllers
                 obslist.Add(labm_h);
 
                 labm_B = new Observation();
-                labm_B.id = Sha1Hash($"labm_B-{Labm_tag.LABMH2}-{Labm_tag.LABMH4}-{Labm_tag.LABMH5}-{Labm_tag.LABMH6}-{Labm_tag.LABMH7}-{Labm_tag.LABMH8}-{Labm_tag.LABMH18}-{Labm_tag.LABMR1}"); labm_B.status = "final";
+                labm_B.id = Sha1Hash($"labm_B-{Labm_tag.LABMH2}-{Labm_tag.LABMH4}-{Labm_tag.LABMH5}-{Labm_tag.LABMH6}-{Labm_tag.LABMH7}-{Labm_tag.LABMH8}-{Labm_tag.LABMH18}-{Labm_tag.LABMR1}"); 
+                labm_B.status = "final";
                 labm_B.subject = new subject { reference = $"Patient/{labm_pt.id}" };//?94
                 labm_B.encounter = new encounter { reference = $"Encounter/{labm_en.id}" };//?91
                 labm_B.identifier = new List<identifier>
@@ -3802,8 +3804,12 @@ namespace FHIR_json.Controllers
         public string PatOrg_Distinct() 
         {
             //去除重複值
-            var pat_distinct_list = patlist.GroupBy(g => g.identifier[0].value).Select(s => s.First()).ToList();
-            var org_distinct_list = orglist.GroupBy(g => g.identifier[0].value).Select(s => s.First()).ToList();
+            //var pat_distinct_list = patlist.GroupBy(g => g.identifier[0].value).Select(s => s.First()).ToList();
+            //var org_distinct_list = orglist.GroupBy(g => g.identifier[0].value).Select(s => s.First()).ToList();
+            //var enc_distinct_list = enclist.GroupBy(g => g.identifier[0].value).Select(s => s.First()).ToList();
+            var pat_distinct_list = patlist.GroupBy(g => g.id).Select(s => s.First()).ToList();
+            var org_distinct_list = orglist.GroupBy(g => g.id).Select(s => s.First()).ToList();
+            var enc_distinct_list = enclist.GroupBy(g => g.id).Select(s => s.First()).ToList();
 
             //建立新bundle 先將Patient Organization傳送到fhir server
             var bundle_distinct = new Bundle();
@@ -3841,7 +3847,23 @@ namespace FHIR_json.Controllers
                 };
                 bundle_distinct.entry.Add(entry);
             }
-            
+            //Encounter
+            foreach (var res in enc_distinct_list)
+            {
+                var entry = new entry
+                {
+                    fullUrl = $"{res.resourceType}/{res.id}",
+                    resource = res,
+                    request = new request
+                    {
+                        method = "PUT",
+                        url = $"{res.resourceType}/{res.id}",
+                        //ifNoneExist = "identifier=" + res.identifier[0].value
+
+                    }
+                };
+                bundle_distinct.entry.Add(entry);
+            }
 
             var bundlejson = JsonConvert.SerializeObject(bundle_distinct, new JsonSerializerSettings
             {
@@ -3854,9 +3876,10 @@ namespace FHIR_json.Controllers
         //轉成json格式
         public string OrganizationJSON()
         {
-
-
-            foreach (var res in orglist)
+            //去除重複id
+            var org_distinct_list = orglist.GroupBy(g => g.id).Select(s => s.First()).ToList();
+            //Organization
+            foreach (var res in org_distinct_list)
             {
                 var entry = new entry
                 {
@@ -3866,11 +3889,28 @@ namespace FHIR_json.Controllers
                     {
                         method = "PUT",
                         url = $"{res.resourceType}/{res.id}",
-                        ifNoneExist = "identifier=" + res.identifier[0].value  //ifNoneExist
+                        ifNoneExist = "identifier=" + res.identifier[0].value
+
                     }
                 };
                 bundle.entry.Add(entry);
             }
+
+            //foreach (var res in orglist)
+            //{
+            //    var entry = new entry
+            //    {
+            //        fullUrl = $"{res.resourceType}/{res.id}",
+            //        resource = res,
+            //        request = new request
+            //        {
+            //            method = "PUT",
+            //            url = $"{res.resourceType}/{res.id}",
+            //            ifNoneExist = "identifier=" + res.identifier[0].value  //ifNoneExist
+            //        }
+            //    };
+            //    bundle.entry.Add(entry);
+            //}
 
             var bundlejson = JsonConvert.SerializeObject(bundle, new JsonSerializerSettings
             {
@@ -3882,9 +3922,10 @@ namespace FHIR_json.Controllers
 
         public string ObservationJSON()
         {
-
-
-            foreach (var res in obslist)
+            //去除重複id
+            var obs_distinct_list = obslist.GroupBy(g => g.id).Select(s => s.First()).ToList();
+            //Organization
+            foreach (var res in obs_distinct_list)
             {
                 var entry = new entry
                 {
@@ -3894,7 +3935,8 @@ namespace FHIR_json.Controllers
                     {
                         method = "PUT",
                         url = $"{res.resourceType}/{res.id}",
-                        //ifNoneExist = "identifier="+res.identifier[0].value
+                        //ifNoneExist = "identifier=" + res.identifier[0].value
+
                     }
                 };
                 bundle.entry.Add(entry);
@@ -3910,8 +3952,10 @@ namespace FHIR_json.Controllers
         public string ProcedureJSON()
         {
 
-
-            foreach (var res in prolist)
+            //去除重複id
+            var Pro_distinct_list = prolist.GroupBy(g => g.id).Select(s => s.First()).ToList();
+            //Organization
+            foreach (var res in Pro_distinct_list)
             {
                 var entry = new entry
                 {
@@ -3921,7 +3965,8 @@ namespace FHIR_json.Controllers
                     {
                         method = "PUT",
                         url = $"{res.resourceType}/{res.id}",
-                        //ifNoneExist = "identifier="+res.identifier[0].value
+                        //ifNoneExist = "identifier=" + res.identifier[0].value
+
                     }
                 };
                 bundle.entry.Add(entry);
@@ -3938,8 +3983,10 @@ namespace FHIR_json.Controllers
         public string ChargeItemJSON()
         {
 
-
-            foreach (var res in chalist)
+            //去除重複id
+            var cha_distinct_list = chalist.GroupBy(g => g.id).Select(s => s.First()).ToList();
+            //Organization
+            foreach (var res in cha_distinct_list)
             {
                 var entry = new entry
                 {
@@ -3949,7 +3996,8 @@ namespace FHIR_json.Controllers
                     {
                         method = "PUT",
                         url = $"{res.resourceType}/{res.id}",
-                        //ifNoneExist = "identifier="+res.identifier[0].value
+                        //ifNoneExist = "identifier=" + res.identifier[0].value
+
                     }
                 };
                 bundle.entry.Add(entry);
@@ -3965,9 +4013,10 @@ namespace FHIR_json.Controllers
         }
         public string MedicationAdministrationJSON()
         {
-
-
-            foreach (var res in medlist)
+            //去除重複id
+            var med_distinct_list = medlist.GroupBy(g => g.id).Select(s => s.First()).ToList();
+            //Organization
+            foreach (var res in med_distinct_list)
             {
                 var entry = new entry
                 {
@@ -3977,7 +4026,8 @@ namespace FHIR_json.Controllers
                     {
                         method = "PUT",
                         url = $"{res.resourceType}/{res.id}",
-                        //ifNoneExist = "identifier="+res.identifier[0].value
+                        //ifNoneExist = "identifier=" + res.identifier[0].value
+
                     }
                 };
                 bundle.entry.Add(entry);
@@ -3993,9 +4043,10 @@ namespace FHIR_json.Controllers
         }
         public string ConditionJSON()
         {
-
-
-            foreach (var res in conlist)
+            //去除重複id
+            var con_distinct_list = conlist.GroupBy(g => g.id).Select(s => s.First()).ToList();
+            //Organization
+            foreach (var res in con_distinct_list)
             {
                 var entry = new entry
                 {
@@ -4005,7 +4056,8 @@ namespace FHIR_json.Controllers
                     {
                         method = "PUT",
                         url = $"{res.resourceType}/{res.id}",
-                        //ifNoneExist = "identifier="+res.identifier[0].value
+                        //ifNoneExist = "identifier=" + res.identifier[0].value
+
                     }
                 };
                 bundle.entry.Add(entry);
@@ -4021,9 +4073,9 @@ namespace FHIR_json.Controllers
         }
         public string PatientJSON()
         {
-
-
-            foreach (var res in patlist)
+            //去除重複值id
+            var pat_distinct_list = patlist.GroupBy(g => g.id).Select(s => s.First()).ToList();
+            foreach (var res in pat_distinct_list)
             {
                 var entry = new entry
                 {
@@ -4038,20 +4090,36 @@ namespace FHIR_json.Controllers
                 };
                 bundle.entry.Add(entry);
             }
+                //foreach (var res in patlist)
+                //{
+                //    var entry = new entry
+                //    {
+                //        fullUrl = $"{res.resourceType}/{res.id}",
+                //        resource = res,
+                //        request = new request
+                //        {
+                //            method = "PUT",
+                //            url = $"{res.resourceType}/{res.id}",
+                //            ifNoneExist = "identifier=" + res.identifier[0].value
+                //        }
+                //    };
+                //    bundle.entry.Add(entry);
+                //}
 
-            var bundlejson = JsonConvert.SerializeObject(bundle, new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore
-            });
+                var bundlejson = JsonConvert.SerializeObject(bundle, new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
 
             return bundlejson;
 
         }
         public string MedicationRequestJSON()
         {
-
-
-            foreach (var res in medrequestlist)
+            //去除重複id
+            var medrequest_distinct_list = medrequestlist.GroupBy(g => g.id).Select(s => s.First()).ToList();
+            //Organization
+            foreach (var res in medrequest_distinct_list)
             {
                 var entry = new entry
                 {
@@ -4061,7 +4129,8 @@ namespace FHIR_json.Controllers
                     {
                         method = "PUT",
                         url = $"{res.resourceType}/{res.id}",
-                        //ifNoneExist = "identifier="+res.identifier[0].value
+                        //ifNoneExist = "identifier=" + res.identifier[0].value
+
                     }
                 };
                 bundle.entry.Add(entry);
@@ -4077,9 +4146,10 @@ namespace FHIR_json.Controllers
         }
         public string EncounterJSON()
         {
-
-
-            foreach (var res in enclist)
+            //去除重複id
+            var enc_distinct_list = enclist.GroupBy(g => g.id).Select(s => s.First()).ToList();
+            //Organization
+            foreach (var res in enc_distinct_list)
             {
                 var entry = new entry
                 {
@@ -4089,11 +4159,28 @@ namespace FHIR_json.Controllers
                     {
                         method = "PUT",
                         url = $"{res.resourceType}/{res.id}",
-                        //ifNoneExist = "identifier="+res.identifier[0].value
+                        //ifNoneExist = "identifier=" + res.identifier[0].value
+
                     }
                 };
                 bundle.entry.Add(entry);
             }
+
+            //foreach (var res in enclist)
+            //{
+            //    var entry = new entry
+            //    {
+            //        fullUrl = $"{res.resourceType}/{res.id}",
+            //        resource = res,
+            //        request = new request
+            //        {
+            //            method = "PUT",
+            //            url = $"{res.resourceType}/{res.id}",
+            //            //ifNoneExist = "identifier="+res.identifier[0].value
+            //        }
+            //    };
+            //    bundle.entry.Add(entry);
+            //}
 
             var bundlejson = JsonConvert.SerializeObject(bundle, new JsonSerializerSettings
             {
@@ -4105,9 +4192,10 @@ namespace FHIR_json.Controllers
         }
         public string SpecimenJSON()
         {
-
-
-            foreach (var res in spelist)
+            //去除重複id
+            var spe_distinct_list = spelist.GroupBy(g => g.id).Select(s => s.First()).ToList();
+            //Organization
+            foreach (var res in spe_distinct_list)
             {
                 var entry = new entry
                 {
@@ -4117,11 +4205,13 @@ namespace FHIR_json.Controllers
                     {
                         method = "PUT",
                         url = $"{res.resourceType}/{res.id}",
-                        //ifNoneExist = "identifier="+res.identifier[0].value
+                        //ifNoneExist = "identifier=" + res.identifier[0].value
+
                     }
                 };
                 bundle.entry.Add(entry);
             }
+
 
             var bundlejson = JsonConvert.SerializeObject(bundle, new JsonSerializerSettings
             {
@@ -4133,9 +4223,10 @@ namespace FHIR_json.Controllers
         }
         public string ConsentJSON()
         {
-
-
-            foreach (var res in consentlist)
+            //去除重複id
+            var consent_distinct_list = consentlist.GroupBy(g => g.id).Select(s => s.First()).ToList();
+            //Organization
+            foreach (var res in consent_distinct_list)
             {
                 var entry = new entry
                 {
@@ -4145,7 +4236,8 @@ namespace FHIR_json.Controllers
                     {
                         method = "PUT",
                         url = $"{res.resourceType}/{res.id}",
-                        //ifNoneExist = "identifier="+res.identifier[0].value
+                        //ifNoneExist = "identifier=" + res.identifier[0].value
+
                     }
                 };
                 bundle.entry.Add(entry);
