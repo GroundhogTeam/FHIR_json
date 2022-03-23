@@ -51,6 +51,7 @@ namespace FHIR_json.Models
     }
     public class identifier
     {
+        public string reference { get; set; }
         public string value { get; set; }
     }
 
@@ -322,6 +323,10 @@ namespace FHIR_json.Models
 
         //新增
         public encounter encounter { get; set; }
+        //0322
+        public List<identifier> identifier { get; set; }
+
+
 
 
     }
@@ -381,11 +386,21 @@ namespace FHIR_json.Models
 
         //0221_new
         public List<performer> performer { get; set; }
+        //0322_新增
+        public List<partOf> partOf { get; set; }
 
 
 
     }
+    //0322_新增
+    public class partOf
+    {
+        public string reference { get; set; }
 
+        //public identifier identifier { get; set; }
+
+    }
+  
     //new
     public class interpretation
     {

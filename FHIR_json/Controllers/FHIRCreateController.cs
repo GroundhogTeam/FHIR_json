@@ -125,7 +125,8 @@ namespace FHIR_json.Controllers
         //TOTFB尾
         //LABD頭
         Encounter labd_en = new Encounter();
-        Observation labd_h = new Observation();
+        //改
+        Procedure labd_h = new Procedure();
         Observation labd_B = new Observation();
         Organization labd = new Organization();
         Patient labd_pt = new Patient();
@@ -136,7 +137,7 @@ namespace FHIR_json.Controllers
         //LABD尾
         //LABM頭
         Encounter labm_en = new Encounter();
-        Observation labm_h = new Observation();
+        Procedure labm_h = new Procedure();
         Observation labm_B = new Observation();
         //LABM尾
 
@@ -312,7 +313,7 @@ namespace FHIR_json.Controllers
                 }
                 enclist.Add(labm_en);
                 //obeser
-                labm_h = new Observation();
+                labm_h = new Procedure();
                 labm_h.id = Sha1Hash($"labm_h-{Labm_tag.LABMH2}-{Labm_tag.LABMH4}-{Labm_tag.LABMH5}-{Labm_tag.LABMH6}-{Labm_tag.LABMH7}-{Labm_tag.LABMH8}-{Labm_tag.LABMH18}-{Labm_tag.LABMR1}"); 
                 labm_h.status = "final";
                 labm_h.subject = new subject { reference = $"Patient/{labm_pt.id}" };//?94
@@ -335,12 +336,18 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                labm_h.issued = DateTime.Parse(Labm_tag.LABMH22).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
-                labm_h.effectiveDateTime = DateTime.Parse(Labm_tag.LABMH23).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
-                labm_h.category = new List<category>
+                labm_h.performedDateTime = DateTime.Parse(Labm_tag.LABMH22).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+
+                //labm_h.performedPeriod.start = DateTime.Parse(Labm_tag.LABMH23).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                //labm_h.performedPeriod.end = DateTime.Parse(Labm_tag.LABMH23).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                labm_h.performedPeriod = new performedPeriod
                 {
-                    new category
-                    {
+                    start = DateTime.Parse(Labm_tag.LABMH23).ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
+                    end = DateTime.Parse(Labm_tag.LABMH23).ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
+                };
+                labm_h.category = new category
+                {
+                   
                         text="檢體採檢方法/來源/類別",
                         coding=new List<coding>
                         {
@@ -349,11 +356,19 @@ namespace FHIR_json.Controllers
                                 code=Labm_tag.LABMH25
                             }
                         }
-                    }
+                   
                 };
-                obslist.Add(labm_h);
+                prolist.Add(labm_h);
 
                 labm_B = new Observation();
+                labm_B.partOf = new List<partOf>
+                { 
+                    new partOf
+                    {
+                        reference = $"Procedure/{labm_h.id}" 
+                        
+                    }
+                };
                 labm_B.id = Sha1Hash($"labm_B-{Labm_tag.LABMH2}-{Labm_tag.LABMH4}-{Labm_tag.LABMH5}-{Labm_tag.LABMH6}-{Labm_tag.LABMH7}-{Labm_tag.LABMH8}-{Labm_tag.LABMH18}-{Labm_tag.LABMR1}"); 
                 labm_B.status = "final";
                 labm_B.subject = new subject { reference = $"Patient/{labm_pt.id}" };//?94
@@ -571,9 +586,10 @@ namespace FHIR_json.Controllers
                 }
                 enclist.Add(labd_en);
                 //obeser
-                labd_h = new Observation();
+                //改
+                labd_h = new Procedure();
                 labd_h.id = Sha1Hash($"labd_h-{Labd_tag.LABDH2}-{Labd_tag.LABDH4}-{Labd_tag.LABDH6}-{Labd_tag.LABDH7}-{Labd_tag.LABDH15}-{Labd_tag.LABDR1}");
-                labd_h.status = "final";
+                labd_h.status = "preparation";
                 labd_h.subject = new subject { reference = $"Patient/{labd_pt.id}" };//?88
                 labd_h.encounter = new encounter { reference = $"Encounter/{labd_en.id}" };//?86
                 labd_h.code = new code
@@ -587,12 +603,15 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                labd_h.issued = DateTime.Parse(Labd_tag.LABDH19).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
-                labd_h.effectiveDateTime = DateTime.Parse(Labd_tag.LABDH20).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
-                labd_h.category = new List<category>
+                labd_h.performedDateTime = DateTime.Parse(Labd_tag.LABDH19).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                labd_h.performedPeriod = new performedPeriod
                 {
-                    new category
-                    {
+                    start = DateTime.Parse(Labd_tag.LABDH20).ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
+                    end = DateTime.Parse(Labd_tag.LABDH20).ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
+                };
+                labd_h.category = new category
+                {
+                    
                         text= "檢體採檢方法/來源/類別",
                         coding=new List<coding>
                         {
@@ -601,12 +620,18 @@ namespace FHIR_json.Controllers
                                 code=Labd_tag.LABDH22
                             }
                         }
-                    }
-
                 };
-                obslist.Add(labd_h);
+                prolist.Add(labd_h);
 
                 labd_B = new Observation();
+                labd_B.partOf = new List<partOf>
+                {
+                    new partOf
+                    {
+                        reference = $"Procedure/{labd_h.id}"
+
+                    }
+                };
                 labd_B.id = Sha1Hash($"labd_B-{Labd_tag.LABDH2}-{Labd_tag.LABDH4}-{Labd_tag.LABDH6}-{Labd_tag.LABDH7}-{Labd_tag.LABDH15}-{Labd_tag.LABDR1}");
                 labd_B.status = "final";
                 labd_B.subject = new subject { reference = $"Patient/{labd_pt.id}" };//?88
@@ -4260,7 +4285,6 @@ namespace FHIR_json.Controllers
             bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\[{}]", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\[{}]", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
-            //bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{},", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @",,", ",");
             bundlejson = Regex.Replace(bundlejson, "_", "");
 
@@ -4356,11 +4380,22 @@ namespace FHIR_json.Controllers
             {
                 NullValueHandling = NullValueHandling.Ignore,
             });
+            //原本的
+
+            //bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
+            //bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\[{}]", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\[{}]", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\[{}]", String.Empty);
-            bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
-            bundlejson = Regex.Replace(bundlejson, @",,", ",");
-            bundlejson = Regex.Replace(bundlejson, "_", "");
+            bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
+            //bundlejson = Regex.Replace(bundlejson, @"  ", String.Empty);
+
+
+
+            //bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\[{}]", String.Empty);
+            //bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\[{}]", String.Empty);
+            //bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
+            //bundlejson = Regex.Replace(bundlejson, @",,", ",");
+            //bundlejson = Regex.Replace(bundlejson, "_", "");
 
             return bundlejson;
 
