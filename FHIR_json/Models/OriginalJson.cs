@@ -8,6 +8,7 @@ namespace FHIR_json.Models
 {
     public class OriginalJson
     {
+
         //CRLF.cs
         public class CRLF
         {

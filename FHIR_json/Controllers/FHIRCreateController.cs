@@ -1816,7 +1816,7 @@ namespace FHIR_json.Controllers
             }
             bundle.entry = new List<entry>();
             var bundle_distinct = PatOrg_Distinct();
-            var response_json_ditsint = await GetandShare_Block(bundle_distinct);
+            var response_json_ditsint = await GetandShare_Block(bundle_distinct); //先送出pat和enc去server
 
             var jsonorg = OrganizationJSON();
             var jsonpro = ProcedureJSON();
@@ -1828,7 +1828,7 @@ namespace FHIR_json.Controllers
             var jsonmedrequest = MedicationRequestJSON();
             var jsonobs = ObservationJSON();
             var bundlejson = BundleJSON_totfb();
-            return await GetandShare_Block(bundlejson);
+            return await GetandShare_Block(bundlejson);//送出所有res去server
         }
 
         [HttpPost]
@@ -2435,10 +2435,10 @@ namespace FHIR_json.Controllers
                             {
                                 url = "volume",
                                 valueReference=new valueReference
-                                    {
-                                        display = "最高放射劑量臨床標靶體積",
-                                        reference = CRLF_tag.rth
-                                    }
+                                {
+                                    display = "最高放射劑量臨床標靶體積",
+                                    reference = CRLF_tag.rth
+                                }
                             },
                             new extension1//11
                             {
