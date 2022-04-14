@@ -315,7 +315,7 @@ namespace FHIR_json.Controllers
                 //obeser
                 labm_h = new Procedure();
                 labm_h.id = Sha1Hash($"labm_h-{Labm_tag.LABMH2}-{Labm_tag.LABMH4}-{Labm_tag.LABMH5}-{Labm_tag.LABMH6}-{Labm_tag.LABMH7}-{Labm_tag.LABMH8}-{Labm_tag.LABMH18}-{Labm_tag.LABMR1}"); 
-                labm_h.status = "final";
+                labm_h.status = "preparation";
                 labm_h.subject = new subject { reference = $"Patient/{labm_pt.id}" };//?94
                 labm_h.encounter = new encounter { reference = $"Encounter/{labm_en.id}" };//?91
                 labm_h.identifier = new List<identifier>
@@ -465,16 +465,20 @@ namespace FHIR_json.Controllers
             bundle.entry = new List<entry>();
             var bundle_distinct = PatOrg_Distinct();
             var response_json_ditsint = await GetandShare_Block(bundle_distinct);
+            var response_json_ditsinthapi = await GetandSharehapi_Block(bundle_distinct);
             var jsonobs = ObservationJSON();
             var jsonorg = OrganizationJSON();
-            //var jsonpro = ProcedureJSON();
+            var jsonpro = ProcedureJSON();
             var jsonchar = ChargeItemJSON();
             //var jsonmed = MedicationAdministrationJSON();
             //var jsoncon = ConditionJSON();
             var jsonpat = PatientJSON();
             var jsonenc = EncounterJSON();
             var bundlejson = BundleJSON_labm();
-            return await GetandShare_Block(bundlejson);
+            //var bundlehapijson = await GetandSharehapi_Block(bundlejson);
+            var bundleIBMjson = await GetandShare_Block(bundlejson);
+            //return await GetandShare_Block(bundlejson);
+            return await GetandSharehapi_Block(bundlejson);
         }
 
         [HttpPost]
@@ -727,16 +731,20 @@ namespace FHIR_json.Controllers
             bundle.entry = new List<entry>();
             var bundle_distinct = PatOrg_Distinct();
             var response_json_ditsint = await GetandShare_Block(bundle_distinct);
+            var response_json_ditsinthapi = await GetandSharehapi_Block(bundle_distinct);
             var jsonobs = ObservationJSON();
             var jsonorg = OrganizationJSON();
-            //var jsonpro = ProcedureJSON();
+            var jsonpro = ProcedureJSON();
             //var jsonchar = ChargeItemJSON();
             //var jsonmed = MedicationAdministrationJSON();
             //var jsoncon = ConditionJSON();
             var jsonpat = PatientJSON();
             var jsonenc = EncounterJSON();
             var bundlejson = BundleJSON_LABD_JSON();
-            return await GetandShare_Block(bundlejson);
+            //var bundlehapijson = await GetandSharehapi_Block(bundlejson);
+            var bundleIBMjson = await GetandShare_Block(bundlejson);
+            //return await GetandShare_Block(bundlejson);
+            return await GetandSharehapi_Block(bundlejson);
         }
 
 
@@ -1331,6 +1339,7 @@ namespace FHIR_json.Controllers
             bundle.entry = new List<entry>();
             var bundle_distinct = PatOrg_Distinct();
             var response_json_ditsint = await GetandShare_Block(bundle_distinct);
+            var response_json_ditsinthapi = await GetandSharehapi_Block(bundle_distinct);
             var jsonobs = ObservationJSON();
             var jsonorg = OrganizationJSON();
             var jsonpro = ProcedureJSON();
@@ -1342,7 +1351,10 @@ namespace FHIR_json.Controllers
             var jsonmedrequest = MedicationRequestJSON();
             //var bundlejson = BundleJSON();
             var bundlejson = BundleJSON_totfa();
-            return await GetandShare_Block(bundlejson);
+            //var bundlehapijson = await GetandSharehapi_Block(bundlejson);
+            var bundleIBMjson = await GetandShare_Block(bundlejson);
+            //return await GetandShare_Block(bundlejson);
+            return await GetandSharehapi_Block(bundlejson);
         }
 
         [HttpPost]
@@ -1817,7 +1829,7 @@ namespace FHIR_json.Controllers
             bundle.entry = new List<entry>();
             var bundle_distinct = PatOrg_Distinct();
             var response_json_ditsint = await GetandShare_Block(bundle_distinct); //先送出pat和enc去server
-
+            var response_json_ditsinthapi = await GetandSharehapi_Block(bundle_distinct);
             var jsonorg = OrganizationJSON();
             var jsonpro = ProcedureJSON();
             var jsonchar = ChargeItemJSON();
@@ -1828,7 +1840,10 @@ namespace FHIR_json.Controllers
             var jsonmedrequest = MedicationRequestJSON();
             var jsonobs = ObservationJSON();
             var bundlejson = BundleJSON_totfb();
-            return await GetandShare_Block(bundlejson);//送出所有res去server
+            //var bundlehapijson = await GetandSharehapi_Block(bundlejson);
+            var bundleIBMjson = await GetandShare_Block(bundlejson);
+            //return await GetandShare_Block(bundlejson);
+            return await GetandSharehapi_Block(bundlejson);
         }
 
         [HttpPost]
@@ -2047,6 +2062,7 @@ namespace FHIR_json.Controllers
             bundle.entry = new List<entry>();
             var bundle_distinct = PatOrg_Distinct();
             var response_json_ditsint = await GetandShare_Block(bundle_distinct);
+            var response_json_ditsinthapi = await GetandSharehapi_Block(bundle_distinct);
             var jsonobs = ObservationJSON();
             var jsonorg = OrganizationJSON();
             //var jsonpro = ProcedureJSON();
@@ -2057,7 +2073,10 @@ namespace FHIR_json.Controllers
             var jsonspet = SpecimenJSON();
             var jsonconsent = ConsentJSON();
             var bundlejson = BundleJSON_spe_JSON();
-            return await GetandShare_Block(bundlejson);
+            //var bundlehapijson = await GetandSharehapi_Block(bundlejson);
+            var bundleIBMjson = await GetandShare_Block(bundlejson);
+            //return await GetandShare_Block(bundlejson);
+            return await GetandSharehapi_Block(bundlejson);
         }
 
 
@@ -3785,7 +3804,7 @@ namespace FHIR_json.Controllers
             bundle.entry = new List<entry>();
             var bundle_distinct = PatOrg_Distinct();
             var response_json_ditsint = await GetandShare_Block(bundle_distinct);
-
+            var response_json_ditsinthapi = await GetandSharehapi_Block(bundle_distinct);
             var jsonobs = ObservationJSON();
             var jsonorg = OrganizationJSON();
             var jsonpro = ProcedureJSON();
@@ -3794,7 +3813,10 @@ namespace FHIR_json.Controllers
             var jsoncon = ConditionJSON();
             var jsonpat = PatientJSON();
             var bundlejson = BundleJSON_CRLF();
-            return await GetandShare_Block(bundlejson);
+            //var bundlehapijson = await GetandSharehapi_Block(bundlejson);
+            var bundleIBMjson = await GetandShare_Block(bundlejson);
+            //return await GetandShare_Block(bundlejson);
+            return await GetandSharehapi_Block(bundlejson);
 
         }
 
@@ -3816,6 +3838,30 @@ namespace FHIR_json.Controllers
             //specify to use TLS 1.2 as default connection
             var byteArray = Encoding.ASCII.GetBytes($"{Username}:{Password}");
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+
+            //POST資料
+            var response = await client.PostAsync(url, data);
+            return JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result);
+        }
+
+        [HttpPost]
+        public async Task<dynamic> GetandSharehapi_Block(string bundlejson)
+        {
+            //var json = JsonConvert.SerializeObject(Post_data);
+            var data = new StringContent(bundlejson, Encoding.UTF8, "application/json");
+
+            //var url = "http://localhost:12904/api/Geth/" + Request_Url;
+            var url = ConfigurationManager.AppSettings.Get("FHIR_hapi_API");
+            //var Username = ConfigurationManager.AppSettings.Get("Username");
+            //var Password = ConfigurationManager.AppSettings.Get("Password");
+
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            HttpClient client = new HttpClient();
+
+            //specify to use TLS 1.2 as default connection
+            //var byteArray = Encoding.ASCII.GetBytes($"{Username}:{Password}");
+            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 
             //POST資料
             var response = await client.PostAsync(url, data);
