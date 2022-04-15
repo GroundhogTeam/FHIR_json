@@ -512,6 +512,7 @@ namespace FHIR_json.Controllers
                         value=Labd_tag.LABDH9
                     }
                 };
+                labd_pt.gender = Labd_tag.LABDGender;
                 patlist.Add(labd_pt);
                 //enc
                 labd_en = new Encounter();
@@ -784,6 +785,7 @@ namespace FHIR_json.Controllers
                         value=TOTFA_tag.TOTFAD3
                     }
                 };
+                pt.gender = TOTFA_tag.TOTFAGender;
                 patlist.Add(pt);
                 //enc
                 fa_en = new Encounter();
