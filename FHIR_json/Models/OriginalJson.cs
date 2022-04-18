@@ -8,6 +8,7 @@ namespace FHIR_json.Models
 {
     public class OriginalJson
     {
+
         //CRLF.cs
         public class CRLF
         {
@@ -410,7 +411,7 @@ namespace FHIR_json.Models
             public int TOTFAD28 { get; set; }
 
             [JsonProperty("TOTFA.gender")]
-            public int TOTFAGender { get; set; }
+            public string TOTFAGender { get; set; }
 
             [JsonProperty("TOTFA.p1")]
             public int TOTFAP1 { get; set; }
