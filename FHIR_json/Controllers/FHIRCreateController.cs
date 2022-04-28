@@ -77,10 +77,10 @@ namespace FHIR_json.Controllers
         Procedure M1 = new Procedure();
         ChargeItem Cha = new ChargeItem();
         MedicationAdministration Med = new MedicationAdministration();
-        MedicationAdministration m2 = new MedicationAdministration();
-        MedicationAdministration m3 = new MedicationAdministration();
+        Procedure m2 = new Procedure();
+        Procedure m3 = new Procedure();
         Procedure m4 = new Procedure();
-        MedicationAdministration m5 = new MedicationAdministration();
+        Procedure m5 = new Procedure();
         ChargeItem m6 = new ChargeItem();
         Procedure m7 = new Procedure();
         //CRLF尾
@@ -2215,13 +2215,20 @@ namespace FHIR_json.Controllers
                     }
                 };
                 P1.category = new category
-                {
-                    text = "微創手術",
+                {                    
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code = CRLF_tag.misurgery
+                            userSelected=false,
+                            display="Surgical procedure",
+                            code="387713003"
+                        },
+                        new coding
+                        {
+                            userSelected=true,
+                            display="微創手術",
+                            code=CRLF_tag.misurgery
                         }
                     }
                 };
@@ -2387,40 +2394,34 @@ namespace FHIR_json.Controllers
                     start = CRLF_tag.drt_1st,
                     end = CRLF_tag.drt_end
                 };
-                Radio1.followUp = new List<followUp>
-                {
-                    new followUp
+                Radio1.code = new code
+                {                    
+                    coding = new List<coding>
                     {
-                        text = "放射治療與手術順序",
-                        coding=new List<coding>
+                        new coding
                         {
-                            new coding
-                            {
-                                code = CRLF_tag.srs
-                            }
-                        }
-                    },
-                    new followUp
-                    {
-                        text = "區域治療與全身性治療順序",
-                        coding=new List<coding>
+                            display="Radiotherapy Course of Treatment (regime/therapy)",
+                            userSelected=false,
+                            code = "USCRS-33529"
+                        },
+                        new coding
                         {
-                            new coding
-                            {
-                                code = CRLF_tag.sls
-                            }
+                            display="放射治療與手術順序",
+                            userSelected=true,
+                            code = CRLF_tag.rtstatus
                         }
                     }
                 };
+
                 Radio1.statusReason = new statusReason
                 {
                     text = "放射治療執行狀態",
                     coding = new List<coding>
                     {
-                            new coding
-                            {
-                                code = CRLF_tag.rtstatus
-                            }
+                        new coding
+                        {
+                            code = CRLF_tag.rtstatus
+                        }
                     }
                 };
                 Radio1.extension = new List<extension>
@@ -2665,13 +2666,7 @@ namespace FHIR_json.Controllers
                     value = Convert.ToDouble(CRLF_tag.age)
                 };
 
-                Con.identifier = new List<identifier>
-                {
-                    new identifier
-                    {
-                        value = CRLF_tag.sequence
-                    }
-                };
+                Con.onsetString = CRLF_tag.sequence;
                 Con.category = new List<category>
                 {
                     new category
@@ -2717,22 +2712,22 @@ namespace FHIR_json.Controllers
                         valueDateTime =  DateTime.Parse(CRLF_tag.didiag).ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
             }
                 };
-                Con.code = new code
-                {
-                    text = "原發部位",
-                    coding = new List<coding>
-                    {
-                        new coding
-                        {
-                            code = CRLF_tag.site
-                        }
-                    }
-                };
                 Con.bodySite = new List<bodySite>
                 {
                     new bodySite
                     {
-                        text = "測性",
+                        text = "原發部位",
+                         coding = new List<coding>
+                        {
+                            new coding
+                            {
+                                code = CRLF_tag.site
+                            }
+                        }
+                    },
+                    new bodySite
+                    {
+                        text = "側性",
                          coding = new List<coding>
                         {
                             new coding
@@ -2859,8 +2854,8 @@ namespace FHIR_json.Controllers
                 chalist.Add(m6);
                 //chalist.add(m6)之後
 
-                //MedicationAdministration-m2
-                m2 = new MedicationAdministration();
+                //Procedure-m2
+                m2 = new Procedure();
                 m2.id = Sha1Hash($"m2-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 m2.status = "completed";
                 m2.subject = new subject { reference = $"Patient/{Pat.id}" };
@@ -2868,17 +2863,17 @@ namespace FHIR_json.Controllers
                 {
                     new reasonCode
                     {
-                        text = "外院荷爾蒙/類固醇治療",
+                         text = "外院荷爾蒙/類固醇治療",
                          coding = new List<coding>
-                        {
+                         {
                             new coding
                             {
                                 code = CRLF_tag.horm_o
                             }
-                        }
+                         }
                     }
                 };
-                m2.category = new category
+                m2.code = new code
                 {
                     text = "申報醫院荷爾蒙/類固醇治療",
                     coding = new List<coding>
@@ -2889,20 +2884,16 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                m2.medicationCodeableConcept = new medicationCodeableConcept
-                {
-                    text = "荷爾蒙/類固醇"
-                };
-                m2.effectiveDateTime = DateTime.Parse(CRLF_tag.dhorm).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
-                medlist.Add(m2);
+                m2.performedDateTime = DateTime.Parse(CRLF_tag.dhorm).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                
+                prolist.Add(m2);
 
 
-                //MedicationAdministration-m3
-                m3 = new MedicationAdministration();
+                //Procedure-m3
+                m3 = new Procedure();
                 m3.id = Sha1Hash($"m3-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 m3.status = "completed";
                 m3.subject = new subject { reference = $"Patient/{Pat.id}" };
-                //m3.reasonCode[0].text = "外院免疫治療";
                 m3.reasonCode = new List<reasonCode>
                 {
                     new reasonCode
@@ -2917,7 +2908,7 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                m3.category = new category
+                m3.code = new code
                 {
                     text = "申報醫院免疫治療",
                     coding = new List<coding>
@@ -2928,18 +2919,15 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                m3.medicationCodeableConcept = new medicationCodeableConcept
-                {
-                    text = "免疫治療"
-                };
-                m3.effectiveDateTime = DateTime.Parse(CRLF_tag.dimmu).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
-                medlist.Add(m3);
+                m3.performedDateTime = DateTime.Parse(CRLF_tag.dimmu).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                
+                prolist.Add(m3);
 
 
-                //MedicationAdministration-m5
-                m5 = new MedicationAdministration();
+                //Procedure-m5
+                m5 = new Procedure();
                 m5.id = Sha1Hash($"m5-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
-                m5.status = "completed";//重複了
+                m5.status = "completed";
                 m5.subject = new subject { reference = $"Patient/{Pat.id}" };
                 m5.reasonCode = new List<reasonCode>
                 {
@@ -2955,7 +2943,7 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                m5.category = new category
+                m5.code = new code
                 {
                     text = "申報醫院標靶治療",
                     coding = new List<coding>
@@ -2966,12 +2954,8 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                m5.medicationCodeableConcept = new medicationCodeableConcept
-                {
-                    text = "標靶治療"
-                };
-                m5.effectiveDateTime = DateTime.Parse(CRLF_tag.dtarget).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
-                medlist.Add(m5);
+                m5.performedDateTime = DateTime.Parse(CRLF_tag.dtarget).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                prolist.Add(m5);
 
                 //Observation
                 TS = new Observation();
@@ -3124,7 +3108,14 @@ namespace FHIR_json.Controllers
                 clinical_T.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
                 clinical_T.code = new code
                 {
-                    text = "臨床T"
+                    text = "臨床T",
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code="21905-5"
+                        }
+                    }
                 };
                 clinical_T.valueCodeableConcept = new valueCodeableConcept
                 {
@@ -3145,7 +3136,14 @@ namespace FHIR_json.Controllers
                 clinical_N.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
                 clinical_N.code = new code
                 {
-                    text = "臨床N"
+                    text = "臨床N",
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code="21906-3"
+                        }
+                    }
                 };
                 clinical_N.valueCodeableConcept = new valueCodeableConcept
                 {
@@ -3166,7 +3164,14 @@ namespace FHIR_json.Controllers
                 clinical_M.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
                 clinical_M.code = new code
                 {
-                    text = "臨床M"
+                    text = "臨床M",
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code="21907-1"
+                        }
+                    }
                 };
                 clinical_M.valueCodeableConcept = new valueCodeableConcept
                 {
@@ -3244,7 +3249,14 @@ namespace FHIR_json.Controllers
                 pathology_T.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
                 pathology_T.code = new code
                 {
-                    text = "病理T"
+                    text = "病理T",
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code="21899-0"
+                        }
+                    }
                 };
                 pathology_T.valueCodeableConcept = new valueCodeableConcept
                 {
@@ -3279,7 +3291,14 @@ namespace FHIR_json.Controllers
                 pathology_N.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
                 pathology_N.code = new code
                 {
-                    text = "病理N"
+                    text = "病理N",
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code="21900-6"
+                        }
+                    }
                 };
                 pathology_N.valueCodeableConcept = new valueCodeableConcept
                 {
@@ -3315,7 +3334,14 @@ namespace FHIR_json.Controllers
                 pathology_M.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
                 pathology_M.code = new code
                 {
-                    text = "病理M"
+                    text = "病理M",
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code="21901-4"
+                        }
+                    }
                 };
                 pathology_M.valueCodeableConcept = new valueCodeableConcept
                 {

@@ -70,6 +70,7 @@ namespace FHIR_json.Models
         public string system { get; set; }
         //0221_new
         public string display { get; set; }
+        public bool userSelected { get; set; }
 
 
     }
@@ -272,6 +273,7 @@ namespace FHIR_json.Models
         public string recordedDate { get; set; }
 
         public onsetAge onsetAge { get; set; }
+        public string onsetString { get; set; }
         public subject subject { get; set; }
         public List<identifier> identifier { get; set; }
         public List<category> category { get; set; }
