@@ -839,49 +839,50 @@ namespace FHIR_json.Controllers
 
                 enclist.Add(fa_en);
 
-                //obeser
-                med_day = new Observation();
-                med_day.id = Sha1Hash($"med_day-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}");
-                med_day.status = "final";
-                med_day.subject = new subject { reference = $"Patient/{pt.id}" };//?
-                med_day.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//?
-                med_day.code = new code
-                {
-                    text = "給藥日份"
-                };
-                med_day.valueCodeableConcept = new valueCodeableConcept
-                {
-                    coding = new List<coding>
-                    {
-                        new coding
-                        {
-                            code=TOTFA_tag.TOTFAD27.ToString()
-                        }
-                    }
-                };
-                obslist.Add(med_day);
+                //obeser 刪除
+                //med_day = new Observation();
+                //med_day.id = Sha1Hash($"med_day-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}");
+                //med_day.status = "final";
+                //med_day.subject = new subject { reference = $"Patient/{pt.id}" };//?
+                //med_day.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//?
+                //med_day.code = new code
+                //{
+                //    text = "給藥日份"
+                //};
+                //med_day.valueCodeableConcept = new valueCodeableConcept
+                //{
+                //    coding = new List<coding>
+                //    {
+                //        new coding
+                //        {
+                //            code=TOTFA_tag.TOTFAD27.ToString()
+                //        }
+                //    }
+                //};
+                //obslist.Add(med_day);
 
-                med_type = new Observation();
-                med_type.id = Sha1Hash($"med_type-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}");
-                med_type.status = "final";
-                med_type.subject = new subject { reference = $"Patient/{pt.id}" };//?
-                med_type.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//?
-                med_type.code = new code
-                {
-                    text = "處方調劑方式"
-                };
-                med_type.valueCodeableConcept = new valueCodeableConcept
-                {
-                    coding = new List<coding>
-                    {
-                        new coding
-                        {
-                            code=TOTFA_tag.TOTFAD28.ToString()
-                        }
-                    }
-                };
+                //刪除
+                //med_type = new Observation();
+                //med_type.id = Sha1Hash($"med_type-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}");
+                //med_type.status = "final";
+                //med_type.subject = new subject { reference = $"Patient/{pt.id}" };//?
+                //med_type.encounter = new encounter { reference = $"Encounter/{fa_en.id}" };//?
+                //med_type.code = new code
+                //{
+                //    text = "處方調劑方式"
+                //};
+                //med_type.valueCodeableConcept = new valueCodeableConcept
+                //{
+                //    coding = new List<coding>
+                //    {
+                //        new coding
+                //        {
+                //            code=TOTFA_tag.TOTFAD28.ToString()
+                //        }
+                //    }
+                //};
 
-                obslist.Add(med_type);
+                //obslist.Add(med_type);
                 //ChargeItem
                 fa_ct = new ChargeItem();
                 fa_ct.id = Sha1Hash($"fa_ct-{TOTFA_tag.TOTFAT2}-{TOTFA_tag.TOTFAT3}-{TOTFA_tag.TOTFAD1}-{TOTFA_tag.TOTFAD2}-{TOTFA_tag.TOTFAP13}");
