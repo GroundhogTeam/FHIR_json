@@ -2117,8 +2117,14 @@ namespace FHIR_json.Controllers
                     new identifier
                     {
                         value=CRLF_tag.id
+                    },
+                    new identifier
+                    {
+                        value = "Cancer Patient",
+                        system="https://build.fhir.org/ig/HL7/fhir-mCODE-ig/"
                     }
-                };
+                }
+               ;
                 Pat.gender = CRLF_tag.sex;
                 Pat.birthDate = CRLF_tag.dbirth;
                 Pat.address = new List<address>
@@ -2179,6 +2185,15 @@ namespace FHIR_json.Controllers
                 //P1
                 P1 = new Procedure();
                 P1.id = Sha1Hash($"P1-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
+                P1.identifier = new List<identifier>
+                {
+                    new identifier
+                    {
+
+                        value = "Cancer-Related Surgical Procedure",
+                        system = "https://build.fhir.org/ig/HL7/fhir-mCODE-ig/"
+                    }
+                };
                 P1.status = "completed";
                 P1.subject = new subject { reference = $"Patient/{Pat.id}" };
                 if (CRLF_tag.dop_mds == null)
@@ -2269,6 +2284,15 @@ namespace FHIR_json.Controllers
                 //P2
                 P2 = new Procedure();
                 P2.id = Sha1Hash($"P2-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
+                P2.identifier = new List<identifier>
+                {
+                    new identifier
+                    {
+
+                        value = "Cancer-Related Surgical Procedure",
+                        system = "https://build.fhir.org/ig/HL7/fhir-mCODE-ig/"
+                    }
+                };
                 P2.status = "completed";
                 P2.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 P2.reasonCode = new List<reasonCode>
@@ -2304,6 +2328,15 @@ namespace FHIR_json.Controllers
                 //P3
                 P3 = new Procedure();
                 P3.id = Sha1Hash($"P3-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
+                P3.identifier = new List<identifier>
+                {
+                    new identifier
+                    {
+
+                        value = "Cancer-Related Surgical Procedure",
+                        system = "https://build.fhir.org/ig/HL7/fhir-mCODE-ig/"
+                    }
+                };
                 P3.status = "completed";
                 P3.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 P3.reasonCode = new List<reasonCode>
@@ -2338,6 +2371,15 @@ namespace FHIR_json.Controllers
                 //Radio1
                 Radio1 = new Procedure();
                 Radio1.id = Sha1Hash($"Radio1-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
+                Radio1.identifier = new List<identifier>
+                {
+                    new identifier
+                    {
+
+                        value = "Radiotherapy Course Summary",
+                        system = "https://build.fhir.org/ig/HL7/fhir-mCODE-ig/"
+                    }
+                };
                 Radio1.status = "completed";
                 Radio1.subject = new subject { reference = $"Patient/{Pat.id}" };//?
                 Radio1.outcome = new outcome
@@ -2658,6 +2700,14 @@ namespace FHIR_json.Controllers
                 //condition_Con
                 Con = new Condition();
                 Con.id = Sha1Hash($"Con-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
+                Con.identifier = new List<identifier>
+                {
+                    new identifier
+                    {
+                        value = "Primary Cancer Condition",
+                        system="https://build.fhir.org/ig/HL7/fhir-mCODE-ig/"
+                    }
+                };
                 Con.subject = new subject { reference = $"Patient/{Pat.id}" };
                 Con.onsetAge = new onsetAge
                 {
@@ -2811,6 +2861,15 @@ namespace FHIR_json.Controllers
                 SCC = new Condition();
                 SCC.id = Sha1Hash($"SCC-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
                 SCC.recordedDate = CRLF_tag.drecur;
+                SCC.identifier = new List<identifier>
+                {
+                    new identifier
+                    {
+
+                        value = "Secondary Cancer Condition",
+                        system = "https://build.fhir.org/ig/HL7/fhir-mCODE-ig/"
+                    }
+                };
                 SCC.subject = new subject { reference = $"Patient/{Pat.id}" };
                 SCC.extension = new List<extension>
                 {
@@ -2961,6 +3020,14 @@ namespace FHIR_json.Controllers
                 //Observation
                 TS = new Observation();
                 TS.id = Sha1Hash($"TS-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
+                TS.identifier = new List<identifier>
+                {
+                    new identifier
+                    {
+                        value = "Tumor Size",
+                        system="https://build.fhir.org/ig/HL7/fhir-mCODE-ig/"
+                    }
+                };
                 TS.subject = new subject { reference = $"Patient/{Pat.id}" };
                 TS.status = "final";
                 TS.code = new code
@@ -3104,6 +3171,14 @@ namespace FHIR_json.Controllers
 
                 clinical_T = new Observation();
                 clinical_T.id = Sha1Hash($"clinical_T-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
+                clinical_T.identifier = new List<identifier>
+                {
+                    new identifier
+                    {
+                        value = "Primary Tumor(T) Category",
+                        system="https://build.fhir.org/ig/HL7/fhir-mCODE-ig/"
+                    }
+                };
                 clinical_T.status = "final";
                 clinical_T.subject = new subject { reference = $"Patient/{Pat.id}" };
                 clinical_T.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -3132,6 +3207,14 @@ namespace FHIR_json.Controllers
 
                 clinical_N = new Observation();
                 clinical_N.id = Sha1Hash($"clinical_N-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
+                clinical_N.identifier = new List<identifier>
+                {
+                    new identifier
+                    {
+                        value = "Regional Nodes(N) Category",
+                        system="https://build.fhir.org/ig/HL7/fhir-mCODE-ig/"
+                    }
+                };
                 clinical_N.status = "final";
                 clinical_N.subject = new subject { reference = $"Patient/{Pat.id}" };
                 clinical_N.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -3160,6 +3243,14 @@ namespace FHIR_json.Controllers
 
                 clinical_M = new Observation();
                 clinical_M.id = Sha1Hash($"clinical_M-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
+                clinical_M.identifier = new List<identifier>
+                {
+                    new identifier
+                    {
+                        value = "Distant Metastases(M) Category",
+                        system="https://build.fhir.org/ig/HL7/fhir-mCODE-ig/"
+                    }
+                };
                 clinical_M.status = "final";
                 clinical_M.subject = new subject { reference = $"Patient/{Pat.id}" };
                 clinical_M.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -3188,6 +3279,14 @@ namespace FHIR_json.Controllers
 
                 CG_clinical = new Observation();
                 CG_clinical.id = Sha1Hash($"CG_clinical-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
+                CG_clinical.identifier = new List<identifier>
+                {
+                    new identifier
+                    {
+                        value = "Stage Group",
+                        system="https://build.fhir.org/ig/HL7/fhir-mCODE-ig/"
+                    }
+                };
                 CG_clinical.status = "final";
                 CG_clinical.subject = new subject { reference = $"Patient/{Pat.id}" };
                 CG_clinical.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -3245,6 +3344,14 @@ namespace FHIR_json.Controllers
 
                 pathology_T = new Observation();
                 pathology_T.id = Sha1Hash($"pathology_T-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
+                pathology_T.identifier = new List<identifier>
+                {
+                    new identifier
+                    {
+                        value = "Primary Tumor(T) Category",
+                        system="https://build.fhir.org/ig/HL7/fhir-mCODE-ig/"
+                    }
+                };
                 pathology_T.status = "final";
                 pathology_T.subject = new subject { reference = $"Patient/{Pat.id}" };
                 pathology_T.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -3287,6 +3394,15 @@ namespace FHIR_json.Controllers
 
                 pathology_N = new Observation();
                 pathology_N.id = Sha1Hash($"pathology_N-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
+                pathology_N.identifier = new List<identifier>
+                {
+                    new identifier
+                    {
+
+                        value = "Regional Nodes(N) Category",
+                        system = "https://build.fhir.org/ig/HL7/fhir-mCODE-ig/"
+                    }
+                };
                 pathology_N.status = "final";
                 pathology_N.subject = new subject { reference = $"Patient/{Pat.id}" };
                 pathology_N.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -3330,6 +3446,15 @@ namespace FHIR_json.Controllers
 
                 pathology_M = new Observation();
                 pathology_M.id = Sha1Hash($"pathology_M-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
+                pathology_M.identifier = new List<identifier>
+                {
+                    new identifier
+                    {
+
+                        value = "Distant Metastases(M) Category",
+                        system = "https://build.fhir.org/ig/HL7/fhir-mCODE-ig/"
+                    }
+                };
                 pathology_M.status = "final";
                 pathology_M.subject = new subject { reference = $"Patient/{Pat.id}" };
                 pathology_M.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
@@ -3372,6 +3497,15 @@ namespace FHIR_json.Controllers
 
                 CG_pathology = new Observation();
                 CG_pathology.id = Sha1Hash($"CG_pathology-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
+                CG_pathology.identifier = new List<identifier>
+                {
+                    new identifier
+                    {
+
+                        value = "Stage Group",
+                        system = "https://build.fhir.org/ig/HL7/fhir-mCODE-ig/"
+                    }
+                };
                 CG_pathology.status = "final";
                 CG_pathology.focus = new List<focus> { new focus { reference = $"Condition/{Con.id}" } };
                 CG_pathology.subject = new subject { reference = $"Patient/{Pat.id}" };
@@ -3430,6 +3564,15 @@ namespace FHIR_json.Controllers
 
                 CG_OtherC = new Observation();
                 CG_OtherC.id = Sha1Hash($"CG_OtherC-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
+                CG_OtherC.identifier = new List<identifier>
+                {
+                    new identifier
+                    {
+
+                        value = "Stage Group",
+                        system = "https://build.fhir.org/ig/HL7/fhir-mCODE-ig/"
+                    }
+                };
                 CG_OtherC.code = new code
                 {
                     text = "其他分期系統",
@@ -3458,6 +3601,15 @@ namespace FHIR_json.Controllers
 
                 CG_OtherP = new Observation();
                 CG_OtherP.id = Sha1Hash($"CG_OtherP-{CRLF_tag.hospid}-{CRLF_tag.id}-{CRLF_tag.dcont}");
+                CG_OtherP.identifier = new List<identifier>
+                {
+                    new identifier
+                    {
+
+                        value = "Stage Group",
+                        system = "https://build.fhir.org/ig/HL7/fhir-mCODE-ig/"
+                    }
+                };
                 CG_OtherP.code = new code
                 {
                     text = "其他分期系統",

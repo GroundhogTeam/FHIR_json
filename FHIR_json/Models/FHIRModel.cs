@@ -53,6 +53,7 @@ namespace FHIR_json.Models
     {
         public string reference { get; set; }
         public string value { get; set; }
+        public string system { get; set; }
     }
 
     public class category
