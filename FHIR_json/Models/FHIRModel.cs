@@ -287,10 +287,14 @@ namespace FHIR_json.Models
         //new
         public encounter encounter { get; set; }
 
+        //0708更新
+        public note note { get; set; }
+
 
     }
     //Condition尾 大
 
+    
 
     //Organization
     public class Organization
