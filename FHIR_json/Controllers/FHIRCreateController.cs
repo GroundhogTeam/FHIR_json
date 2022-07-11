@@ -234,7 +234,8 @@ namespace FHIR_json.Controllers
                             }
                         }
                 };
-                labm_ct.occurrenceDateTime = Labm_tag.LABMH6;
+                labm_ct.occurrenceDateTime = DateTime.Parse(Labm_tag.LABMH6).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                //start = DateTime.Parse(Labm_tag.LABMH11).ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
                 chalist.Add(labm_ct);
                 //enc
                 labm_en = new Encounter();
@@ -2145,11 +2146,14 @@ namespace FHIR_json.Controllers
                                                                                //diag.performedDateTime = CRLF_tag.dsdiag;
                 if (CRLF_tag.dsdiag == null)
                 {
-                    diag.performedDateTime = CRLF_tag.dsdiag;
+                    //diag.performedDateTime = CRLF_tag.dsdiag;
+                    diag.performedDateTime = DateTime.Parse(CRLF_tag.dsdiag).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 }
                 else if (CRLF_tag.dsdiag != null)
                 {
-                    diag.performedDateTime = CRLF_tag.dsdiag;
+                    //diag.performedDateTime = CRLF_tag.dsdiag;
+                    diag.performedDateTime = DateTime.Parse(CRLF_tag.dsdiag).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+
 
                 }
                 diag.reasonCode = new List<reasonCode>
@@ -2197,11 +2201,14 @@ namespace FHIR_json.Controllers
                 P1.subject = new subject { reference = $"Patient/{Pat.id}" };
                 if (CRLF_tag.dop_mds == null)
                 {
-                    P1.performedDateTime = CRLF_tag.dop_mds;
+                    //P1.performedDateTime = CRLF_tag.dop_mds;
+                    P1.performedDateTime = DateTime.Parse(CRLF_tag.dop_mds).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+
                 }
                 else if (CRLF_tag.dop_mds != null)
                 {
-                    P1.performedDateTime = CRLF_tag.dop_mds;
+                    //P1.performedDateTime = CRLF_tag.dop_mds;
+                    P1.performedDateTime = DateTime.Parse(CRLF_tag.dop_mds).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
 
                 }
                 P1.reasonCode = new List<reasonCode>
@@ -2431,11 +2438,42 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                Radio1.performedPeriod = new performedPeriod
-                {
-                    start = CRLF_tag.drt_1st,
-                    end = CRLF_tag.drt_end
-                };
+                //Radio1.performedPeriod = new performedPeriod
+                //{
+                //    //start = CRLF_tag.drt_1st,
+                //    start = DateTime.Parse(CRLF_tag.drt_1st).ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
+                //    end = DateTime.Parse(CRLF_tag.drt_end).ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
+
+                //    //end = CRLF_tag.drt_end
+                //};
+
+
+
+                if (CRLF_tag.drt_1st == null || CRLF_tag.drt_end == null)
+                    Radio1.performedPeriod = new performedPeriod
+                    {
+                        //start = CRLF_tag.dsyt,
+                        //end = CRLF_tag.dchem
+                        start = DateTime.Parse(CRLF_tag.drt_1st).ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
+                        end = DateTime.Parse(CRLF_tag.drt_end).ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
+
+                    };
+                else if (CRLF_tag.drt_1st != null || CRLF_tag.drt_end != null)
+                    Radio1.performedPeriod = new performedPeriod
+                    {
+                        //start = CRLF_tag.dsyt,
+                        //end = CRLF_tag.dchem
+                        start = DateTime.Parse(CRLF_tag.drt_1st).ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
+                        end = DateTime.Parse(CRLF_tag.drt_end).ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
+                    };
+
+
+
+
+
+
+
+
                 Radio1.code = new code
                 {                    
                     coding = new List<coding>
@@ -2617,15 +2655,19 @@ namespace FHIR_json.Controllers
                 if (CRLF_tag.dsyt == null || CRLF_tag.dchem == null)
                     M1.performedPeriod = new performedPeriod
                     {
-                        start = CRLF_tag.dsyt,
-                        end = CRLF_tag.dchem
+                        //start = CRLF_tag.dsyt,
+                        //end = CRLF_tag.dchem
+                        start = DateTime.Parse(CRLF_tag.dsyt).ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
+                        end = DateTime.Parse(CRLF_tag.dchem).ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
 
                     };
                 else if (CRLF_tag.dchem != null || CRLF_tag.dsyt != null)
                     M1.performedPeriod = new performedPeriod
                     {
-                        start = CRLF_tag.dsyt,
-                        end = CRLF_tag.dchem
+                        //start = CRLF_tag.dsyt,
+                        //end = CRLF_tag.dchem
+                        start = DateTime.Parse(CRLF_tag.dsyt).ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
+                        end = DateTime.Parse(CRLF_tag.dchem).ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
                     };
 
                 M1.reasonCode = new List<reasonCode>
@@ -2673,7 +2715,10 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                m4.performedDateTime = CRLF_tag.dhtep;
+
+                //m4.performedDateTime = CRLF_tag.dhtep;
+                m4.performedDateTime = DateTime.Parse(CRLF_tag.dhtep).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+
                 prolist.Add(m4);
 
 
@@ -2693,7 +2738,9 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                m7.performedDateTime = CRLF_tag.dother;
+                //m7.performedDateTime = CRLF_tag.dother;
+                m7.performedDateTime = DateTime.Parse(CRLF_tag.dother).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+
                 prolist.Add(m7);
 
                 //condition_Con
@@ -2952,8 +2999,9 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                m2.performedDateTime = CRLF_tag.dhorm;
-                
+                //m2.performedDateTime = CRLF_tag.dhorm;
+                m2.performedDateTime = DateTime.Parse(CRLF_tag.dhorm).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+
                 prolist.Add(m2);
 
 
@@ -2987,8 +3035,9 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                m3.performedDateTime = CRLF_tag.dimmu;
-                
+                //m3.performedDateTime = CRLF_tag.dimmu;
+                m3.performedDateTime = DateTime.Parse(CRLF_tag.dimmu).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+
                 prolist.Add(m3);
 
 
@@ -3022,7 +3071,9 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                m5.performedDateTime = CRLF_tag.dtarget;
+                //m5.performedDateTime = CRLF_tag.dtarget;
+                m5.performedDateTime = DateTime.Parse(CRLF_tag.dtarget).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+
                 prolist.Add(m5);
 
                 //Observation
@@ -4517,11 +4568,14 @@ namespace FHIR_json.Controllers
             {
                 NullValueHandling = NullValueHandling.Ignore,
             });
+            //bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\[{}]", String.Empty);
+            //bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\[{}]", String.Empty);
+            //bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
+            //bundlejson = Regex.Replace(bundlejson, @",,", ",");
+            //bundlejson = Regex.Replace(bundlejson, "_", "");
             bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\[{}]", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\[{}]", String.Empty);
-            bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
-            bundlejson = Regex.Replace(bundlejson, @",,", ",");
-            bundlejson = Regex.Replace(bundlejson, "_", "");
+            bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
 
             //var bundlejson = JsonConvert.SerializeObject(bundle, Formatting.Indented, new JsonSerializerSettings
             //{
