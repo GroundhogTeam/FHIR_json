@@ -2247,7 +2247,8 @@ namespace FHIR_json.Controllers
                         {
                             userSelected=false,
                             display="Surgical procedure",
-                            code="387713003"
+                            code="387713003",
+                            system = "http://snomed.info/sct"
                         },
                         new coding
                         {
@@ -3265,6 +3266,20 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
+                clinical_T.category = new List<category>
+                {
+                    new category
+                    {
+                        text="AJCC癌症分期版本與章節",
+                        coding=new List<coding>
+                        {
+                            new coding
+                            {
+                                code=CRLF_tag.ajcc_ed
+                            }
+                        }
+                    }
+                };
                 obslist.Add(clinical_T);
 
                 clinical_N = new Observation();
@@ -3301,6 +3316,20 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
+                clinical_N.category = new List<category>
+                {
+                    new category
+                    {
+                        text="AJCC癌症分期版本與章節",
+                        coding=new List<coding>
+                        {
+                            new coding
+                            {
+                                code=CRLF_tag.ajcc_ed
+                            }
+                        }
+                    }
+                };
                 obslist.Add(clinical_N);
 
                 clinical_M = new Observation();
@@ -3334,6 +3363,20 @@ namespace FHIR_json.Controllers
                         new coding
                         {
                             code=CRLF_tag.cm
+                        }
+                    }
+                };
+                clinical_M.category = new List<category>
+                {
+                    new category
+                    {
+                        text="AJCC癌症分期版本與章節",
+                        coding=new List<coding>
+                        {
+                            new coding
+                            {
+                                code=CRLF_tag.ajcc_ed
+                            }
                         }
                     }
                 };
