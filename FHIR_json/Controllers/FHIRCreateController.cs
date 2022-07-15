@@ -337,7 +337,7 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                labm_h.performedDateTime = DateTime.Parse(Labm_tag.LABMH22).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                //labm_h.performedDateTime = DateTime.Parse(Labm_tag.LABMH22).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
 
                 //labm_h.performedPeriod.start = Labm_tag.LABMH23;
                 //labm_h.performedPeriod.end = Labm_tag.LABMH23;
@@ -401,29 +401,35 @@ namespace FHIR_json.Controllers
                             }
                         }
                 };
-                labm_B.valueQuantity = new valueQuantity
-                {
-                    value = Convert.ToDouble(Labm_tag.LABMR4),
-                    unit = Labm_tag.LABMR5
-                };
+                //labm_B.valueQuantity = new valueQuantity
+                //{
+                //    value = Convert.ToDouble(Labm_tag.LABMR4),
+                //    unit = Labm_tag.LABMR5
+                //};
 
+                //0715_新
+                labm_B.valueString = Labm_tag.LABMR4;
+                labm_B.note = new List<note>
+                {
+                    new note
+                    {
+                        text = Labm_tag.LABMR5
+                    }
+                };
+                
                 labm_B.referenceRange = new List<referenceRange>
                 {
                     new referenceRange
                     {
-                        low=new low
-                        {
-                            unit=Labm_tag.LABMR5,
-                            //value= Regex.Match(Labm_tag.LABMR61 ?? "", @"[0-9].*").Success ? Convert.ToDouble(Regex.Match(Labm_tag.LABMR61 ?? "", @"[0-9].*").Value) : new double()
-                        },
-                        high=new high
-                        {
-                            unit=Labm_tag.LABMR5,
-                            //value=  Regex.Match(Labm_tag.LABMR62 ?? "", @"[0-9].*").Success ? Convert.ToDouble(Regex.Match(Labm_tag.LABMR62 ?? "", @"[0-9].*").Value) : new double()
-                        }
-
+                        text = Labm_tag.LABMR61
+                    },
+                    new referenceRange
+                    {
+                        text = Labm_tag.LABMR62
                     }
                 };
+                //0715_新_到這
+
                 labm_B.interpretation = new List<interpretation>
                 {
                     new interpretation
@@ -609,7 +615,7 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-                labd_h.performedDateTime = Labd_tag.LABDH19;
+                //labd_h.performedDateTime = Labd_tag.LABDH19;
                 labd_h.performedPeriod = new performedPeriod
                 {
                     start = Labd_tag.LABDH20,
@@ -617,9 +623,9 @@ namespace FHIR_json.Controllers
                 };
                 labd_h.category = new category
                 {
-                    
-                        text= "檢體採檢方法/來源/類別",
-                        coding=new List<coding>
+
+                    text = "檢體採檢方法/來源/類別",
+                    coding = new List<coding>
                         {
                             new coding
                             {
@@ -669,25 +675,23 @@ namespace FHIR_json.Controllers
                             }
                         }
                 };
-                labd_B.valueQuantity = new valueQuantity
+                labd_B.valueString = Labd_tag.LABDR4;
+                labd_B.note = new List<note>
                 {
-                    value = Convert.ToDouble(Labd_tag.LABDR4),
-                    unit = Labd_tag.LABDR4
+                    new note
+                    {
+                        text=Labd_tag.LABDR5
+                    }
                 };
                 labd_B.referenceRange = new List<referenceRange>
                 {
                     new referenceRange
                     {
-                        low=new low
-                        {
-                            unit=Labd_tag.LABDR5,
-                            value= Regex.Match(Labd_tag.LABDR61 ?? "", @"[0-9].*").Success ? Convert.ToDouble(Regex.Match(Labd_tag.LABDR61 ?? "", @"[0-9].*").Value) : new double()
-                        },
-                        high=new high
-                        {
-                            unit=Labd_tag.LABDR5,
-                            value=  Regex.Match(Labd_tag.LABDR62 ?? "", @"[0-9].*").Success ? Convert.ToDouble(Regex.Match(Labd_tag.LABDR62 ?? "", @"[0-9].*").Value) : new double()
-                        }
+                        text=Labd_tag.LABDR61
+                    },
+                    new referenceRange
+                    {
+                        text=Labd_tag.LABDR62
                     }
                 };
                 labd_B.interpretation = new List<interpretation>
@@ -748,7 +752,6 @@ namespace FHIR_json.Controllers
             //return await GetandShare_Block(bundlejson);
             return await GetandSharehapi_Block(bundlejson);
         }
-
 
         [HttpPost]
         public async Task<dynamic> TOTFA_JSON(List<OriginalJson.TOTFA> TOTFA_tags)

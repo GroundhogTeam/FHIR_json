@@ -383,6 +383,10 @@ namespace FHIR_json.Models
         public List<component> component { get; set; }
         public valueCodeableConcept valueCodeableConcept { get; set; }
         public valueQuantity valueQuantity { get; set; }
+        //0715_new
+        public string valueString { get; set; }
+        public List<note> note { get; set; }
+
 
         //new
         public encounter encounter { get; set; }
@@ -399,6 +403,7 @@ namespace FHIR_json.Models
 
 
     }
+   
     //0322_新增
     public class partOf
     {
@@ -416,8 +421,7 @@ namespace FHIR_json.Models
     }
     public class referenceRange
     {
-        public low low { get; set; }
-        public high high { get; set; }
+        public string text { get; set; }
     }
     public class low
     {
