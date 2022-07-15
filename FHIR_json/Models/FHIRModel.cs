@@ -423,16 +423,6 @@ namespace FHIR_json.Models
     {
         public string text { get; set; }
     }
-    public class low
-    {
-        public string unit { get; set; }
-        public double? value { get; set; }
-    }
-    public class high
-    {
-        public string unit { get; set; }
-        public double? value { get; set; }
-    }
     public class method
     {
         public List<coding> coding { get; set; }
