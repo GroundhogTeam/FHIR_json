@@ -221,7 +221,8 @@ namespace FHIR_json.Controllers
 
                 //ChargeItem
                 labm_ct = new ChargeItem();
-                labm_ct.id = Sha1Hash($"labm_ct-{Labm_tag.LABMH2}-{Labm_tag.LABMH4}-{Labm_tag.LABMH5}-{Labm_tag.LABMH6}-{Labm_tag.LABMH7}-{Labm_tag.LABMH8}-{Labm_tag.LABMH18}-{Labm_tag.LABMR1}"); labm_ct.enteredDate = Labm_tag.LABMH4;
+                labm_ct.id = Sha1Hash($"labm_ct-{Labm_tag.LABMH2}-{Labm_tag.LABMH4}-{Labm_tag.LABMH5}-{Labm_tag.LABMH6}-{Labm_tag.LABMH7}-{Labm_tag.LABMH8}-{Labm_tag.LABMH18}-{Labm_tag.LABMR1}"); 
+                labm_ct.enteredDate = Labm_tag.LABMH4;
                 labm_ct.subject = new subject { reference = $"Patient/{labm_pt.id}" };//? 94
                 labm_ct.status = "billed";
                 labm_ct.code = new code
