@@ -1252,6 +1252,7 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
+                conlist.Add(fa_c1);
 
                 //condition_fa_c2
                 fa_c2 = new Condition();
@@ -1274,6 +1275,7 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
+                conlist.Add(fa_c2);
 
                 //condition_fa_c3
                 fa_c3 = new Condition();
@@ -1296,6 +1298,7 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
+                conlist.Add(fa_c3);
 
                 //condition_fa_c4
                 fa_c4 = new Condition();
@@ -1318,6 +1321,7 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
+                conlist.Add(fa_c4);
 
                 //condition_fa_c5
                 fa_c5 = new Condition();
@@ -1340,7 +1344,7 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
-
+                conlist.Add(fa_c5);
 
 
             }
@@ -2770,7 +2774,7 @@ namespace FHIR_json.Controllers
 
                 //Con.onsetString = CRLF_tag.sequence;
 
-                Sp.note = new List<note>
+                Con.note = new List<note>
                 {
                     new note
                     {

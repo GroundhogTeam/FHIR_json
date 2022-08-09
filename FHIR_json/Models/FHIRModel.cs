@@ -288,7 +288,7 @@ namespace FHIR_json.Models
         public encounter encounter { get; set; }
 
         //0708更新
-        public note note { get; set; }
+        public List<note> note { get; set; }
 
 
     }
