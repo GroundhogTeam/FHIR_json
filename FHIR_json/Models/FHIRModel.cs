@@ -577,6 +577,8 @@ namespace FHIR_json.Models
         public List<doseAndRate> doseAndRate { get; set; }
         public timing timing { get; set; }
         public site site { get; set; }
+        public route route { get; set; }
+
 
 
 
@@ -599,6 +601,11 @@ namespace FHIR_json.Models
     }
     //new
     public class site
+    {
+        public List<coding> coding { get; set; }
+
+    }
+    public class route
     {
         public List<coding> coding { get; set; }
 
