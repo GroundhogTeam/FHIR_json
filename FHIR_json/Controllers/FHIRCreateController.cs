@@ -83,6 +83,7 @@ namespace FHIR_json.Controllers
         Procedure m5 = new Procedure();
         ChargeItem m6 = new ChargeItem();
         Procedure m7 = new Procedure();
+        Composition Com_CRLF = new Composition();
         //CRLF尾
 
         //TOTFA頭
@@ -102,6 +103,7 @@ namespace FHIR_json.Controllers
         Procedure fa_p2 = new Procedure();//TOTFA
         Procedure fa_p3 = new Procedure();//TOTFA
         Procedure fa_p4 = new Procedure();//TOTFA
+        Composition Com_TOTFA = new Composition();
                                           //TOTFA尾
 
         //TOTFB頭
@@ -122,6 +124,8 @@ namespace FHIR_json.Controllers
         Procedure fb_p4 = new Procedure();//TOTFB
         Procedure fb_p5 = new Procedure();//TOTFB
         MedicationRequest fb_med = new MedicationRequest();
+        Composition Com_TOTFB = new Composition();
+
         //TOTFB尾
         //LABD頭
         Encounter labd_en = new Encounter();
@@ -130,6 +134,8 @@ namespace FHIR_json.Controllers
         Observation labd_B = new Observation();
         Organization labd = new Organization();
         Patient labd_pt = new Patient();
+        Composition Com_LABD = new Composition();
+
         //LABM
         Organization labm = new Organization();
         Patient labm_pt = new Patient();
@@ -139,6 +145,8 @@ namespace FHIR_json.Controllers
         Encounter labm_en = new Encounter();
         Procedure labm_h = new Procedure();
         Observation labm_B = new Observation();
+        Composition Com_LABM = new Composition();
+
         //LABM尾
 
         //0221_new
@@ -150,6 +158,8 @@ namespace FHIR_json.Controllers
         Observation sp_age = new Observation();
         Observation sp_height = new Observation();
         Observation sp_weight = new Observation();
+        Composition Com_SP = new Composition();
+
 
         //spe_JSON
 
@@ -174,6 +184,7 @@ namespace FHIR_json.Controllers
         //0221_new
         List<Consent> consentlist = new List<Consent>();
         List<Specimen> spelist = new List<Specimen>();
+        List<Composition> comlist = new List<Composition>();
 
         Bundle bundle = new Bundle();
         #endregion 變數結束
@@ -469,6 +480,42 @@ namespace FHIR_json.Controllers
                 };
                 labm_B.effectiveDateTime = DateTime.Parse(Labm_tag.LABMR10).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 obslist.Add(labm_B);
+
+                //Composition
+                Com_LABM = new Composition();
+                Com_LABM.id = Sha1Hash($"{DateTime.Now.ToString()}-LABM");
+                Com_LABM.date = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                Com_LABM.status = "final";
+                Com_LABM.title = "LABM";
+                Com_LABM.type = new type
+                {
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code = "",
+                            display = "",
+                            system = "http://loinc.org"
+                        }
+                    }
+                };
+                Com_LABM.subject = new subject
+                {
+                    reference = $"Patient/{labm_pt.id}"
+                };
+
+                Com_LABM.author = new List<author> { new author { reference = $"Organization/{labm.id}" } };
+                Com_LABM.encounter = new encounter
+                {
+                    reference = $"Encounter/{labm_en.id}"
+                };
+                Com_LABM.section = new List<section>
+                {
+                    new section{title="ChargeItem",ectry = new List<ectry>{new ectry{reference = $"ChargeItem/{labm_ct.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{labm_h.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{labm_B.id}"}}}
+                };
+                comlist.Add(Com_LABM);
             }
             bundle.entry = new List<entry>();
             var bundle_distinct = PatOrg_Distinct();
@@ -485,8 +532,16 @@ namespace FHIR_json.Controllers
             var bundlejson = BundleJSON_labm();
             //var bundlehapijson = await GetandSharehapi_Block(bundlejson);
             var bundleIBMjson = await GetandShare_Block(bundlejson);
+            var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
+
+            var ComJson = CompositionJSON();
+            var bundlejson_com = BundleJSON_labm();
+
+
+
             //return await GetandShare_Block(bundlejson);
-            return await GetandSharehapi_Block(bundlejson);
+            var bundleIBMjson_Com = await GetandShare_Block(bundlejson_com);
+            return await GetandSharehapi_Block(bundlejson_com);
         }
 
         [HttpPost]
@@ -734,6 +789,41 @@ namespace FHIR_json.Controllers
                 };
                 labd_B.effectiveDateTime = Labd_tag.LABDR10;
                 obslist.Add(labd_B);
+
+                //Composition
+                Com_LABD = new Composition();
+                Com_LABD.id = Sha1Hash($"{DateTime.Now.ToString()}-LABD");
+                Com_LABD.date = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                Com_LABD.status = "final";
+                Com_LABD.title = "LABD";
+                Com_LABD.type = new type
+                {
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code = "",
+                            display = "",
+                            system = "http://loinc.org"
+                        }
+                    }
+                };
+                Com_LABD.subject = new subject
+                {
+                    reference = $"Patient/{labd_pt.id}"
+                };
+
+                Com_LABD.author = new List<author> { new author { reference = $"Organization/{labd.id}" } };
+                Com_LABD.encounter = new encounter
+                {
+                    reference = $"Encounter/{labd_en.id}"
+                };
+                Com_LABD.section = new List<section>
+                {
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{labd_h.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{labd_B.id}"}}},
+                };
+                comlist.Add(Com_LABD);
             }
             bundle.entry = new List<entry>();
             var bundle_distinct = PatOrg_Distinct();
@@ -750,8 +840,16 @@ namespace FHIR_json.Controllers
             var bundlejson = BundleJSON_LABD_JSON();
             //var bundlehapijson = await GetandSharehapi_Block(bundlejson);
             var bundleIBMjson = await GetandShare_Block(bundlejson);
+            var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
+
+            var ComJson = CompositionJSON();
+            var bundlejson_com = BundleJSON_LABD_JSON();
+
+
+
             //return await GetandShare_Block(bundlejson);
-            return await GetandSharehapi_Block(bundlejson);
+            var bundleIBMjson_Com = await GetandShare_Block(bundlejson_com);
+            return await GetandSharehapi_Block(bundlejson_com);
         }
 
         [HttpPost]
@@ -1346,6 +1444,70 @@ namespace FHIR_json.Controllers
                 };
                 conlist.Add(fa_c5);
 
+                //Composition
+                Com_TOTFA = new Composition();
+                Com_TOTFA.id = Sha1Hash($"{DateTime.Now.ToString()}-TOTFA");
+                Com_TOTFA.date = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                Com_TOTFA.status = "final";
+                Com_TOTFA.title = "TOTFA";
+                Com_TOTFA.type = new type
+                {
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code = "83821-9",
+                            display = "Attending Outpatient Note",
+                            system = "http://loinc.org"
+                        }
+                    }
+                };
+                Com_TOTFA.subject = new subject
+                {
+                    reference = $"Patient/{pt.id}"
+                };
+
+                Com_TOTFA.author = new List<author> { new author { reference = $"Organization/{fa.id}" } };
+                Com_TOTFA.encounter = new encounter
+                {
+                    reference = $"Encounter/{fa_en.id}"
+                };
+                Com_TOTFA.section = new List<section>
+                {
+                    new section{title="ChargeItem",ectry = new List<ectry>{new ectry{reference = $"ChargeItem/{fa_ct.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{fa_p1.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{fa_p2.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{fa_p3.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{fa_p4.id}"}}},
+                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fa_c1.id}"}}},
+                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fa_c2.id}"}}},
+                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fa_c3.id}"}}},
+                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fa_c4.id}"}}},
+                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fa_c5.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{P1.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{P2.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{P3.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{med_day.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{med_type.id}"}}},
+                    new section{title="MedicationRequest",ectry = new List<ectry>{new ectry{reference = $"MedicationRequest/{fa_med.id}"}}},
+                    new section{title="ChargeItem",ectry = new List<ectry>{new ectry{reference = $"ChargeItem/{fa_ct.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{fa_p1.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{fa_p2.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{fa_p3.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{fa_p4.id}"}}},
+                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fa_c1.id}"}}},
+                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fa_c2.id}"}}},
+                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fa_c3.id}"}}},
+                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fa_c4.id}"}}},
+                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fa_c5.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{P1.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{P2.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{P3.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{med_day.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{med_type.id}"}}},
+                    new section{title="MedicationRequest",ectry = new List<ectry>{new ectry{reference = $"MedicationRequest/{fa_med.id}"}}}
+                };
+                comlist.Add(Com_TOTFA);
 
             }
             bundle.entry = new List<entry>();
@@ -1365,8 +1527,16 @@ namespace FHIR_json.Controllers
             var bundlejson = BundleJSON_totfa();
             //var bundlehapijson = await GetandSharehapi_Block(bundlejson);
             var bundleIBMjson = await GetandShare_Block(bundlejson);
+            var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
+
+            var ComJson = CompositionJSON();
+            var bundlejson_com = BundleJSON_totfa();
+
+
+
             //return await GetandShare_Block(bundlejson);
-            return await GetandSharehapi_Block(bundlejson);
+            var bundleIBMjson_Com = await GetandShare_Block(bundlejson_com);
+            return await GetandSharehapi_Block(bundlejson_com);
         }
 
         [HttpPost]
@@ -1837,6 +2007,54 @@ namespace FHIR_json.Controllers
                 };
                 conlist.Add(fb_c5);
 
+                //Composition
+                Com_TOTFB = new Composition();
+                Com_TOTFB.id = Sha1Hash($"{DateTime.Now.ToString()}-TOTFB");
+                Com_TOTFB.date = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                Com_TOTFB.status = "final";
+                Com_TOTFB.title = "TOTFB";
+                Com_TOTFB.type = new type
+                {
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code = "86947-9",
+                            display = "Reason for hospitalization",
+                            system = "http://loinc.org"
+                        }
+                    }
+                };
+                Com_TOTFB.subject = new subject
+                {
+                    reference = $"Patient/{fb_pt.id}"
+                };
+
+                Com_TOTFB.author = new List<author> { new author { reference = $"Organization/{fb.id}" } };
+                Com_TOTFB.encounter = new encounter
+                {
+                    reference = $"Encounter/{fb_en.id}"
+                };
+
+                Com_TOTFB.section = new List<section>
+                {
+                    new section{title="ChargeItem",ectry = new List<ectry>{new ectry{reference = $"ChargeItem/{fb_ct.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{fb_e_bed.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{fb_s_bed.id}"}}},
+                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fb_c1.id}"}}},
+                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fb_c2.id}"}}},
+                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fb_c3.id}"}}},
+                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fb_c4.id}"}}},
+                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fb_c5.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{fb_p1.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{fb_p2.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{fb_p3.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{fb_p4.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{fb_p5.id}"}}},
+                    new section{title="MedicationRequest",ectry = new List<ectry>{new ectry{reference = $"MedicationRequest/{fb_med.id}"}}}
+                };
+                comlist.Add(Com_TOTFB);
+
             }
             bundle.entry = new List<entry>();
             var bundle_distinct = PatOrg_Distinct();
@@ -1854,8 +2072,14 @@ namespace FHIR_json.Controllers
             var bundlejson = BundleJSON_totfb();
             //var bundlehapijson = await GetandSharehapi_Block(bundlejson);
             var bundleIBMjson = await GetandShare_Block(bundlejson);
+            var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
+
+            var ComJson = CompositionJSON();
+            var bundlejson_com = BundleJSON_totfb();
+
             //return await GetandShare_Block(bundlejson);
-            return await GetandSharehapi_Block(bundlejson);
+            var bundleIBMjson_Com = await GetandShare_Block(bundlejson_com);
+            return await GetandSharehapi_Block(bundlejson_com);
         }
         [HttpPost]
         public async Task<dynamic> spe_JSON(List<OriginalJson.spe> spe_tags)
@@ -2084,10 +2308,17 @@ namespace FHIR_json.Controllers
             var jsonspet = SpecimenJSON();
             var jsonconsent = ConsentJSON();
             var bundlejson = BundleJSON_spe_JSON();
-            //var bundlehapijson = await GetandSharehapi_Block(bundlejson);
+
             var bundleIBMjson = await GetandShare_Block(bundlejson);
+            var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
+
+            var ComJson = CompositionJSON();
+            var bundlejson_com = BundleJSON_spe_JSON();
+
+
+
             //return await GetandShare_Block(bundlejson);
-            return await GetandSharehapi_Block(bundlejson);
+            return await GetandSharehapi_Block(bundlejson_com);
         }
 
 
@@ -2099,6 +2330,7 @@ namespace FHIR_json.Controllers
             //ViewBag.CRLF_tags = CRLF_tags;
             //開始分類
             int fhir_id = 0;//FHIR流水號
+            //List<string> com_add = new List<string>();
             foreach (var CRLF_tag in CRLF_tags)
             {
                 //org
@@ -2189,6 +2421,9 @@ namespace FHIR_json.Controllers
                             }
                         }
                 };
+                //com_add.Add(diag.id);
+                //com_add.Add("Procedure");
+
                 prolist.Add(diag);
 
 
@@ -2292,6 +2527,9 @@ namespace FHIR_json.Controllers
                         }
                     }
                 };
+                //com_add.Add(P1.id);
+                //com_add.Add("Procedure");
+
                 prolist.Add(P1);
 
 
@@ -4090,6 +4328,82 @@ namespace FHIR_json.Controllers
                     }
                 };
                 obslist.Add(ssf10);
+
+                //Composition
+                Com_CRLF = new Composition();
+                Com_CRLF.id = Sha1Hash($"{DateTime.Now.ToString()}-CRLF");
+                Com_CRLF.date = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                Com_CRLF.status = "final";
+                Com_CRLF.title = "CRLF";
+                Com_CRLF.type = new type
+                {
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code = "72134-0",
+                            display = "Cancer event report",
+                            system = "http://loinc.org"
+                        }
+                    }
+                };
+                Com_CRLF.subject = new subject
+                {
+                    reference = $"Patient/{Pat.id}"
+                };
+
+                Com_CRLF.author = new List<author> { new author { reference = $"Organization/{OG.id}" } };
+                Com_CRLF.section = new List<section>
+                {
+                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{Con.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{TS.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{pni.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{lvi.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{nexam.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{nposit.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{diag.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{clinical_T.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{clinical_N.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{clinical_M.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{CG_clinical.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{pathology_T.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{pathology_N.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{pathology_M.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{CG_pathology.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{CG_OtherC.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{CG_OtherP.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{P1.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{P2.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{P3.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{Radio1.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{M1.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{m2.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{m3.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{m4.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{m5.id}"}}},
+                    new section{title="ChargeItem",ectry = new List<ectry>{new ectry{reference = $"ChargeItem/{m6.id}"}}},
+                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{m7.id}"}}},
+                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{SCC.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{height.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{weight.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{smoke.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{btchew.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{drinking.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{ps.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{ssf1.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{ssf2.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{ssf3.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{ssf4.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{ssf5.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{ssf6.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{ssf7.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{ssf8.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{ssf9.id}"}}},
+                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{ssf10.id}"}}}
+
+
+                };
+                comlist.Add(Com_CRLF);  
             }
 
             bundle.entry = new List<entry>();
@@ -4104,10 +4418,19 @@ namespace FHIR_json.Controllers
             var jsoncon = ConditionJSON();
             var jsonpat = PatientJSON();
             var bundlejson = BundleJSON_CRLF();
+
             //var bundlehapijson = await GetandSharehapi_Block(bundlejson);
             var bundleIBMjson = await GetandShare_Block(bundlejson);
+            var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
+
+            var ComJson = CompositionJSON();
+            var bundlejson_com = BundleJSON_CRLF();
+
+
+
             //return await GetandShare_Block(bundlejson);
-            return await GetandSharehapi_Block(bundlejson);
+            var bundleIBMjson_Com = await GetandShare_Block(bundlejson_com);
+            return await GetandSharehapi_Block(bundlejson_com);
 
         }
 
@@ -4158,6 +4481,28 @@ namespace FHIR_json.Controllers
             var response = await client.PostAsync(url, data);
             return JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result);
         }
+        //public async Task<dynamic> GetandShare_Com_Block(string bundlejson_com)
+        //{
+        //    //var json = JsonConvert.SerializeObject(Post_data);
+        //    var data = new StringContent(bundlejson_com, Encoding.UTF8, "application/json");
+
+        //    //var url = "http://localhost:12904/api/Geth/" + Request_Url;
+        //    var url = ConfigurationManager.AppSettings.Get("FHIRAPI");
+        //    //var Username = ConfigurationManager.AppSettings.Get("Username");
+        //    //var Password = ConfigurationManager.AppSettings.Get("Password");
+
+        //    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+        //    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+        //    HttpClient client = new HttpClient();
+
+        //    //specify to use TLS 1.2 as default connection
+        //    //var byteArray = Encoding.ASCII.GetBytes($"{Username}:{Password}");
+        //    //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+
+        //    //POST資料
+        //    var response = await client.PostAsync(url, data);
+        //    return JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result);
+        //}
 
         /// <summary>
         /// 去除Patient Organization 重複的identifier
@@ -4768,7 +5113,82 @@ namespace FHIR_json.Controllers
             return bundlejson;
 
         }
+        public string BundleJSON_Composition()
+        {
+            var bundlejson_com = JsonConvert.SerializeObject(bundle, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Include
+            });
 
+            //bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
+            //bundlejson = Regex.Replace(bundlejson, "extension1", "extension");
+            //bundlejson = Regex.Replace(bundlejson, "_", "");
+            //bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
+            //bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
+            //bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
+
+
+
+
+            //var bundlejson = JsonConvert.SerializeObject(bundle, Formatting.Indented, new JsonSerializerSettings
+            //{
+            //    NullValueHandling = NullValueHandling.Ignore
+            //    //MissingMemberHandling = MissingMemberHandling.Ignore
+            //});
+            //var bundlejson = JsonConvert.SerializeObject(bundle);
+
+            return bundlejson_com;
+
+        }
+
+
+        public string CompositionJSON()
+        {
+            //去除重複id
+            var com_distinct_list = comlist.GroupBy(g => g.id).Select(s => s.First()).ToList();
+            //Organization
+            foreach (var res in com_distinct_list)
+            {
+                var entry = new entry
+                {
+                    fullUrl = $"{res.resourceType}/{res.id}",
+                    resource = res,
+                    request = new request
+                    {
+                        method = "PUT",
+                        url = $"{res.resourceType}/{res.id}",
+                        //ifNoneExist = "identifier=" + res.identifier[0].value
+
+                    }
+                };
+                bundle.entry.Add(entry);
+            }
+
+            //foreach (var res in enclist)
+            //{
+            //    var entry = new entry
+            //    {
+            //        fullUrl = $"{res.resourceType}/{res.id}",
+            //        resource = res,
+            //        request = new request
+            //        {
+            //            method = "PUT",
+            //            url = $"{res.resourceType}/{res.id}",
+            //            //ifNoneExist = "identifier="+res.identifier[0].value
+            //        }
+            //    };
+            //    bundle.entry.Add(entry);
+            //}
+
+            var bundlejson = JsonConvert.SerializeObject(bundle, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+
+            return bundlejson;
+
+        }
         /// <summary>
         /// SHA1加密
         /// </summary>

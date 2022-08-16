@@ -687,9 +687,40 @@ namespace FHIR_json.Models
     {
         public string value { get; set; }
     }
-
-    public class composition
+    //composition_起_0809
+    public class Composition
     {
+        public string resourceType { get; set; } = "Composition";
+        public string id { get; set; }
+        public string date { get; set; }
+        public string status { get; set; }
+        public string title { get; set; }
+        public type type { get; set; }
+        public subject subject { get; set; }
+        public List<author> author { get; set; }
+        public encounter encounter { get; set; }
+
+        public List<section> section { get; set; }
+
+
+
+    }
+    public class author
+    {
+        public string reference { get; set; }
+
+    }
+
+    public class section
+    {
+        public string title { get; set; }
+
+        public List<ectry> ectry { get; set; }
+
+    }
+    public class ectry
+    {
+        public string reference { get; set; }
 
     }
 }
