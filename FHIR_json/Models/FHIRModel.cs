@@ -22,6 +22,8 @@ namespace FHIR_json.Models
         public string fullUrl { get; set; }
         public dynamic resource { get; set; }
         public request request { get; set; }
+        //20220915新增
+        public string reference { get; set; }
     }
     public class request
     {
@@ -204,6 +206,8 @@ namespace FHIR_json.Models
         public double value { get; set; }
         public string code { get; set; }
         public string unit { get; set; }
+        public string display { get; set; }
+
 
 
     }
@@ -602,11 +606,13 @@ namespace FHIR_json.Models
     //new
     public class site
     {
+        public string text { get; set; }
         public List<coding> coding { get; set; }
 
     }
     public class route
     {
+        public string text { get; set; }
         public List<coding> coding { get; set; }
 
     }
@@ -715,12 +721,8 @@ namespace FHIR_json.Models
     {
         public string title { get; set; }
 
-        public List<ectry> ectry { get; set; }
+        public List<entry> entry { get; set; }
 
     }
-    public class ectry
-    {
-        public string reference { get; set; }
 
-    }
 }

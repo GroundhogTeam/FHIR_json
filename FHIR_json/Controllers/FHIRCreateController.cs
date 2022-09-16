@@ -189,6 +189,22 @@ namespace FHIR_json.Controllers
         Bundle bundle = new Bundle();
         #endregion 變數結束
 
+        string NHI_Outpatient = "https://dep.mohw.gov.tw/DOS/lp-2503-113-xCat-DOS_dc002.html";
+        string NHI_Hospitalize = "https://dep.mohw.gov.tw/DOS/lp-2503-113-xCat-DOS_dc002.html";
+        string NHI_LABD = "https://dep.mohw.gov.tw/DOS/lp-2503-113-xCat-DOS_dc002.html";
+        string NHI_LABM = "https://dep.mohw.gov.tw/DOS/lp-2503-113-xCat-DOS_dc002.html";
+        string NHI_CRLF = "https://dep.mohw.gov.tw/DOS/lp-2503-113-xCat-DOS_dc002.html";
+
+        string Med_Use_URL = "http://sc-dr.tw/news/96/11/11120101.pdf";
+        string DRGs_TW_URL = "https://www.nhi.gov.tw/Content_List.aspx?n=9261941716EB8070&topn=5FE8C9FEAE863B46";
+        string DRGs_URL = "https://www.nhi.gov.tw/Content_List.aspx?n=9261941716EB8070&topn=5FE8C9FEAE863B46";
+
+        string ICD9_URL = "http://terminology.hl7.org/CodeSystem/icd9cm";
+        string ICDO3_URL = "http://terminology.hl7.org/CodeSystem/icd-o-3";
+        string MCODE_URL = "http://hl7.org/fhir/us/mcode/";
+        string AJCC_URL = "https://www.twiap.org.tw/data/content.asp?ID=1214&FDType=11";
+
+
         //List<Coverage> covlist = new List<Coverage>();
         //List<MedicationRequest> medreqlist = new List<MedicationRequest>();
         // GET: FHIR_NHI_Path
@@ -238,11 +254,14 @@ namespace FHIR_json.Controllers
                 labm_ct.status = "billed";
                 labm_ct.code = new code
                 {
+                    text = "申報類別",
                     coding = new List<coding>
                         {
                             new coding
                             {
-                                code = Labm_tag.LABMH5
+                                code = Labm_tag.LABMH5,
+                              display = "申報類別",
+                              system = NHI_LABM
                             }
                         }
                 };
@@ -262,7 +281,9 @@ namespace FHIR_json.Controllers
                       {
                           new coding
                           {
-                              code=Labm_tag.LABMH1
+                              code=Labm_tag.LABMH1,
+                              display = "報告類別",
+                              system = NHI_LABM
                           }
                       }
 
@@ -275,7 +296,9 @@ namespace FHIR_json.Controllers
                       {
                           new coding
                           {
-                              code=Labm_tag.LABMH7
+                              code=Labm_tag.LABMH7,
+                              display = "案件分類",
+                              system = NHI_LABM
                           }
                       }
 
@@ -296,7 +319,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code=Labm_tag.LABMH3
+                                code=Labm_tag.LABMH3,
+                              display = "醫事類別",
+                              system = NHI_LABM
                             }
                         }
                 };
@@ -345,7 +370,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code=Labm_tag.LABMH18
+                            code=Labm_tag.LABMH18,
+                              display = "醫令代碼",
+                              system = NHI_LABM
                         }
                     }
                 };
@@ -366,7 +393,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code=Labm_tag.LABMH25
+                                code=Labm_tag.LABMH25,
+                                display = "檢體採檢方法/來源/類別",
+                                system = NHI_LABM
                             }
                         }
                    
@@ -395,21 +424,27 @@ namespace FHIR_json.Controllers
                 };
                 labm_B.code = new code
                 {
+                    text = "檢驗項目名稱",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code=Labm_tag.LABMR2 ?? "未知"
+                            code=Labm_tag.LABMR2 ?? "未知",
+                            display = "檢驗項目名稱",
+                            system = NHI_LABM
                         }
                     }
                 };
                 labm_B.method = new method
                 {
+                    text = "檢驗方法",
                     coding = new List<coding>
                         {
                             new coding
                             {
-                               code=Labm_tag.LABMR3
+                               code=Labm_tag.LABMR3,
+                            display = "檢驗方法",
+                            system = NHI_LABM
                             }
                         }
                 };
@@ -451,7 +486,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                               code=Labm_tag.LABMR7
+                               code=Labm_tag.LABMR7,
+                                display = "報告結果",
+                                system = NHI_LABM
                             }
                         }
                     },
@@ -462,7 +499,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                               code=Labm_tag.LABMR81
+                               code=Labm_tag.LABMR81,
+                                display = "病理發現及診斷",
+                                system = NHI_LABM
                             }
                         }
                     },
@@ -473,7 +512,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                               code=Labm_tag.LABMR12
+                               code=Labm_tag.LABMR12,
+                                display = "檢驗（查）結果值註記",
+                                system = NHI_LABM
                             }
                         }
                     },
@@ -489,13 +530,14 @@ namespace FHIR_json.Controllers
                 Com_LABM.title = "LABM";
                 Com_LABM.type = new type
                 {
+                    text = "LABM",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code = "",
-                            display = "",
-                            system = "http://loinc.org"
+                            code = "LABM",
+                            display = "LABM",
+                            system = NHI_LABM
                         }
                     }
                 };
@@ -511,9 +553,9 @@ namespace FHIR_json.Controllers
                 };
                 Com_LABM.section = new List<section>
                 {
-                    new section{title="ChargeItem",ectry = new List<ectry>{new ectry{reference = $"ChargeItem/{labm_ct.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{labm_h.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{labm_B.id}"}}}
+                    new section{title="ChargeItem",entry = new List<entry>{new entry{reference = $"ChargeItem/{labm_ct.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{labm_h.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{labm_B.id}"}}}
                 };
                 comlist.Add(Com_LABM);
             }
@@ -540,8 +582,8 @@ namespace FHIR_json.Controllers
 
 
             //return await GetandShare_Block(bundlejson);
-            var bundleIBMjson_Com = await GetandShare_Block(bundlejson_com);
-            return await GetandSharehapi_Block(bundlejson_com);
+            var bundleIBMjson_Com = await GetandSharehapi_Block(bundlejson_com);
+            return  await GetandShare_Block(bundlejson_com);
         }
 
         [HttpPost]
@@ -591,7 +633,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code=Labd_tag.LABDH1
+                                code=Labd_tag.LABDH1,
+                                display = "報告類別",
+                                system = NHI_LABD
                             }
                         }
                     }
@@ -610,7 +654,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code=Labd_tag.LABDH3
+                                code=Labd_tag.LABDH3,
+                                display = "醫事類別",
+                                system = NHI_LABD
                             }
                         }
                 };
@@ -623,7 +669,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code=Labd_tag.LABDH6
+                                code=Labd_tag.LABDH6,
+                                display = "就醫類別",
+                                system = NHI_LABD
                             }
                         }
                     }
@@ -667,7 +715,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code=Labd_tag.LABDH15
+                            code=Labd_tag.LABDH15,
+                                display = "醫令代碼",
+                                system = NHI_LABD
                         }
                     }
                 };
@@ -685,7 +735,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code=Labd_tag.LABDH22
+                                code=Labd_tag.LABDH22,
+                                display = "檢體採檢方法/來源/類別",
+                                system = NHI_LABD
                             }
                         }
                 };
@@ -713,21 +765,27 @@ namespace FHIR_json.Controllers
                 };
                 labd_B.code = new code
                 {
+                    text = "檢驗項目名稱",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code=Labd_tag.LABDR2 ??"未知"
+                            code=Labd_tag.LABDR2 ??"未知",
+                                display = "檢驗項目名稱",
+                                system = NHI_LABD
                         }
                     }
                 };
                 labd_B.method = new method
                 {
+                    text = "檢驗方法",
                     coding = new List<coding>
                         {
                             new coding
                             {
-                                code=Labd_tag.LABDR3
+                                code=Labd_tag.LABDR3,
+                                display = "檢驗方法",
+                                system = NHI_LABD
                             }
                         }
                 };
@@ -759,7 +817,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code=Labd_tag.LABDR7
+                                code=Labd_tag.LABDR7,
+                                display = "報告結果",
+                                system = NHI_LABD
                             }
                         }
                     },
@@ -770,7 +830,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code=Labd_tag.LABDR81
+                                code=Labd_tag.LABDR81,
+                                display = "病理發現及診斷",
+                                system = NHI_LABD
                             }
                         }
                     },
@@ -781,7 +843,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code=Labd_tag.LABDR12
+                                code=Labd_tag.LABDR12,
+                                display = "檢驗（查）結果值註記",
+                                system = NHI_LABD
                             }
                         }
                     }
@@ -820,8 +884,8 @@ namespace FHIR_json.Controllers
                 };
                 Com_LABD.section = new List<section>
                 {
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{labd_h.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{labd_B.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{labd_h.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{labd_B.id}"}}},
                 };
                 comlist.Add(Com_LABD);
             }
@@ -848,8 +912,8 @@ namespace FHIR_json.Controllers
 
 
             //return await GetandShare_Block(bundlejson);
-            var bundleIBMjson_Com = await GetandShare_Block(bundlejson_com);
-            return await GetandSharehapi_Block(bundlejson_com);
+            var bundleIBMjson_Com =  await GetandSharehapi_Block(bundlejson_com);
+            return await GetandShare_Block(bundlejson_com);
         }
 
         [HttpPost]
@@ -903,7 +967,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code=TOTFA_tag.TOTFAD1.ToString()
+                                code=TOTFA_tag.TOTFAD1.ToString(),
+                                display = "案件分類",
+                                system = NHI_Outpatient
                             }
                         }
 
@@ -930,7 +996,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code=TOTFA_tag.TOTFAD8.ToString()
+                                code=TOTFA_tag.TOTFAD8.ToString(),
+                                display = "就醫科別",
+                                system = NHI_Outpatient
                             }
                         }
                 };
@@ -994,11 +1062,15 @@ namespace FHIR_json.Controllers
                 fa_ct.status = "billed";
                 fa_ct.code = new code
                 {
+                    text = "申報類別",
                     coding = new List<coding>
                         {
                             new coding
                             {
-                                code = TOTFA_tag.TOTFAT5.ToString()
+                                code = TOTFA_tag.TOTFAT5.ToString(),
+                                display = "申報類別",
+                                system = NHI_Outpatient
+
                             }
                         }
                 };
@@ -1019,7 +1091,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = TOTFA_tag.TOTFAD4
+                            code = TOTFA_tag.TOTFAD4,
+                            display = "特定治療項目代號(一)",
+                            system= NHI_Outpatient
                         }
                     }
                 };
@@ -1038,7 +1112,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = TOTFA_tag.TOTFAD5
+                            code = TOTFA_tag.TOTFAD5,
+                            display = "特定治療項目代號(二)",
+                            system = NHI_Outpatient 
                         }
                     }
                 };
@@ -1057,7 +1133,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = TOTFA_tag.TOTFAD6
+                            code = TOTFA_tag.TOTFAD6,
+                            display = "特定治療項目代號(三)",
+                            system= NHI_Outpatient
                         }
                     }
 
@@ -1077,7 +1155,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = TOTFA_tag.TOTFAD7
+                            code = TOTFA_tag.TOTFAD7,
+                            display = "特定治療項目代號(四)",
+                            system = NHI_Outpatient
                         }
                     }
                 };
@@ -1096,7 +1176,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = TOTFA_tag.TOTFAD24
+                            code = TOTFA_tag.TOTFAD24,
+                            display = "主手術(處置)代碼",
+                            system= NHI_Outpatient
                         }
                     }
 
@@ -1116,7 +1198,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = TOTFA_tag.TOTFAD25
+                            code = TOTFA_tag.TOTFAD25,
+                            display = "次手術(處置)代碼(一)",
+                            system= NHI_Outpatient
                         }
                     }
                 };
@@ -1135,7 +1219,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = TOTFA_tag.TOTFAD26
+                            code = TOTFA_tag.TOTFAD26,
+                            display = "次手術(處置)代碼(二)",
+                            system= NHI_Outpatient
                         }
                     }
                 };
@@ -1207,7 +1293,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code = TOTFA_tag.TOTFAP2.ToString()//資料格式不同
+                                code = TOTFA_tag.TOTFAP2.ToString(),//資料格式不同
+                                display = "醫令調劑方式",
+                                system = NHI_Outpatient
     }
 }
                     },
@@ -1218,7 +1306,9 @@ namespace FHIR_json.Controllers
                          {
                             new coding
                             {
-                                code = TOTFA_tag.TOTFAP3.ToString()//資料格式不同
+                                code = TOTFA_tag.TOTFAP3.ToString(),//資料格式不同
+                                display = "醫令類別",
+                                system = NHI_Outpatient
                             }
                         }
 
@@ -1230,7 +1320,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code = TOTFA_tag.TOTFAP17
+                                code = TOTFA_tag.TOTFAP17,
+                                display = "慢性病連續處方箋、同一療程及排程檢查案件註記",
+                                system= NHI_Outpatient
                             }
                         }
                      }
@@ -1238,12 +1330,14 @@ namespace FHIR_json.Controllers
                 };
                 fa_med.medicationCodeableConcept = new medicationCodeableConcept
                 {
+                    text = "藥品(項目)代號",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code = TOTFA_tag.TOTFAP4
-
+                            code = TOTFA_tag.TOTFAP4,
+                            display = "藥品(項目)代號",
+                            system = NHI_Outpatient
                         }
                     }
                 };
@@ -1266,19 +1360,21 @@ namespace FHIR_json.Controllers
                          {
                             code = new code
                             {
+                                text = "藥品使用頻率",
                                 coding = new List<coding>
                                 {
                                     new coding
                                     {
-                                        code = TOTFA_tag.TOTFAP7
+                                        code = TOTFA_tag.TOTFAP7,
+                                        display = "藥品使用頻率",
+                                        system = Med_Use_URL
                                     }
                                 }
                             }
                          },
                           route = new route
                         {
-
-
+                              text = "給藥途徑/作用部位",
                             coding = new List<coding>
 
                             {
@@ -1287,8 +1383,9 @@ namespace FHIR_json.Controllers
 
                                 {
 
-                                    code = TOTFA_tag.TOTFAP9
-
+                                    code = TOTFA_tag.TOTFAP9,
+                                    display = "給藥途徑/作用部位",
+                                        system = Med_Use_URL
                                 }
 
                             }
@@ -1305,7 +1402,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code = TOTFA_tag.TOTFAP6
+                                code = TOTFA_tag.TOTFAP6,
+                                display = "診療之部位",
+                                system = NHI_Outpatient
                             }
                         }
                     }
@@ -1319,13 +1418,7 @@ namespace FHIR_json.Controllers
 
                     }
                 };
-                fa_med.category = new List<category>
-                {
-                    new category
-                    {
-                        text="慢性病連續處方箋、同一療程及排程檢查案件註記"
-                    }
-                };
+
                 medrequestlist.Add(fa_med);
 
 
@@ -1337,19 +1430,18 @@ namespace FHIR_json.Controllers
                                                                                         //fa_c1.code.text = "主診斷代碼";
                 fa_c1.code = new code
                 {
-                    text = "主診斷代碼"
-                };
-                //fa_c1.code.coding[0].code = TOTFA_tag.TOTFAD19;
-                fa_c1.code = new code
-                {
+                    text = "主診斷代碼",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code = TOTFA_tag.TOTFAD19
+                            code = TOTFA_tag.TOTFAD19,
+                            display = "主診斷代碼",
+                            system = "http://terminology.hl7.org/CodeSystem/icd9cm"
                         }
                     }
                 };
+                //fa_c1.code.coding[0].code = TOTFA_tag.TOTFAD19;
                 conlist.Add(fa_c1);
 
                 //condition_fa_c2
@@ -1360,19 +1452,19 @@ namespace FHIR_json.Controllers
                                                                                         //fa_c2.code.text = "次診斷代碼(一)";
                 fa_c2.code = new code
                 {
-                    text = "次診斷代碼(一)"
-                };
-                //fa_c2.code.coding[0].code = TOTFA_tag.TOTFAD20;
-                fa_c2.code = new code
-                {
+                    text = "次診斷代碼(一)",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code = TOTFA_tag.TOTFAD20
+                            code = TOTFA_tag.TOTFAD20,
+                            display = "次診斷代碼(一)",
+                            system = "http://terminology.hl7.org/CodeSystem/icd9cm"
                         }
                     }
                 };
+                //fa_c2.code.coding[0].code = TOTFA_tag.TOTFAD20;
+                
                 conlist.Add(fa_c2);
 
                 //condition_fa_c3
@@ -1383,19 +1475,19 @@ namespace FHIR_json.Controllers
                                                                                         //fa_c2.code.text = "次診斷代碼(二)";
                 fa_c3.code = new code
                 {
-                    text = "次診斷代碼(二)"
-                };
-                //fa_c2.code.coding[0].code = TOTFA_tag.TOTFAD21;
-                fa_c3.code = new code
-                {
+                    text = "次診斷代碼(二)",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code = TOTFA_tag.TOTFAD21
+                            code = TOTFA_tag.TOTFAD21,
+                            display = "次診斷代碼(二)",
+                            system = "http://terminology.hl7.org/CodeSystem/icd9cm"
                         }
                     }
                 };
+                //fa_c2.code.coding[0].code = TOTFA_tag.TOTFAD21;
+                
                 conlist.Add(fa_c3);
 
                 //condition_fa_c4
@@ -1406,19 +1498,19 @@ namespace FHIR_json.Controllers
                                                                                         //fa_c4.code.text = "次診斷代碼(三)";
                 fa_c4.code = new code
                 {
-                    text = "次診斷代碼(三)"
-                };
-                //fa_c4.code.coding[0].code = TOTFA_tag.TOTFAD22;
-                fa_c4.code = new code
-                {
+                    text = "次診斷代碼(三)",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code = TOTFA_tag.TOTFAD22
+                            code = TOTFA_tag.TOTFAD22,
+                            display = "次診斷代碼(三)",
+                            system = "http://terminology.hl7.org/CodeSystem/icd9cm"
                         }
                     }
                 };
+                //fa_c4.code.coding[0].code = TOTFA_tag.TOTFAD22;
+                
                 conlist.Add(fa_c4);
 
                 //condition_fa_c5
@@ -1429,19 +1521,19 @@ namespace FHIR_json.Controllers
                                                                                         //fa_c5.code.text = "次診斷代碼(四)";
                 fa_c5.code = new code
                 {
-                    text = "次診斷代碼(四)"
-                };
-                //fa_c5.code.coding[0].code = TOTFA_tag.TOTFAD23;
-                fa_c5.code = new code
-                {
+                    text = "次診斷代碼(四)",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code = TOTFA_tag.TOTFAD23
+                            code = TOTFA_tag.TOTFAD23,
+                            display = "次診斷代碼(四)",
+                            system = "http://terminology.hl7.org/CodeSystem/icd9cm"
                         }
                     }
                 };
+                //fa_c5.code.coding[0].code = TOTFA_tag.TOTFAD23;
+                
                 conlist.Add(fa_c5);
 
                 //Composition
@@ -1474,38 +1566,38 @@ namespace FHIR_json.Controllers
                 };
                 Com_TOTFA.section = new List<section>
                 {
-                    new section{title="ChargeItem",ectry = new List<ectry>{new ectry{reference = $"ChargeItem/{fa_ct.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{fa_p1.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{fa_p2.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{fa_p3.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{fa_p4.id}"}}},
-                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fa_c1.id}"}}},
-                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fa_c2.id}"}}},
-                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fa_c3.id}"}}},
-                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fa_c4.id}"}}},
-                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fa_c5.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{P1.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{P2.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{P3.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{med_day.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{med_type.id}"}}},
-                    new section{title="MedicationRequest",ectry = new List<ectry>{new ectry{reference = $"MedicationRequest/{fa_med.id}"}}},
-                    new section{title="ChargeItem",ectry = new List<ectry>{new ectry{reference = $"ChargeItem/{fa_ct.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{fa_p1.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{fa_p2.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{fa_p3.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{fa_p4.id}"}}},
-                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fa_c1.id}"}}},
-                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fa_c2.id}"}}},
-                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fa_c3.id}"}}},
-                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fa_c4.id}"}}},
-                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fa_c5.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{P1.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{P2.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{P3.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{med_day.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{med_type.id}"}}},
-                    new section{title="MedicationRequest",ectry = new List<ectry>{new ectry{reference = $"MedicationRequest/{fa_med.id}"}}}
+                    new section{title="ChargeItem",entry = new List<entry>{new entry{reference = $"ChargeItem/{fa_ct.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{fa_p1.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{fa_p2.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{fa_p3.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{fa_p4.id}"}}},
+                    new section{title="Condition",entry = new List<entry>{new entry{reference = $"Condition/{fa_c1.id}"}}},
+                    new section{title="Condition",entry = new List<entry>{new entry{reference = $"Condition/{fa_c2.id}"}}},
+                    new section{title="Condition",entry = new List<entry>{new entry{reference = $"Condition/{fa_c3.id}"}}},
+                    new section{title="Condition",entry = new List<entry>{new entry{reference = $"Condition/{fa_c4.id}"}}},
+                    new section{title="Condition",entry = new List<entry>{new entry{reference = $"Condition/{fa_c5.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{P1.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{P2.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{P3.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{med_day.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{med_type.id}"}}},
+                    new section{title="MedicationRequest",entry = new List<entry>{new entry{reference = $"MedicationRequest/{fa_med.id}"}}},
+                    new section{title="ChargeItem",entry = new List<entry>{new entry{reference = $"ChargeItem/{fa_ct.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{fa_p1.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{fa_p2.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{fa_p3.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{fa_p4.id}"}}},
+                    new section{title="Condition",entry = new List<entry>{new entry{reference = $"Condition/{fa_c1.id}"}}},
+                    new section{title="Condition",entry = new List<entry>{new entry{reference = $"Condition/{fa_c2.id}"}}},
+                    new section{title="Condition",entry = new List<entry>{new entry{reference = $"Condition/{fa_c3.id}"}}},
+                    new section{title="Condition",entry = new List<entry>{new entry{reference = $"Condition/{fa_c4.id}"}}},
+                    new section{title="Condition",entry = new List<entry>{new entry{reference = $"Condition/{fa_c5.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{P1.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{P2.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{P3.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{med_day.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{med_type.id}"}}},
+                    new section{title="MedicationRequest",entry = new List<entry>{new entry{reference = $"MedicationRequest/{fa_med.id}"}}}
                 };
                 comlist.Add(Com_TOTFA);
 
@@ -1535,8 +1627,8 @@ namespace FHIR_json.Controllers
 
 
             //return await GetandShare_Block(bundlejson);
-            var bundleIBMjson_Com = await GetandShare_Block(bundlejson_com);
-            return await GetandSharehapi_Block(bundlejson_com);
+            var bundleIBMjson_Com =  await GetandSharehapi_Block(bundlejson_com);
+            return await GetandShare_Block(bundlejson_com);
         }
 
         [HttpPost]
@@ -1584,7 +1676,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code=TOTFB_tag.TOTFBD1.ToString()
+                                code=TOTFB_tag.TOTFBD1.ToString(),
+                                display = "案件分類",
+                                system = NHI_Hospitalize
                             }
                         }
                     },
@@ -1595,7 +1689,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code=TOTFB_tag.TOTFBD18
+                                code=TOTFB_tag.TOTFBD18,
+                                display = "Tw-DRG碼",
+                                system = DRGs_TW_URL
                             }
                         }
                     },
@@ -1606,7 +1702,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code=TOTFB_tag.TOTFBD21
+                                code=TOTFB_tag.TOTFBD21,
+                                display = "DRGs碼",
+                                system = DRGs_URL
                             }
                         }
                     }
@@ -1632,7 +1730,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code=TOTFB_tag.TOTFBD9
+                                code=TOTFB_tag.TOTFBD9,
+                                display = "就醫科別",
+                                system = NHI_Hospitalize
                             }
                         }
                 };
@@ -1650,7 +1750,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code=TOTFB_tag.TOTFBD24
+                                code=TOTFB_tag.TOTFBD24,
+                                display = "轉歸代碼",
+                                system = NHI_Hospitalize
                             }
 
                         }
@@ -1705,11 +1807,14 @@ namespace FHIR_json.Controllers
                 //fb_ct.code.coding[0].code = TOTFB_tag.TOTFBT5
                 fb_ct.code = new code
                 {
+                    text = "申報類別",
                     coding = new List<coding>
                         {
                             new coding
                             {
-                                code = TOTFB_tag.TOTFBT5.ToString()
+                                code = TOTFB_tag.TOTFBT5.ToString(),
+                                display = "申報類別",
+                                system = NHI_Hospitalize
                             }
                         }
                 };
@@ -1729,7 +1834,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = TOTFB_tag.TOTFBD45
+                            code = TOTFB_tag.TOTFBD45,
+                            display = "主手術(處置)代碼",
+                            system = ICD9_URL
                         }
                     }
                 };
@@ -1747,7 +1854,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = TOTFB_tag.TOTFBD46
+                            code = TOTFB_tag.TOTFBD46,
+                            display = "次手術(處置)代碼一",
+                            system = ICD9_URL
                         }
                     }
                 };
@@ -1765,7 +1874,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = TOTFB_tag.TOTFBD47
+                            code = TOTFB_tag.TOTFBD47,
+                            display = "次手術(處置)代碼二",
+                            system = ICD9_URL
                         }
                     }
                 };
@@ -1783,7 +1894,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = TOTFB_tag.TOTFBD48
+                            code = TOTFB_tag.TOTFBD48,
+                            display = "次手術(處置)代碼三",
+                            system = ICD9_URL
                         }
                     }
                 };
@@ -1801,7 +1914,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = TOTFB_tag.TOTFBD49
+                            code = TOTFB_tag.TOTFBD49,
+                            display = "次手術(處置)代碼四",
+                            system = ICD9_URL
                         }
                     }
                 };
@@ -1832,18 +1947,23 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code = TOTFB_tag.TOTFBP2.ToString()
+                                code = TOTFB_tag.TOTFBP2.ToString(),
+                                display = "醫令類別",
+                                system = NHI_Hospitalize
                             }
                         }
                     }
                 };
                 fb_med.medicationCodeableConcept = new medicationCodeableConcept
                 {
+                    text = "醫令代碼",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code = TOTFB_tag.TOTFBP3.ToString()
+                            code = TOTFB_tag.TOTFBP3.ToString(),
+                            display = "醫令代碼",
+                            system = DRGs_TW_URL
                         }
                     }
                 };
@@ -1866,22 +1986,30 @@ namespace FHIR_json.Controllers
                         {
                             code=new code
                             {
+                                text = "(藥品)使用頻率",
                                 coding=new List<coding>
                                 {
                                     new coding
                                     {
-                                        code= TOTFB_tag.TOTFBP6
+                                        code= TOTFB_tag.TOTFBP6,
+                                        display = "(藥品)使用頻率",
+                                        system = Med_Use_URL
                                     }
                                 }
                             }
                         },
                         site=new site
                         {
+                            text = "給藥途徑/作用部位",
+
+
                             coding=new List<coding>
                             {
                                 new coding
                                 {
-                                    code = TOTFB_tag.TOTFBP7
+                                    code = TOTFB_tag.TOTFBP7,
+                                    display = "給藥途徑/作用部位",
+                                    system = Med_Use_URL
                                 }
                             }
                         }
@@ -1894,7 +2022,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = TOTFB_tag.TOTFBP8
+                            code = TOTFB_tag.TOTFBP8,
+                            display = "會診科別",
+                            system = NHI_Hospitalize
                         }
                     }
                 };
@@ -1925,7 +2055,10 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = TOTFB_tag.TOTFBD25
+                            code = TOTFB_tag.TOTFBD25,
+                            display = "主診斷",
+                            system = ICD9_URL
+
                         }
                     }
                 };
@@ -1944,7 +2077,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = TOTFB_tag.TOTFBD26
+                            code = TOTFB_tag.TOTFBD26,
+                            display = "次診斷代碼(一)",
+                            system = ICD9_URL
                         }
                     }
                 };
@@ -1963,7 +2098,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = TOTFB_tag.TOTFBD27
+                            code = TOTFB_tag.TOTFBD27,
+                            display = "次診斷代碼(二)",
+                            system = ICD9_URL
                         }
                     }
                 };
@@ -1982,7 +2119,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = TOTFB_tag.TOTFBD28
+                            code = TOTFB_tag.TOTFBD28,
+                            display = "次診斷代碼(三)",
+                            system = ICD9_URL
                         }
                     }
                 };
@@ -2001,7 +2140,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = TOTFB_tag.TOTFBD29
+                            code = TOTFB_tag.TOTFBD29,
+                            display = "次診斷代碼(四)",
+                            system = ICD9_URL
                         }
                     }
                 };
@@ -2038,20 +2179,20 @@ namespace FHIR_json.Controllers
 
                 Com_TOTFB.section = new List<section>
                 {
-                    new section{title="ChargeItem",ectry = new List<ectry>{new ectry{reference = $"ChargeItem/{fb_ct.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{fb_e_bed.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{fb_s_bed.id}"}}},
-                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fb_c1.id}"}}},
-                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fb_c2.id}"}}},
-                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fb_c3.id}"}}},
-                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fb_c4.id}"}}},
-                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{fb_c5.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{fb_p1.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{fb_p2.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{fb_p3.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{fb_p4.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{fb_p5.id}"}}},
-                    new section{title="MedicationRequest",ectry = new List<ectry>{new ectry{reference = $"MedicationRequest/{fb_med.id}"}}}
+                    new section{title="ChargeItem",entry = new List<entry>{new entry{reference = $"ChargeItem/{fb_ct.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{fb_e_bed.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{fb_s_bed.id}"}}},
+                    new section{title="Condition",entry = new List<entry>{new entry{reference = $"Condition/{fb_c1.id}"}}},
+                    new section{title="Condition",entry = new List<entry>{new entry{reference = $"Condition/{fb_c2.id}"}}},
+                    new section{title="Condition",entry = new List<entry>{new entry{reference = $"Condition/{fb_c3.id}"}}},
+                    new section{title="Condition",entry = new List<entry>{new entry{reference = $"Condition/{fb_c4.id}"}}},
+                    new section{title="Condition",entry = new List<entry>{new entry{reference = $"Condition/{fb_c5.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{fb_p1.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{fb_p2.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{fb_p3.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{fb_p4.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{fb_p5.id}"}}},
+                    new section{title="MedicationRequest",entry = new List<entry>{new entry{reference = $"MedicationRequest/{fb_med.id}"}}}
                 };
                 comlist.Add(Com_TOTFB);
 
@@ -2078,8 +2219,8 @@ namespace FHIR_json.Controllers
             var bundlejson_com = BundleJSON_totfb();
 
             //return await GetandShare_Block(bundlejson);
-            var bundleIBMjson_Com = await GetandShare_Block(bundlejson_com);
-            return await GetandSharehapi_Block(bundlejson_com);
+            var bundleIBMjson_Com = await GetandSharehapi_Block(bundlejson_com);
+            return  await GetandShare_Block(bundlejson_com);
         }
         [HttpPost]
         public async Task<dynamic> spe_JSON(List<OriginalJson.spe> spe_tags)
@@ -2405,7 +2546,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code = CRLF_tag.sdiag_o
+                                code = CRLF_tag.sdiag_o,
+                                display = "外院診斷性及分期性手術處置",
+                                system = NHI_CRLF
                             }
                         }
                     }
@@ -2417,7 +2560,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code = CRLF_tag.sdiag_h
+                                code = CRLF_tag.sdiag_h,
+                                display = "申報醫院診斷性及分期性手術處置",
+                                system = NHI_CRLF
                             }
                         }
                 };
@@ -2463,7 +2608,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code = CRLF_tag.optype_o
+                                code = CRLF_tag.optype_o,
+                                display = "外院原發部位手術方式",
+                                system = NHI_CRLF
                             }
                         }
                     }
@@ -2475,7 +2622,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = CRLF_tag.optype_h
+                            code = CRLF_tag.optype_h,
+                                display = "申報醫院原發部位手術方式",
+                                system = NHI_CRLF
                         }
                     }
                 };
@@ -2494,7 +2643,8 @@ namespace FHIR_json.Controllers
                         {
                             userSelected=true,
                             display="微創手術",
-                            code=CRLF_tag.misurgery
+                            code=CRLF_tag.misurgery,
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -2505,7 +2655,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = CRLF_tag.smargin
+                            code = CRLF_tag.smargin,
+                            display = "原發部位手術邊緣",
+                            system = NHI_CRLF
                         }
                      }
                 };
@@ -2523,7 +2675,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = CRLF_tag.noop
+                            code = CRLF_tag.noop,
+                            display = "原發部位未手術原因",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -2557,7 +2711,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code = CRLF_tag.opln_o
+                                code = CRLF_tag.opln_o,
+                            display = "外院區域淋巴結手術範圍",
+                            system = NHI_CRLF
                             }
                         }
                     }
@@ -2569,7 +2725,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = CRLF_tag.opln_h
+                            code = CRLF_tag.opln_h,
+                            display = "申報醫院區域淋巴結手術範圍",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -2601,7 +2759,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code = CRLF_tag.opother_o
+                                code = CRLF_tag.opother_o,
+                            display = "外院其他部位手術方式",
+                            system = NHI_CRLF
                             }
                         }
                     }
@@ -2613,7 +2773,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = CRLF_tag.opother_h
+                            code = CRLF_tag.opother_h,
+                            display = "申報醫院其他部位手術方式",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -2642,7 +2804,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = CRLF_tag.rtsumm
+                            code = CRLF_tag.rtsumm,
+                            display = "放射治療臨床標靶體積摘要",
+                            system= NHI_CRLF
                         }
                     }
                 };
@@ -2661,7 +2825,9 @@ namespace FHIR_json.Controllers
                             {
                                 new coding
                                 {
-                                    code = CRLF_tag.rtmodal
+                                    code = CRLF_tag.rtmodal,
+                                    display = "放射治療儀器",
+                                    system= NHI_CRLF
                                 }
                             }
                         }
@@ -2679,7 +2845,9 @@ namespace FHIR_json.Controllers
                             {
                                 new coding
                                 {
-                                    code = CRLF_tag.ort_modal
+                                    code = CRLF_tag.ort_modal,
+                                    display = "其他放射治療儀器",
+                                    system= NHI_CRLF
                                 }
                             }
                         }
@@ -2729,13 +2897,22 @@ namespace FHIR_json.Controllers
                         {
                             display="Radiotherapy Course of Treatment (regime/therapy)",
                             userSelected=false,
-                            code = "USCRS-33529"
+                            code = "USCRS-33529",
+                            system = "http://hl7.org/fhir/us/mcode/CodeSystem/snomed-requested-cs"
                         },
                         new coding
                         {
                             display="放射治療與手術順序",
                             userSelected=true,
-                            code = CRLF_tag.rtstatus
+                            code = CRLF_tag.srs,
+                            system = NHI_CRLF
+                        },
+                        new coding
+                        {
+                            display="放射治療與手術順序",
+                            userSelected=true,
+                            code = CRLF_tag.sls,
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -2747,7 +2924,10 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = CRLF_tag.rtstatus
+                            code = CRLF_tag.rtstatus,
+                            display="放射治療執行狀態",
+                            system = NHI_CRLF
+
                         }
                     }
                 };
@@ -2768,7 +2948,9 @@ namespace FHIR_json.Controllers
                                     {
                                         new coding
                                         {
-                                            code = CRLF_tag.ebrt
+                                            code = CRLF_tag.ebrt,
+                                            display="體外放射治療技術",
+                                            system = NHI_CRLF
                                         }
                                     }
                                 }
@@ -2795,7 +2977,8 @@ namespace FHIR_json.Controllers
                                 valueQuantity=new valueQuantity
                                     {
                                         system = "最高放射劑量臨床標靶體積劑量",
-                                        value = Convert.ToDouble(CRLF_tag.rth_dose)
+                                        value = Convert.ToDouble(CRLF_tag.rth_dose),
+                                        unit = "cGy"
                                     }
                             },
                             new extension1//12
@@ -2826,7 +3009,8 @@ namespace FHIR_json.Controllers
                                 valueQuantity=new valueQuantity
                                 {
                                     system = "較低放射劑量臨床標靶體積劑量",
-                                    value = Convert.ToDouble(CRLF_tag.rtl_dose)
+                                    value = Convert.ToDouble(CRLF_tag.rtl_dose),
+                                    unit = "cGy"
                                 }
                             },
                             new extension1//22
@@ -2851,7 +3035,9 @@ namespace FHIR_json.Controllers
                                     {
                                         new coding
                                         {
-                                            code = CRLF_tag.ort_tech
+                                            code = CRLF_tag.ort_tech,
+                                            display = "其他放射治療儀器",
+                                            system= NHI_CRLF
                                         }
                                     }
                                 }
@@ -2878,7 +3064,9 @@ namespace FHIR_json.Controllers
                                 valueQuantity=new valueQuantity
                                 {
                                     system = "其他放射治療臨床標靶體積劑量",
-                                    value = Convert.ToDouble(CRLF_tag.ort_dose)
+                                    value = Convert.ToDouble(CRLF_tag.ort_dose),
+                                    unit = "cGy"
+
                                 }
                             },
                             new extension1//42
@@ -2926,7 +3114,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code = CRLF_tag.chem_o
+                                code = CRLF_tag.chem_o,
+                                display = "外院化學治療",
+                                system = NHI_CRLF
                             }
                         }
                     }
@@ -2938,7 +3128,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = CRLF_tag.chem_h
+                            code = CRLF_tag.chem_h,
+                                display = "申報醫院化學治療",
+                                system = NHI_CRLF
                         }
                     }
                 };
@@ -2958,7 +3150,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = CRLF_tag.htep_h
+                            code = CRLF_tag.htep_h,
+                            display = "骨髓/幹細胞移植或內分泌處置",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -2981,7 +3175,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = CRLF_tag.other
+                            code = CRLF_tag.other,
+                            display = "其他治療",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -3029,7 +3225,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code = CRLF_tag.@class
+                                code = CRLF_tag.@class,
+                                display = "個案分類",
+                                system = NHI_CRLF
                             }
                         }
                     },
@@ -3040,7 +3238,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code = CRLF_tag.class_d
+                                code = CRLF_tag.class_d,
+                                display = "診斷狀態分類",
+                                system = NHI_CRLF
                             }
                         }
                     },
@@ -3051,7 +3251,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code = CRLF_tag.class_t
+                                code = CRLF_tag.class_t,
+                                display = "治療狀態分類",
+                                system = NHI_CRLF
                             }
                         }
                     }
@@ -3074,7 +3276,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code = CRLF_tag.site
+                                code = CRLF_tag.site,
+                                display = "原發部位",
+                                system = ICDO3_URL
                             }
                         }
                     },
@@ -3085,7 +3289,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code = CRLF_tag.lateral
+                                code = CRLF_tag.lateral,
+                                display = "側性",
+                                system = NHI_CRLF
                             }
                         }
                     }
@@ -3103,7 +3309,9 @@ namespace FHIR_json.Controllers
                                 {
                                     new coding
                                     {
-                                        code = CRLF_tag.hist
+                                        code = CRLF_tag.hist,
+                                        display = "組織類型",
+                                        system = ICDO3_URL
 
                                     }
                                 }
@@ -3115,7 +3323,9 @@ namespace FHIR_json.Controllers
                                 {
                                     new coding
                                     {
-                                        code = CRLF_tag.behavior
+                                        code = CRLF_tag.behavior,
+                                        display = "性態碼",
+                                        system = MCODE_URL
 
                                     }
                                 }
@@ -3134,7 +3344,9 @@ namespace FHIR_json.Controllers
                             {
                                 new coding
                                 {
-                                    code = CRLF_tag.grade_c
+                                    code = CRLF_tag.grade_c,
+                                    display = "臨床分級/分化",
+                                    system = NHI_CRLF
 
                                 }
                             }
@@ -3149,7 +3361,9 @@ namespace FHIR_json.Controllers
                             {
                                 new coding
                                 {
-                                    code = CRLF_tag.grade_p
+                                    code = CRLF_tag.grade_p,
+                                    display = "病理分級/分化",
+                                    system = NHI_CRLF
 
                                 }
                             }
@@ -3191,7 +3405,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = CRLF_tag.recur
+                            code = CRLF_tag.recur,
+                            display = "首次復發型式",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -3209,7 +3425,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = CRLF_tag.palli_h
+                            code = CRLF_tag.palli_h,
+                            display = "申報醫院緩和照護",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -3230,7 +3448,9 @@ namespace FHIR_json.Controllers
                          {
                             new coding
                             {
-                                code = CRLF_tag.horm_o
+                                code = CRLF_tag.horm_o,
+                                display = "外院荷爾蒙/類固醇治療",
+                                system = NHI_CRLF
                             }
                          }
                     }
@@ -3242,7 +3462,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = CRLF_tag.horm_h
+                            code = CRLF_tag.horm_h,
+                            display = "申報醫院荷爾蒙/類固醇治療",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -3266,7 +3488,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code = CRLF_tag.immu_o
+                                code = CRLF_tag.immu_o,
+                                display = "外院免疫治療",
+                                system = NHI_CRLF
                             }
                         }
                     }
@@ -3278,7 +3502,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = CRLF_tag.immu_h
+                            code = CRLF_tag.immu_h,
+                            display = "申報醫院免疫治療",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -3302,7 +3528,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code = CRLF_tag.target_o
+                                code = CRLF_tag.target_o,
+                            display = "外院標靶治療",
+                            system = NHI_CRLF
                             }
                         }
                     }
@@ -3314,7 +3542,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code = CRLF_tag.target_h
+                            code = CRLF_tag.target_h,
+                            display = "申報醫院標靶治療",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -3343,7 +3573,8 @@ namespace FHIR_json.Controllers
                         new coding
                         {
                             system="http://loinc.org",
-                            code="21889-1"
+                            code="21889-1",
+                            display = "Size Tumor"
                         }
                     }
                 };
@@ -3353,7 +3584,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code=CRLF_tag.confirm
+                                code=CRLF_tag.confirm,
+                                display = "癌症確診方式",
+                                system = NHI_CRLF
 
                             }
                         },
@@ -3379,7 +3612,8 @@ namespace FHIR_json.Controllers
                                 new coding
                                 {
                                     code="33729-5",
-                                    system="http://loinc.org"
+                                    system="http://loinc.org",
+                                    display = "Size additional dimension in Tumor"
                                 }
                             },
                             text="腫瘤大小"
@@ -3401,15 +3635,27 @@ namespace FHIR_json.Controllers
                 pni.status = "final";
                 pni.code = new code
                 {
-                    text = "神經侵襲"
-                };
-                pni.valueCodeableConcept = new valueCodeableConcept
-                {
+                    text = "神經侵襲",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code=CRLF_tag.pni
+                            code = "92837-4",
+                            display = "Perineural invasion [Presence] in Cancer specimen",
+                            system = "http://loinc.org"
+                        }
+                    }
+                };
+                pni.valueCodeableConcept = new valueCodeableConcept
+                {
+                    text = "神經侵襲",
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code=CRLF_tag.pni,
+                            display = "神經侵襲",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -3421,15 +3667,27 @@ namespace FHIR_json.Controllers
                 lvi.status = "final";
                 lvi.code = new code
                 {
-                    text = "淋巴管或血管侵犯"
-                };
-                lvi.valueCodeableConcept = new valueCodeableConcept
-                {
+                    text = "淋巴管或血管侵犯",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code=CRLF_tag.lvi
+                            code = "LP428208-5",
+                            display = "Vessels involved in lymphovascular invasion",
+                            system = "http://loinc.org"
+                        }
+                    }
+                };
+                lvi.valueCodeableConcept = new valueCodeableConcept
+                {
+                    text = "淋巴管或血管侵犯",
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code=CRLF_tag.lvi,
+                            display = "淋巴管或血管侵犯",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -3441,15 +3699,28 @@ namespace FHIR_json.Controllers
                 nexam.subject = new subject { reference = $"Patient/{Pat.id}" };
                 nexam.code = new code
                 {
-                    text = "區域淋巴結檢查數目"
-                };
-                nexam.valueCodeableConcept = new valueCodeableConcept
-                {
+                    text = "區域淋巴結檢查數目",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code=CRLF_tag.nexam
+                           code = "21900-6",
+                            display = "Regional lymph nodes.pathology [Class] Cancer",
+                            system = "http://loinc.org"
+                        }
+                    }
+                };
+                nexam.valueCodeableConcept = new valueCodeableConcept
+                {
+                    text = "區域淋巴結檢查數目",
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code=CRLF_tag.nexam,
+                            display = "區域淋巴結檢查數目",
+                            system = NHI_CRLF
+
                         }
                     }
                 };
@@ -3461,15 +3732,27 @@ namespace FHIR_json.Controllers
                 nposit.subject = new subject { reference = $"Patient/{Pat.id}" };
                 nposit.code = new code
                 {
-                    text = "區域淋巴結侵犯數目"
-                };
-                nposit.valueCodeableConcept = new valueCodeableConcept
-                {
+                    text = "區域淋巴結侵犯數目",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code=CRLF_tag.nposit
+                           code = "21900-6",
+                            display = "Regional lymph nodes.pathology [Class] Cancer",
+                            system = "http://loinc.org"
+                        }
+                    }
+                };
+                nposit.valueCodeableConcept = new valueCodeableConcept
+                {
+                    text = "區域淋巴結侵犯數目",
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code=CRLF_tag.nposit,
+                            display = "區域淋巴結侵犯數目",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -3495,17 +3778,22 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code="21905-5"
+                            code="21905-5",
+                            display = "Primary tumor.clinical [Class] Cancer",
+                            system = "http://loinc.org"
                         }
                     }
                 };
                 clinical_T.valueCodeableConcept = new valueCodeableConcept
                 {
+                    text = "臨床T",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code=CRLF_tag.ct
+                            code=CRLF_tag.ct,
+                            display = "臨床T",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -3518,7 +3806,10 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code=CRLF_tag.ajcc_ed
+                                code=CRLF_tag.ajcc_ed,
+                                display = "AJCC癌症分期版本與章節",
+                                system = AJCC_URL
+
                             }
                         }
                     }
@@ -3545,17 +3836,22 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code="21906-3"
+                            code="21906-3",
+                            display = "Regional lymph nodes.clinical [Class] Cancer",
+                            system = "http://loinc.org"
                         }
                     }
                 };
                 clinical_N.valueCodeableConcept = new valueCodeableConcept
                 {
+                    text = "臨床N",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code=CRLF_tag.cn
+                            code=CRLF_tag.cn,
+                            display = "臨床N",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -3568,7 +3864,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code=CRLF_tag.ajcc_ed
+                                code=CRLF_tag.ajcc_ed,
+                                display = "AJCC癌症分期版本與章節",
+                                system = AJCC_URL
                             }
                         }
                     }
@@ -3595,17 +3893,22 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code="21907-1"
+                            code="21907-1",
+                            display = "Distant metastases.clinical [Class] Cancer",
+                            system = "http://loinc.org"
                         }
                     }
                 };
                 clinical_M.valueCodeableConcept = new valueCodeableConcept
                 {
+                    text = "臨床M",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code=CRLF_tag.cm
+                            code=CRLF_tag.cm,
+                            display = "臨床M",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -3618,7 +3921,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code=CRLF_tag.ajcc_ed
+                                code=CRLF_tag.ajcc_ed,
+                                display = "AJCC癌症分期版本與章節",
+                                system = AJCC_URL
                             }
                         }
                     }
@@ -3655,15 +3960,27 @@ namespace FHIR_json.Controllers
                 };
                 CG_clinical.code = new code
                 {
-                    text = "臨床期別組合"
-                };
-                CG_clinical.valueCodeableConcept = new valueCodeableConcept
-                {
+                    text = "臨床期別組合",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code=CRLF_tag.cstage
+                            code="21908-9",
+                            display = "Stage group.clinical Cancer",
+                            system = "http://loinc.org"
+                        }
+                    }
+                };
+                CG_clinical.valueCodeableConcept = new valueCodeableConcept
+                {
+                    text = "臨床期別組合",
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code=CRLF_tag.cstage,
+                            display = "臨床期別組合",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -3675,14 +3992,27 @@ namespace FHIR_json.Controllers
                         code = new code
                         {
                             text="臨床分期字根/字首"
+                            //,
+                            //coding = new List<coding>
+                            //{
+                            //    new coding
+                            //    {
+                            //        code="21908-9",
+                            //        display = "Stage group.clinical Cancer",
+                            //        system = "http://loinc.org"
+                            //    }
+                            //}
                         },
                         valueCodeableConcept = new valueCodeableConcept
                         {
+                            text="臨床分期字根/字首",
                             coding=new List<coding>
                             {
                                 new coding
                                 {
-                                    code=CRLF_tag.cdescr
+                                    code=CRLF_tag.cdescr,
+                                    display = "臨床分期字根/字首",
+                                    system = NHI_CRLF
                                 }
                             }
                         }
@@ -3710,17 +4040,22 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code="21899-0"
+                            code="21899-0",
+                            display = "Primary tumor.pathology Cancer",
+                            system = "http://loinc.org"
                         }
                     }
                 };
                 pathology_T.valueCodeableConcept = new valueCodeableConcept
                 {
+                    text = "病理T",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code=CRLF_tag.pt
+                            code=CRLF_tag.pt,
+                            display = "病理T",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -3733,7 +4068,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code=CRLF_tag.ajcc_ed
+                                code=CRLF_tag.ajcc_ed,
+                                display = "AJCC癌症分期版本與章節",
+                                system = AJCC_URL
                             }
                         }
                     }
@@ -3761,18 +4098,22 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code="21900-6"
+                            code="21900-6",
+                            display = "Regional lymph nodes.pathology [Class] Cancer",
+                            system = "http://loinc.org"
                         }
                     }
                 };
                 pathology_N.valueCodeableConcept = new valueCodeableConcept
                 {
-
+                    text = "病理N",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code=CRLF_tag.pn
+                            code=CRLF_tag.pn,
+                            display = "病理N",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -3785,7 +4126,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code=CRLF_tag.ajcc_ed
+                                code=CRLF_tag.ajcc_ed,
+                                display = "AJCC癌症分期版本與章節",
+                                system = AJCC_URL
                             }
                         }
                     }
@@ -3813,17 +4156,22 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code="21901-4"
+                            code="21901-4",
+                            display = "Distant metastases.pathology [Class] Cancer",
+                            system = "http://loinc.org"
                         }
                     }
                 };
                 pathology_M.valueCodeableConcept = new valueCodeableConcept
                 {
+                    text = "病理M",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code=CRLF_tag.pm
+                            code=CRLF_tag.pm,
+                            display = "病理M",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -3836,7 +4184,9 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code=CRLF_tag.ajcc_ed
+                                code=CRLF_tag.ajcc_ed,
+                                display = "AJCC癌症分期版本與章節",
+                                system = AJCC_URL
                             }
                         }
                     }
@@ -3875,15 +4225,27 @@ namespace FHIR_json.Controllers
                 };
                 CG_pathology.code = new code
                 {
-                    text = "病理期別組合"
-                };
-                CG_pathology.valueCodeableConcept = new valueCodeableConcept
-                {
+                    text = "病理期別組合",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code=CRLF_tag.pstage
+                            code="21902-2",
+                            display = "Stage group.pathology Cancer",
+                            system = "http://loinc.org"
+                        }
+                    }
+                };
+                CG_pathology.valueCodeableConcept = new valueCodeableConcept
+                {
+                    text = "病理期別組合",
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code=CRLF_tag.pstage,
+                            display = "病理期別組合",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -3895,14 +4257,27 @@ namespace FHIR_json.Controllers
                         code = new code
                         {
                              text="病理分期字根/字首"
+                             //,
+                             //coding = new List<coding>
+                             //   {
+                             //       new coding
+                             //       {
+                             //           code="21902-2",
+                             //           display = "Stage group.pathology Cancer",
+                             //           system = "http://loinc.org"
+                             //       }
+                             //   }
                         },
                         valueCodeableConcept = new valueCodeableConcept
                         {
+                            text="病理分期字根/字首",
                             coding=new List<coding>
                             {
                                 new coding
                                 {
-                                    code=CRLF_tag.pdescr
+                                    code=CRLF_tag.pdescr,
+                                    display = "病理分期字根/字首",
+                                    system = NHI_CRLF
                                 }
                             }
                         }
@@ -3928,7 +4303,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code=CRLF_tag.ostage
+                            code=CRLF_tag.ostage,
+                            display = "其他分期系統",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -3941,7 +4318,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code=CRLF_tag.ostagec
+                            code=CRLF_tag.ostagec,
+                            display = "其他分期系統期別(臨床分期)",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -3965,7 +4344,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code=CRLF_tag.ostage
+                            code=CRLF_tag.ostage,
+                            display = "其他分期系統",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -3978,7 +4359,9 @@ namespace FHIR_json.Controllers
                     {
                         new coding
                         {
-                            code=CRLF_tag.ostagep
+                            code=CRLF_tag.ostagep,
+                            display = "其他分期系統期別(病理分期)",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -4039,15 +4422,27 @@ namespace FHIR_json.Controllers
                 smoke.subject = new subject { reference = $"Patient/{Pat.id}" };
                 smoke.code = new code
                 {
-                    text = "吸菸行為"
-                };
-                smoke.valueCodeableConcept = new valueCodeableConcept
-                {
+                    text = "吸菸行為",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code=CRLF_tag.smoking
+                            code="72166-2",
+                            display = "Tobacco smoking status",
+                            system = "http://loinc.org"
+                        }
+                    }
+                };
+                smoke.valueCodeableConcept = new valueCodeableConcept
+                {
+                    text = "吸菸行為",
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code=CRLF_tag.smoking,
+                            display = "吸菸行為",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -4060,15 +4455,27 @@ namespace FHIR_json.Controllers
                 btchew.subject = new subject { reference = $"Patient/{Pat.id}" };
                 btchew.code = new code
                 {
-                    text = "嚼檳榔行為"
-                };
-                btchew.valueCodeableConcept = new valueCodeableConcept
-                {
+                    text = "嚼檳榔行為",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code = CRLF_tag.btchew
+                            code = "嚼檳榔行為",
+                            display = "嚼檳榔行為",
+                            system = NHI_CRLF
+                        }
+                    }
+                };
+                btchew.valueCodeableConcept = new valueCodeableConcept
+                {
+                    text = "嚼檳榔行為",
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code = CRLF_tag.btchew,
+                            display = "嚼檳榔行為",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -4081,16 +4488,28 @@ namespace FHIR_json.Controllers
                 drinking.subject = new subject { reference = $"Patient/{Pat.id}" };
                 drinking.code = new code
                 {
-                    text = "喝酒行為"
-                };
-                //btchew.valueCodeableConcept[0].coding[0].code = CRLF_tag.btchew;
-                drinking.valueCodeableConcept = new valueCodeableConcept
-                {
+                    text = "喝酒行為",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code = CRLF_tag.drinking
+                            code = "11287-0",
+                            display = "Alcoholic drinks per drinking day - Reported",
+                            system = "http://loinc.org"
+                        }
+                    }
+                };
+                //btchew.valueCodeableConcept[0].coding[0].code = CRLF_tag.btchew;
+                drinking.valueCodeableConcept = new valueCodeableConcept
+                {
+                    text = "喝酒行為",
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code = CRLF_tag.drinking,
+                            display = "喝酒行為",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -4104,15 +4523,28 @@ namespace FHIR_json.Controllers
                 //btchew.code[0].text = "嚼檳榔行為";
                 ps.code = new code
                 {
-                    text = "首次治療前生活功能狀態評估"
-                };
-                ps.valueCodeableConcept = new valueCodeableConcept
-                {
+                    text = "首次治療前生活功能狀態評估",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code = CRLF_tag.ps
+                            code = "90521-6",
+                            display = "CollaborativeOptional state assessment [CMS Assessment]",
+                            system = "http://loinc.org"
+                        }
+                    }
+                };
+                ps.valueCodeableConcept = new valueCodeableConcept
+                {
+                    text = "首次治療前生活功能狀態評估",
+                    coding = new List<coding>
+                    {
+                        
+                        new coding
+                        {
+                            code = CRLF_tag.ps,
+                            display = "首次治療前生活功能狀態評估",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -4125,15 +4557,28 @@ namespace FHIR_json.Controllers
                 ssf1.subject = new subject { reference = $"Patient/{Pat.id}" };
                 ssf1.code = new code
                 {
-                    text = "癌症部位特定因子 1"
-                };
-                ssf1.valueCodeableConcept = new valueCodeableConcept
-                {
+                    text = "癌症部位特定因子 1",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code = CRLF_tag.ssf1
+                            code = "42086-9",
+                            display = "Collaborative staging site-Specific factor 1 Cancer",
+                            system = "http://loinc.org"
+                        }
+                    }
+                };
+                ssf1.valueCodeableConcept = new valueCodeableConcept
+                {
+                    text = "癌症部位特定因子 1"
+                    ,
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code = CRLF_tag.ssf1,
+                            display = "癌症部位特定因子 1",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -4147,15 +4592,28 @@ namespace FHIR_json.Controllers
                 ssf2.subject = new subject { reference = $"Patient/{Pat.id}" };
                 ssf2.code = new code
                 {
-                    text = "癌症部位特定因子 2"
-                };
-                ssf2.valueCodeableConcept = new valueCodeableConcept
-                {
+                    text = "癌症部位特定因子 2",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code = CRLF_tag.ssf2
+                            code = "42087-7",
+                            display = "Collaborative staging site-Specific factor 2 Cancer",
+                            system = "http://loinc.org"
+                        }
+                    }
+                };
+                ssf2.valueCodeableConcept = new valueCodeableConcept
+                {
+                    text = "癌症部位特定因子 2"
+                    ,
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code = CRLF_tag.ssf2,
+                            display = "癌症部位特定因子 2",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -4169,15 +4627,27 @@ namespace FHIR_json.Controllers
                 ssf3.subject = new subject { reference = $"Patient/{Pat.id}" };
                 ssf3.code = new code
                 {
-                    text = "癌症部位特定因子 3"
-                };
-                ssf3.valueCodeableConcept = new valueCodeableConcept
-                {
+                    text = "癌症部位特定因子 3",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code = CRLF_tag.ssf3
+                            code = "42088-5",
+                            display = "Collaborative staging site-Specific factor 3 Cancer",
+                            system = "http://loinc.org"
+                        }
+                    }
+                };
+                ssf3.valueCodeableConcept = new valueCodeableConcept
+                {
+                    text = "癌症部位特定因子 3",
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code = CRLF_tag.ssf3,
+                            display = "癌症部位特定因子 3",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -4191,16 +4661,27 @@ namespace FHIR_json.Controllers
                 ssf4.subject = new subject { reference = $"Patient/{Pat.id}" };
                 ssf4.code = new code
                 {
-                    text = "癌症部位特定因子 4"
-                };
-                ssf4.valueCodeableConcept = new valueCodeableConcept
-                {
-
+                    text = "癌症部位特定因子 4",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code = CRLF_tag.ssf4
+                            code = "42089-3",
+                            display = "Collaborative staging site-Specific factor 4 Cancer",
+                            system = "http://loinc.org"
+                        }
+                    }
+                };
+                ssf4.valueCodeableConcept = new valueCodeableConcept
+                {
+                    text = "癌症部位特定因子 4",
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code = CRLF_tag.ssf4,
+                            display = "癌症部位特定因子 4",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -4213,16 +4694,28 @@ namespace FHIR_json.Controllers
                 ssf5.status = "final";
                 ssf5.code = new code
                 {
-                    text = "癌症部位特定因子 5"
-                };
-                //ssf5.valueCodeableConcept[0].coding[0].code = CRLF_tag.ssf5;
-                ssf5.valueCodeableConcept = new valueCodeableConcept
-                {
+                    text = "癌症部位特定因子 5",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code = CRLF_tag.ssf5
+                            code = "42090-1",
+                            display = "Collaborative staging site-Specific factor 5 Cancer",
+                            system = "http://loinc.org"
+                        }
+                    }
+                };
+                //ssf5.valueCodeableConcept[0].coding[0].code = CRLF_tag.ssf5;
+                ssf5.valueCodeableConcept = new valueCodeableConcept
+                {
+                    text = "癌症部位特定因子 5",
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code = CRLF_tag.ssf5,
+                            display = "癌症部位特定因子 5",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -4235,15 +4728,27 @@ namespace FHIR_json.Controllers
                 ssf6.subject = new subject { reference = $"Patient/{Pat.id}" };//???
                 ssf6.code = new code
                 {
-                    text = "癌症部位特定因子 6"
-                };
-                ssf6.valueCodeableConcept = new valueCodeableConcept
-                {
+                    text = "癌症部位特定因子 6",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code = CRLF_tag.ssf6
+                            code = "42091-9",
+                            display = "Collaborative staging site-Specific factor 6 Cancer",
+                            system = "http://loinc.org"
+                        }
+                    }
+                };
+                ssf6.valueCodeableConcept = new valueCodeableConcept
+                {
+                    text = "癌症部位特定因子 6",
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code = CRLF_tag.ssf6,
+                            display = "癌症部位特定因子 6",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -4255,15 +4760,27 @@ namespace FHIR_json.Controllers
                 ssf7.subject = new subject { reference = $"Patient/{Pat.id}" };//???
                 ssf7.code = new code
                 {
-                    text = "癌症部位特定因子 7"
-                };
-                ssf7.valueCodeableConcept = new valueCodeableConcept
-                {
+                    text = "癌症部位特定因子 7",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code = CRLF_tag.ssf7
+                            code = "59489-5",
+                            display = "Collaborative staging site-specific factor 7 Cancer",
+                            system = "http://loinc.org"
+                        }
+                    }
+                };
+                ssf7.valueCodeableConcept = new valueCodeableConcept
+                {
+                    text = "癌症部位特定因子 7",
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code = CRLF_tag.ssf7,
+                            display = "癌症部位特定因子 7",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -4275,15 +4792,27 @@ namespace FHIR_json.Controllers
                 ssf8.subject = new subject { reference = $"Patient/{Pat.id}" };//???
                 ssf8.code = new code
                 {
-                    text = "癌症部位特定因子 8"
-                };
-                ssf8.valueCodeableConcept = new valueCodeableConcept
-                {
+                    text = "癌症部位特定因子 8",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code = CRLF_tag.ssf8
+                            code = "59490-3",
+                            display = "Collaborative staging site-specific factor 8 Cancer",
+                            system = "http://loinc.org"
+                        }
+                    }
+                };
+                ssf8.valueCodeableConcept = new valueCodeableConcept
+                {
+                    text = "癌症部位特定因子 8",
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code = CRLF_tag.ssf8,
+                            display = "癌症部位特定因子 8",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -4295,15 +4824,27 @@ namespace FHIR_json.Controllers
                 ssf9.subject = new subject { reference = $"Patient/{Pat.id}" };//???
                 ssf9.code = new code
                 {
-                    text = "癌症部位特定因子 9"
-                };
-                ssf9.valueCodeableConcept = new valueCodeableConcept
-                {
+                    text = "癌症部位特定因子 9",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code = CRLF_tag.ssf9
+                            code = "59491-1",
+                            display = "Collaborative staging site-specific factor 9 Cancer",
+                            system = "http://loinc.org"
+                        }
+                    }
+                };
+                ssf9.valueCodeableConcept = new valueCodeableConcept
+                {
+                    text = "癌症部位特定因子 9",
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code = CRLF_tag.ssf9,
+                            display = "癌症部位特定因子 9",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -4315,15 +4856,28 @@ namespace FHIR_json.Controllers
                 ssf10.subject = new subject { reference = $"Patient/{Pat.id}" };//???
                 ssf10.code = new code
                 {
-                    text = "癌症部位特定因子 10"
-                };
-                ssf10.valueCodeableConcept = new valueCodeableConcept
-                {
+                    text = "癌症部位特定因子 10",
                     coding = new List<coding>
                     {
                         new coding
                         {
-                            code = CRLF_tag.ssf10
+                            code = "59492-9",
+                            display = "Collaborative staging site-specific factor 10 Cancer",
+                            system = "http://loinc.org"
+                        }
+                    }
+                };
+                ssf10.valueCodeableConcept = new valueCodeableConcept
+                {
+                    text = "癌症部位特定因子 10",
+                    
+                    coding = new List<coding>
+                    {
+                        new coding
+                        {
+                            code = CRLF_tag.ssf10,
+                            display = "癌症部位特定因子 10",
+                            system = NHI_CRLF
                         }
                     }
                 };
@@ -4355,51 +4909,51 @@ namespace FHIR_json.Controllers
                 Com_CRLF.author = new List<author> { new author { reference = $"Organization/{OG.id}" } };
                 Com_CRLF.section = new List<section>
                 {
-                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{Con.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{TS.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{pni.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{lvi.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{nexam.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{nposit.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{diag.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{clinical_T.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{clinical_N.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{clinical_M.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{CG_clinical.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{pathology_T.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{pathology_N.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{pathology_M.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{CG_pathology.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{CG_OtherC.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{CG_OtherP.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{P1.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{P2.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{P3.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{Radio1.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{M1.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{m2.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{m3.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{m4.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{m5.id}"}}},
-                    new section{title="ChargeItem",ectry = new List<ectry>{new ectry{reference = $"ChargeItem/{m6.id}"}}},
-                    new section{title="Procedure",ectry = new List<ectry>{new ectry{reference = $"Procedure/{m7.id}"}}},
-                    new section{title="Condition",ectry = new List<ectry>{new ectry{reference = $"Condition/{SCC.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{height.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{weight.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{smoke.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{btchew.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{drinking.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{ps.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{ssf1.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{ssf2.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{ssf3.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{ssf4.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{ssf5.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{ssf6.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{ssf7.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{ssf8.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{ssf9.id}"}}},
-                    new section{title="Observation",ectry = new List<ectry>{new ectry{reference = $"Observation/{ssf10.id}"}}}
+                    new section{title="Condition",entry = new List<entry>{new entry{reference = $"Condition/{Con.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{TS.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{pni.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{lvi.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{nexam.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{nposit.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{diag.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{clinical_T.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{clinical_N.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{clinical_M.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{CG_clinical.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{pathology_T.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{pathology_N.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{pathology_M.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{CG_pathology.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{CG_OtherC.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{CG_OtherP.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{P1.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{P2.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{P3.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{Radio1.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{M1.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{m2.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{m3.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{m4.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{m5.id}"}}},
+                    new section{title="ChargeItem",entry = new List<entry>{new entry{reference = $"ChargeItem/{m6.id}"}}},
+                    new section{title="Procedure",entry = new List<entry>{new entry{reference = $"Procedure/{m7.id}"}}},
+                    new section{title="Condition",entry = new List<entry>{new entry{reference = $"Condition/{SCC.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{height.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{weight.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{smoke.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{btchew.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{drinking.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{ps.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{ssf1.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{ssf2.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{ssf3.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{ssf4.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{ssf5.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{ssf6.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{ssf7.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{ssf8.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{ssf9.id}"}}},
+                    new section{title="Observation",entry = new List<entry>{new entry{reference = $"Observation/{ssf10.id}"}}}
 
 
                 };
@@ -4429,8 +4983,8 @@ namespace FHIR_json.Controllers
 
 
             //return await GetandShare_Block(bundlejson);
-            var bundleIBMjson_Com = await GetandShare_Block(bundlejson_com);
-            return await GetandSharehapi_Block(bundlejson_com);
+            var bundleIBMjson_Com =  await GetandSharehapi_Block(bundlejson_com);
+            return await GetandShare_Block(bundlejson_com);
 
         }
 
@@ -4972,6 +5526,10 @@ namespace FHIR_json.Controllers
             bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\[{}]", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\[{}]", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @",{}", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @"{},", String.Empty);
+
+
 
             //var bundlejson = JsonConvert.SerializeObject(bundle, Formatting.Indented, new JsonSerializerSettings
             //{
@@ -5000,7 +5558,8 @@ namespace FHIR_json.Controllers
             bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\""\""", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\[{}]", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{},", String.Empty);
-            bundlejson = Regex.Replace(bundlejson, "_", "");
+            bundlejson = Regex.Replace(bundlejson, "{,", "{");
+            //bundlejson = Regex.Replace(bundlejson, "_", "");
 
 
 
@@ -5027,7 +5586,7 @@ namespace FHIR_json.Controllers
             bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
-            bundlejson = Regex.Replace(bundlejson, "_", "");
+            //bundlejson = Regex.Replace(bundlejson, "_", "");
             //bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{},", String.Empty);
 
 
@@ -5095,7 +5654,7 @@ namespace FHIR_json.Controllers
 
             bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
             bundlejson = Regex.Replace(bundlejson, "extension1", "extension");
-            bundlejson = Regex.Replace(bundlejson, "_", "");
+            //bundlejson = Regex.Replace(bundlejson, "_", "");
             //bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
             //bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
             //bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
