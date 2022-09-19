@@ -3992,16 +3992,16 @@ namespace FHIR_json.Controllers
                         code = new code
                         {
                             text="臨床分期字根/字首"
-                            //,
-                            //coding = new List<coding>
-                            //{
-                            //    new coding
-                            //    {
-                            //        code="21908-9",
-                            //        display = "Stage group.clinical Cancer",
-                            //        system = "http://loinc.org"
-                            //    }
-                            //}
+                            ,
+                            coding = new List<coding>
+                            {
+                                new coding
+                                {
+                                    code="臨床分期字根/字首",
+                                    display = "臨床分期字根/字首",
+                                    system = NHI_CRLF
+                                }
+                            }
                         },
                         valueCodeableConcept = new valueCodeableConcept
                         {
@@ -4257,16 +4257,16 @@ namespace FHIR_json.Controllers
                         code = new code
                         {
                              text="病理分期字根/字首"
-                             //,
-                             //coding = new List<coding>
-                             //   {
-                             //       new coding
-                             //       {
-                             //           code="21902-2",
-                             //           display = "Stage group.pathology Cancer",
-                             //           system = "http://loinc.org"
-                             //       }
-                             //   }
+                             ,
+                             coding = new List<coding>
+                                {
+                                    new coding
+                                    {
+                                        code="病理分期字根/字首",
+                                        display = "病理分期字根/字首",
+                                        system = NHI_CRLF
+                                    }
+                                }
                         },
                         valueCodeableConcept = new valueCodeableConcept
                         {
