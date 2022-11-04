@@ -577,13 +577,10 @@ namespace FHIR_json.Controllers
             var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
 
             var ComJson = CompositionJSON();
-            var bundlejson_com = BundleJSON_labm();
-
-
-
+            
             //return await GetandShare_Block(bundlejson);
-            var bundleIBMjson_Com = await GetandSharehapi_Block(bundlejson_com);
-            return  await GetandShare_Block(bundlejson_com);
+            var bundleIBMjson_Com = await GetandSharehapi_Block(ComJson);
+            return  await GetandShare_Block(ComJson);
         }
 
         [HttpPost]
@@ -907,13 +904,10 @@ namespace FHIR_json.Controllers
             var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
 
             var ComJson = CompositionJSON();
-            var bundlejson_com = BundleJSON_LABD_JSON();
-
-
 
             //return await GetandShare_Block(bundlejson);
-            var bundleIBMjson_Com =  await GetandSharehapi_Block(bundlejson_com);
-            return await GetandShare_Block(bundlejson_com);
+            var bundleIBMjson_Com =  await GetandSharehapi_Block(ComJson);
+            return await GetandShare_Block(ComJson);
         }
 
         [HttpPost]
@@ -1622,13 +1616,9 @@ namespace FHIR_json.Controllers
             var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
 
             var ComJson = CompositionJSON();
-            var bundlejson_com = BundleJSON_totfa();
 
-
-
-            //return await GetandShare_Block(bundlejson);
-            var bundleIBMjson_Com =  await GetandSharehapi_Block(bundlejson_com);
-            return await GetandShare_Block(bundlejson_com);
+            var bundleIBMjsonhapi_Com =  await GetandSharehapi_Block(ComJson);
+            return await GetandShare_Block(ComJson);
         }
 
         [HttpPost]
@@ -2216,11 +2206,10 @@ namespace FHIR_json.Controllers
             var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
 
             var ComJson = CompositionJSON();
-            var bundlejson_com = BundleJSON_totfb();
 
             //return await GetandShare_Block(bundlejson);
-            var bundleIBMjson_Com = await GetandSharehapi_Block(bundlejson_com);
-            return  await GetandShare_Block(bundlejson_com);
+            var bundleIBMjson_Com = await GetandSharehapi_Block(ComJson);
+            return  await GetandShare_Block(ComJson);
         }
         [HttpPost]
         public async Task<dynamic> spe_JSON(List<OriginalJson.spe> spe_tags)
@@ -4978,13 +4967,10 @@ namespace FHIR_json.Controllers
             var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
 
             var ComJson = CompositionJSON();
-            var bundlejson_com = BundleJSON_CRLF();
-
-
 
             //return await GetandShare_Block(bundlejson);
-            var bundleIBMjson_Com =  await GetandSharehapi_Block(bundlejson_com);
-            return await GetandShare_Block(bundlejson_com);
+            var bundleIBMjson_Com =  await GetandSharehapi_Block(ComJson);
+            return await GetandShare_Block(ComJson);
 
         }
 
@@ -5652,8 +5638,36 @@ namespace FHIR_json.Controllers
                 DefaultValueHandling = DefaultValueHandling.Include
             });
 
-            bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
+            //bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
             bundlejson = Regex.Replace(bundlejson, "extension1", "extension");
+            //bundlejson = Regex.Replace(bundlejson, "_", "");
+            //bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
+            //bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
+            //bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
+
+
+
+
+            //var bundlejson = JsonConvert.SerializeObject(bundle, Formatting.Indented, new JsonSerializerSettings
+            //{
+            //    NullValueHandling = NullValueHandling.Ignore
+            //    //MissingMemberHandling = MissingMemberHandling.Ignore
+            //});
+            //var bundlejson = JsonConvert.SerializeObject(bundle);
+
+            return bundlejson;
+
+        }
+        public string BundleJSON_Compositon()
+        {
+            var bundlejson = JsonConvert.SerializeObject(bundle, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Include
+            });
+
+            //bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
+            //bundlejson = Regex.Replace(bundlejson, "extension1", "extension");
             //bundlejson = Regex.Replace(bundlejson, "_", "");
             //bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
             //bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
@@ -5686,7 +5700,7 @@ namespace FHIR_json.Controllers
             //bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
             //bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
             //bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
-
+            
 
 
 
@@ -5744,6 +5758,25 @@ namespace FHIR_json.Controllers
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
+            
+            bundlejson = Regex.Replace(bundlejson, @",\""entry\"":\[{\""reference\"":\""(\w*)/\""}\]", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @",{\""title\"":\""(\w*)\""}", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @"{\""title\"":\""(\w *)\""},", String.Empty);
+
+            bundlejson = Regex.Replace(bundlejson, "extension1", "extension");
+            bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\[{}]", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\[{}]", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{},", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\""\""", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\[{}]", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{},", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, "{,", "{");
+            bundlejson = Regex.Replace(bundlejson, @",{}", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @"{},", String.Empty);
+
 
             return bundlejson;
 
