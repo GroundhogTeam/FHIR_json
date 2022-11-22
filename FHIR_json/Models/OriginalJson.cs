@@ -460,7 +460,7 @@ namespace FHIR_json.Models
             public string TOTFAT6 { get; set; }
 
             [JsonProperty("TOTFA_d1")]
-            public int TOTFAD1 { get; set; }
+            public string TOTFAD1 { get; set; }
 
             [JsonProperty("TOTFA_d2")]
             public int TOTFAD2 { get; set; }
@@ -478,7 +478,7 @@ namespace FHIR_json.Models
             public string TOTFAD7 { get; set; }
 
             [JsonProperty("TOTFA_d8")]
-            public int TOTFAD8 { get; set; }
+            public string TOTFAD8 { get; set; }
 
             [JsonProperty("TOTFA_d9")]
             public string TOTFAD9 { get; set; }
@@ -526,10 +526,10 @@ namespace FHIR_json.Models
             public string TOTFAGender { get; set; }
 
             [JsonProperty("TOTFA_p1")]
-            public int TOTFAP1 { get; set; }
+            public double TOTFAP1 { get; set; }
 
             [JsonProperty("TOTFA_p2")]
-            public int? TOTFAP2 { get; set; }
+            public double? TOTFAP2 { get; set; }
 
             [JsonProperty("TOTFA_p3")]
             public int TOTFAP3 { get; set; }
@@ -538,7 +538,7 @@ namespace FHIR_json.Models
             public string TOTFAP4 { get; set; }
 
             [JsonProperty("TOTFA_p5")]
-            public int? TOTFAP5 { get; set; }
+            public double? TOTFAP5 { get; set; }
 
             [JsonProperty("TOTFA_p6")]
             public string TOTFAP6 { get; set; }
@@ -550,7 +550,7 @@ namespace FHIR_json.Models
             public string TOTFAP9 { get; set; }
 
             [JsonProperty("TOTFA_p10")]
-            public int TOTFAP10 { get; set; }
+            public double TOTFAP10 { get; set; }
 
             [JsonProperty("TOTFA_p13")]
             public int TOTFAP13 { get; set; }
@@ -676,7 +676,7 @@ namespace FHIR_json.Models
             public string TOTFBP15 { get; set; }
 
             [JsonProperty("TOTFB_p16")]
-            public int TOTFBP16 { get; set; }
+            public double TOTFBP16 { get; set; }
         }
     }
 }

@@ -244,6 +244,7 @@ namespace FHIR_json.Controllers
                         value=Labm_tag.LABMH9
                     }
                 };
+                labm_pt.gender = Labm_tag.LABMGender;
                 patlist.Add(labm_pt);
 
                 //ChargeItem
@@ -562,7 +563,7 @@ namespace FHIR_json.Controllers
             bundle.entry = new List<entry>();
             var bundle_distinct = PatOrg_Distinct();
             var response_json_ditsint = await GetandShare_Block(bundle_distinct);
-            var response_json_ditsinthapi = await GetandSharehapi_Block(bundle_distinct);
+            //var response_json_ditsinthapi = await GetandSharehapi_Block(bundle_distinct);
             var jsonobs = ObservationJSON();
             var jsonorg = OrganizationJSON();
             var jsonpro = ProcedureJSON();
@@ -574,12 +575,12 @@ namespace FHIR_json.Controllers
             var bundlejson = BundleJSON_labm();
             //var bundlehapijson = await GetandSharehapi_Block(bundlejson);
             var bundleIBMjson = await GetandShare_Block(bundlejson);
-            var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
+            //var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
 
             var ComJson = CompositionJSON();
             
             //return await GetandShare_Block(bundlejson);
-            var bundleIBMjson_Com = await GetandSharehapi_Block(ComJson);
+            //var bundleIBMjson_Com = await GetandSharehapi_Block(ComJson);
             return  await GetandShare_Block(ComJson);
         }
 
@@ -889,7 +890,7 @@ namespace FHIR_json.Controllers
             bundle.entry = new List<entry>();
             var bundle_distinct = PatOrg_Distinct();
             var response_json_ditsint = await GetandShare_Block(bundle_distinct);
-            var response_json_ditsinthapi = await GetandSharehapi_Block(bundle_distinct);
+            //var response_json_ditsinthapi = await GetandSharehapi_Block(bundle_distinct);
             var jsonobs = ObservationJSON();
             var jsonorg = OrganizationJSON();
             var jsonpro = ProcedureJSON();
@@ -901,12 +902,12 @@ namespace FHIR_json.Controllers
             var bundlejson = BundleJSON_LABD_JSON();
             //var bundlehapijson = await GetandSharehapi_Block(bundlejson);
             var bundleIBMjson = await GetandShare_Block(bundlejson);
-            var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
+            //var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
 
             var ComJson = CompositionJSON();
 
             //return await GetandShare_Block(bundlejson);
-            var bundleIBMjson_Com =  await GetandSharehapi_Block(ComJson);
+            //var bundleIBMjson_Com =  await GetandSharehapi_Block(ComJson);
             return await GetandShare_Block(ComJson);
         }
 
@@ -961,7 +962,7 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code=TOTFA_tag.TOTFAD1.ToString(),
+                                code=TOTFA_tag.TOTFAD1,
                                 display = "案件分類",
                                 system = NHI_Outpatient
                             }
@@ -1287,7 +1288,8 @@ namespace FHIR_json.Controllers
                         {
                             new coding
                             {
-                                code = TOTFA_tag.TOTFAP2.ToString(),//資料格式不同
+                                //code = TOTFA_tag.TOTFAP2.ToString("0.##"),//資料格式不同
+                                code = String.Format("{0:#.0}", TOTFA_tag.TOTFAP2),
                                 display = "醫令調劑方式",
                                 system = NHI_Outpatient
     }
@@ -1599,7 +1601,7 @@ namespace FHIR_json.Controllers
             bundle.entry = new List<entry>();
             var bundle_distinct = PatOrg_Distinct();
             var response_json_ditsint = await GetandShare_Block(bundle_distinct);
-            var response_json_ditsinthapi = await GetandSharehapi_Block(bundle_distinct);
+            //var response_json_ditsinthapi = await GetandSharehapi_Block(bundle_distinct);
             var jsonobs = ObservationJSON();
             var jsonorg = OrganizationJSON();
             var jsonpro = ProcedureJSON();
@@ -1613,11 +1615,11 @@ namespace FHIR_json.Controllers
             var bundlejson = BundleJSON_totfa();
             //var bundlehapijson = await GetandSharehapi_Block(bundlejson);
             var bundleIBMjson = await GetandShare_Block(bundlejson);
-            var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
+            //var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
 
             var ComJson = CompositionJSON();
 
-            var bundleIBMjsonhapi_Com =  await GetandSharehapi_Block(ComJson);
+            //var bundleIBMjsonhapi_Com =  await GetandSharehapi_Block(ComJson);
             return await GetandShare_Block(ComJson);
         }
 
@@ -2190,7 +2192,7 @@ namespace FHIR_json.Controllers
             bundle.entry = new List<entry>();
             var bundle_distinct = PatOrg_Distinct();
             var response_json_ditsint = await GetandShare_Block(bundle_distinct); //先送出pat和enc去server
-            var response_json_ditsinthapi = await GetandSharehapi_Block(bundle_distinct);
+            //var response_json_ditsinthapi = await GetandSharehapi_Block(bundle_distinct);
             var jsonorg = OrganizationJSON();
             var jsonpro = ProcedureJSON();
             var jsonchar = ChargeItemJSON();
@@ -2203,12 +2205,12 @@ namespace FHIR_json.Controllers
             var bundlejson = BundleJSON_totfb();
             //var bundlehapijson = await GetandSharehapi_Block(bundlejson);
             var bundleIBMjson = await GetandShare_Block(bundlejson);
-            var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
+            //var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
 
             var ComJson = CompositionJSON();
 
             //return await GetandShare_Block(bundlejson);
-            var bundleIBMjson_Com = await GetandSharehapi_Block(ComJson);
+            //var bundleIBMjson_Com = await GetandSharehapi_Block(ComJson);
             return  await GetandShare_Block(ComJson);
         }
         [HttpPost]
@@ -4952,7 +4954,7 @@ namespace FHIR_json.Controllers
             bundle.entry = new List<entry>();
             var bundle_distinct = PatOrg_Distinct();
             var response_json_ditsint = await GetandShare_Block(bundle_distinct);
-            var response_json_ditsinthapi = await GetandSharehapi_Block(bundle_distinct);
+            //var response_json_ditsinthapi = await GetandSharehapi_Block(bundle_distinct);
             var jsonobs = ObservationJSON();
             var jsonorg = OrganizationJSON();
             var jsonpro = ProcedureJSON();
@@ -4964,12 +4966,12 @@ namespace FHIR_json.Controllers
 
             //var bundlehapijson = await GetandSharehapi_Block(bundlejson);
             var bundleIBMjson = await GetandShare_Block(bundlejson);
-            var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
+            //var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
 
             var ComJson = CompositionJSON();
 
             //return await GetandShare_Block(bundlejson);
-            var bundleIBMjson_Com =  await GetandSharehapi_Block(ComJson);
+            //var bundleIBMjson_Com =  await GetandSharehapi_Block(ComJson);
             return await GetandShare_Block(ComJson);
 
         }
@@ -5767,13 +5769,15 @@ namespace FHIR_json.Controllers
             bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{}", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\[{}]", String.Empty);
-            bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\[{}]", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\[{},{}]", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{}", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @",\""(\w*)\"":\{},", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\""\""", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\[{}]", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @"\""(\w*)\"":\{},", String.Empty);
             bundlejson = Regex.Replace(bundlejson, "{,", "{");
+            bundlejson = Regex.Replace(bundlejson, @",{}", String.Empty);
+            bundlejson = Regex.Replace(bundlejson, @"{},", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @",{}", String.Empty);
             bundlejson = Regex.Replace(bundlejson, @"{},", String.Empty);
 
