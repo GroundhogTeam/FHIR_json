@@ -221,9 +221,11 @@ namespace FHIR_json.Controllers
             var TokenValue = HttpContext.Current.Request.Headers["Authorization"];
             //抓取serverIP
             var Tokenip = HttpContext.Current.Request.Headers["ServerIP"];
+            //接流水號
+            var NumId = HttpContext.Current.Request.Headers["NumId"];
 
             //開始分類
-            //int fhir_id = 0;//FHIR流水號
+            int fhir_id = 0;//FHIR流水號
             foreach (var Labm_tag in Labm_tags)
             {
                 //organization
@@ -531,7 +533,7 @@ namespace FHIR_json.Controllers
 
                 //Composition
                 Com_LABM = new Composition();
-                Com_LABM.id = Sha1Hash($"{DateTime.Now.ToString()}-LABM");
+                Com_LABM.id = Sha1Hash($"{DateTime.Now.ToString()}-LABM-{NumId}");
                 Com_LABM.date = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 Com_LABM.status = "final";
                 Com_LABM.title = "LABM";
@@ -597,6 +599,8 @@ namespace FHIR_json.Controllers
             var TokenValue = HttpContext.Current.Request.Headers["Authorization"];
             //抓取serverIP
             var Tokenip = HttpContext.Current.Request.Headers["ServerIP"];
+            //接流水號
+            var NumId = HttpContext.Current.Request.Headers["NumId"];
             //開始分類
             int fhir_id = 0;//FHIR流水號
             foreach (var Labd_tag in Labd_tags)
@@ -864,7 +868,7 @@ namespace FHIR_json.Controllers
 
                 //Composition
                 Com_LABD = new Composition();
-                Com_LABD.id = Sha1Hash($"{DateTime.Now.ToString()}-LABD");
+                Com_LABD.id = Sha1Hash($"{DateTime.Now.ToString()}-LABD-{NumId}");
                 Com_LABD.date = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 Com_LABD.status = "final";
                 Com_LABD.title = "LABD";
@@ -928,6 +932,9 @@ namespace FHIR_json.Controllers
             var TokenValue = HttpContext.Current.Request.Headers["Authorization"];
             //抓取serverIP
             var Tokenip = HttpContext.Current.Request.Headers["ServerIP"];
+            //接流水號
+            var NumId = HttpContext.Current.Request.Headers["NumId"];
+
             //StreamReader r = new StreamReader(@"C:\Users\huang\source\repos\GroundhogTeam\NHIRDB_system\WebApplication3\ReadJSON\totfae_merge_col.json");
             //StreamReader r = new StreamReader(@"D:\信華專區\newNHIRDB_system\NHIRDB_system\WebApplication3\ReadJSON\totfae_merge_col.json");
             //StreamReader r = new StreamReader(@"C:\Users\pin-hua\source\repos\GroundhogTeam\NHIRDB_system\WebApplication3\ReadJSON\totfae_merge_col.json");
@@ -1548,7 +1555,7 @@ namespace FHIR_json.Controllers
 
                 //Composition
                 Com_TOTFA = new Composition();
-                Com_TOTFA.id = Sha1Hash($"{DateTime.Now.ToString()}-TOTFA");
+                Com_TOTFA.id = Sha1Hash($"{DateTime.Now.ToString()}-TOTFA-{NumId}");
                 Com_TOTFA.date = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 Com_TOTFA.status = "final";
                 Com_TOTFA.title = "TOTFA";
@@ -1644,6 +1651,8 @@ namespace FHIR_json.Controllers
             var TokenValue = HttpContext.Current.Request.Headers["Authorization"];
             //抓取serverIP
             var Tokenip = HttpContext.Current.Request.Headers["ServerIP"];
+            //接流水號
+            var NumId = HttpContext.Current.Request.Headers["NumId"];
             //開始分類
             int fhir_id = 0;//FHIR流水號
             foreach (var TOTFB_tag in TOTFB_tags)
@@ -2160,7 +2169,7 @@ namespace FHIR_json.Controllers
 
                 //Composition
                 Com_TOTFB = new Composition();
-                Com_TOTFB.id = Sha1Hash($"{DateTime.Now.ToString()}-TOTFB");
+                Com_TOTFB.id = Sha1Hash($"{DateTime.Now.ToString()}-TOTFB-{NumId}");
                 Com_TOTFB.date = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 Com_TOTFB.status = "final";
                 Com_TOTFB.title = "TOTFB";
@@ -2238,9 +2247,11 @@ namespace FHIR_json.Controllers
             var TokenValue = HttpContext.Current.Request.Headers["Authorization"];
             //抓取serverIP
             var Tokenip = HttpContext.Current.Request.Headers["ServerIP"];
+            //接流水號
+            var NumId = HttpContext.Current.Request.Headers["NumId"];
             //ViewBag.spe_tags = spe_tags;
             //開始分類
-            //int fhir_id = 0;//FHIR流水號
+            int fhir_id = 0;//FHIR流水號
             foreach (var spe_tag in spe_tags)
             {
                 //Patient
@@ -2483,6 +2494,8 @@ namespace FHIR_json.Controllers
             var TokenValue = HttpContext.Current.Request.Headers["Authorization"];
             //抓取serverIP
             var Tokenip = HttpContext.Current.Request.Headers["ServerIP"];
+            //接流水號
+            var NumId = HttpContext.Current.Request.Headers["NumId"];
             //string jsonString = r.ReadToEnd();
             //var CRLF_tags = JsonConvert.DeserializeObject<List<OriginalJson.CRLF>>(jsonString);//將JSON格式轉換成物件
             //ViewBag.CRLF_tags = CRLF_tags;
@@ -4902,7 +4915,7 @@ namespace FHIR_json.Controllers
 
                 //Composition
                 Com_CRLF = new Composition();
-                Com_CRLF.id = Sha1Hash($"{DateTime.Now.ToString()}-CRLF");
+                Com_CRLF.id = Sha1Hash($"{DateTime.Now.ToString()}-CRLF-{NumId}");
                 Com_CRLF.date = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                 Com_CRLF.status = "final";
                 Com_CRLF.title = "CRLF";
