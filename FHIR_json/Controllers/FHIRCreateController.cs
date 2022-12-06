@@ -15,6 +15,7 @@ using System.Net.Http.Headers;
 using System.Security.Authentication;
 using System.Security.Policy;
 using System.Security.Cryptography;
+using System.Web;
 
 namespace FHIR_json.Controllers
 {
@@ -216,6 +217,9 @@ namespace FHIR_json.Controllers
         [HttpPost]
         public async Task<dynamic> LABM_JSON(List<OriginalJson.LABM> Labm_tags)
         {
+            //抓取帳號密碼
+            var TokenValue = HttpContext.Current.Request.Headers["Authorization"];
+
             //開始分類
             //int fhir_id = 0;//FHIR流水號
             foreach (var Labm_tag in Labm_tags)
@@ -562,7 +566,7 @@ namespace FHIR_json.Controllers
             }
             bundle.entry = new List<entry>();
             var bundle_distinct = PatOrg_Distinct();
-            var response_json_ditsint = await GetandShare_Block(bundle_distinct);
+            var response_json_ditsint = await GetandShare_Block(bundle_distinct, TokenValue);
             //var response_json_ditsinthapi = await GetandSharehapi_Block(bundle_distinct);
             var jsonobs = ObservationJSON();
             var jsonorg = OrganizationJSON();
@@ -574,19 +578,21 @@ namespace FHIR_json.Controllers
             var jsonenc = EncounterJSON();
             var bundlejson = BundleJSON_labm();
             //var bundlehapijson = await GetandSharehapi_Block(bundlejson);
-            var bundleIBMjson = await GetandShare_Block(bundlejson);
+            var bundleIBMjson = await GetandShare_Block(bundlejson, TokenValue);
             //var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
 
             var ComJson = CompositionJSON();
             
-            //return await GetandShare_Block(bundlejson);
+            //return await GetandShare_Block(bundlejson,TokenValue);
             //var bundleIBMjson_Com = await GetandSharehapi_Block(ComJson);
-            return  await GetandShare_Block(ComJson);
+            return  await GetandShare_Block(ComJson, TokenValue);
         }
 
         [HttpPost]
         public async Task<dynamic> LABD_JSON(List<OriginalJson.LABD> Labd_tags) //Bundle
         {
+            //抓取帳號密碼
+            var TokenValue = HttpContext.Current.Request.Headers["Authorization"];
             //開始分類
             int fhir_id = 0;//FHIR流水號
             foreach (var Labd_tag in Labd_tags)
@@ -889,7 +895,7 @@ namespace FHIR_json.Controllers
             }
             bundle.entry = new List<entry>();
             var bundle_distinct = PatOrg_Distinct();
-            var response_json_ditsint = await GetandShare_Block(bundle_distinct);
+            var response_json_ditsint = await GetandShare_Block(bundle_distinct, TokenValue);
             //var response_json_ditsinthapi = await GetandSharehapi_Block(bundle_distinct);
             var jsonobs = ObservationJSON();
             var jsonorg = OrganizationJSON();
@@ -901,19 +907,21 @@ namespace FHIR_json.Controllers
             var jsonenc = EncounterJSON();
             var bundlejson = BundleJSON_LABD_JSON();
             //var bundlehapijson = await GetandSharehapi_Block(bundlejson);
-            var bundleIBMjson = await GetandShare_Block(bundlejson);
+            var bundleIBMjson = await GetandShare_Block(bundlejson,TokenValue);
             //var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
 
             var ComJson = CompositionJSON();
 
-            //return await GetandShare_Block(bundlejson);
+            //return await GetandShare_Block(bundlejson,TokenValue);
             //var bundleIBMjson_Com =  await GetandSharehapi_Block(ComJson);
-            return await GetandShare_Block(ComJson);
+            return await GetandShare_Block(ComJson, TokenValue);
         }
 
         [HttpPost]
         public async Task<dynamic> TOTFA_JSON(List<OriginalJson.TOTFA> TOTFA_tags)
         {
+            //抓取帳號密碼
+            var TokenValue = HttpContext.Current.Request.Headers["Authorization"];
             //StreamReader r = new StreamReader(@"C:\Users\huang\source\repos\GroundhogTeam\NHIRDB_system\WebApplication3\ReadJSON\totfae_merge_col.json");
             //StreamReader r = new StreamReader(@"D:\信華專區\newNHIRDB_system\NHIRDB_system\WebApplication3\ReadJSON\totfae_merge_col.json");
             //StreamReader r = new StreamReader(@"C:\Users\pin-hua\source\repos\GroundhogTeam\NHIRDB_system\WebApplication3\ReadJSON\totfae_merge_col.json");
@@ -1600,7 +1608,7 @@ namespace FHIR_json.Controllers
             }
             bundle.entry = new List<entry>();
             var bundle_distinct = PatOrg_Distinct();
-            var response_json_ditsint = await GetandShare_Block(bundle_distinct);
+            var response_json_ditsint = await GetandShare_Block(bundle_distinct, TokenValue);
             //var response_json_ditsinthapi = await GetandSharehapi_Block(bundle_distinct);
             var jsonobs = ObservationJSON();
             var jsonorg = OrganizationJSON();
@@ -1614,18 +1622,20 @@ namespace FHIR_json.Controllers
             //var bundlejson = BundleJSON();
             var bundlejson = BundleJSON_totfa();
             //var bundlehapijson = await GetandSharehapi_Block(bundlejson);
-            var bundleIBMjson = await GetandShare_Block(bundlejson);
+            var bundleIBMjson = await GetandShare_Block(bundlejson,TokenValue);
             //var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
 
             var ComJson = CompositionJSON();
 
             //var bundleIBMjsonhapi_Com =  await GetandSharehapi_Block(ComJson);
-            return await GetandShare_Block(ComJson);
+            return await GetandShare_Block(ComJson, TokenValue);
         }
 
         [HttpPost]
         public async Task<dynamic> TOTFB_JSON(List<OriginalJson.TOTFB> TOTFB_tags)
         {
+            //抓取帳號密碼
+            var TokenValue = HttpContext.Current.Request.Headers["Authorization"];
             //開始分類
             int fhir_id = 0;//FHIR流水號
             foreach (var TOTFB_tag in TOTFB_tags)
@@ -2191,7 +2201,7 @@ namespace FHIR_json.Controllers
             }
             bundle.entry = new List<entry>();
             var bundle_distinct = PatOrg_Distinct();
-            var response_json_ditsint = await GetandShare_Block(bundle_distinct); //先送出pat和enc去server
+            var response_json_ditsint = await GetandShare_Block(bundle_distinct, TokenValue); //先送出pat和enc去server
             //var response_json_ditsinthapi = await GetandSharehapi_Block(bundle_distinct);
             var jsonorg = OrganizationJSON();
             var jsonpro = ProcedureJSON();
@@ -2204,18 +2214,20 @@ namespace FHIR_json.Controllers
             var jsonobs = ObservationJSON();
             var bundlejson = BundleJSON_totfb();
             //var bundlehapijson = await GetandSharehapi_Block(bundlejson);
-            var bundleIBMjson = await GetandShare_Block(bundlejson);
+            var bundleIBMjson = await GetandShare_Block(bundlejson,TokenValue);
             //var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
 
             var ComJson = CompositionJSON();
 
-            //return await GetandShare_Block(bundlejson);
+            //return await GetandShare_Block(bundlejson,TokenValue);
             //var bundleIBMjson_Com = await GetandSharehapi_Block(ComJson);
-            return  await GetandShare_Block(ComJson);
+            return  await GetandShare_Block(ComJson, TokenValue);
         }
         [HttpPost]
         public async Task<dynamic> spe_JSON(List<OriginalJson.spe> spe_tags)
         {
+            //抓取帳號密碼
+            var TokenValue = HttpContext.Current.Request.Headers["Authorization"];
             //ViewBag.spe_tags = spe_tags;
             //開始分類
             //int fhir_id = 0;//FHIR流水號
@@ -2428,7 +2440,7 @@ namespace FHIR_json.Controllers
             }
             bundle.entry = new List<entry>();
             var bundle_distinct = PatOrg_Distinct();
-            var response_json_ditsint = await GetandShare_Block(bundle_distinct);
+            var response_json_ditsint = await GetandShare_Block(bundle_distinct, TokenValue);
             var response_json_ditsinthapi = await GetandSharehapi_Block(bundle_distinct);
             var jsonobs = ObservationJSON();
             var jsonorg = OrganizationJSON();
@@ -2441,7 +2453,7 @@ namespace FHIR_json.Controllers
             var jsonconsent = ConsentJSON();
             var bundlejson = BundleJSON_spe_JSON();
 
-            var bundleIBMjson = await GetandShare_Block(bundlejson);
+            var bundleIBMjson = await GetandShare_Block(bundlejson,TokenValue);
             var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
 
             var ComJson = CompositionJSON();
@@ -2449,7 +2461,7 @@ namespace FHIR_json.Controllers
 
 
 
-            //return await GetandShare_Block(bundlejson);
+            //return await GetandShare_Block(bundlejson,TokenValue);
             return await GetandSharehapi_Block(bundlejson_com);
         }
 
@@ -2457,6 +2469,8 @@ namespace FHIR_json.Controllers
         [HttpPost]
         public async Task<dynamic> CRLF_JSON(List<OriginalJson.CRLF> CRLF_tags)
         {
+            //抓取帳號密碼
+            var TokenValue = HttpContext.Current.Request.Headers["Authorization"];
             //string jsonString = r.ReadToEnd();
             //var CRLF_tags = JsonConvert.DeserializeObject<List<OriginalJson.CRLF>>(jsonString);//將JSON格式轉換成物件
             //ViewBag.CRLF_tags = CRLF_tags;
@@ -4953,7 +4967,7 @@ namespace FHIR_json.Controllers
 
             bundle.entry = new List<entry>();
             var bundle_distinct = PatOrg_Distinct();
-            var response_json_ditsint = await GetandShare_Block(bundle_distinct);
+            var response_json_ditsint = await GetandShare_Block(bundle_distinct, TokenValue);
             //var response_json_ditsinthapi = await GetandSharehapi_Block(bundle_distinct);
             var jsonobs = ObservationJSON();
             var jsonorg = OrganizationJSON();
@@ -4965,35 +4979,36 @@ namespace FHIR_json.Controllers
             var bundlejson = BundleJSON_CRLF();
 
             //var bundlehapijson = await GetandSharehapi_Block(bundlejson);
-            var bundleIBMjson = await GetandShare_Block(bundlejson);
+            var bundleIBMjson = await GetandShare_Block(bundlejson,TokenValue);
             //var bundleIBMjsonhapi = await GetandSharehapi_Block(bundlejson);
 
             var ComJson = CompositionJSON();
 
-            //return await GetandShare_Block(bundlejson);
+            //return await GetandShare_Block(bundlejson,TokenValue);
             //var bundleIBMjson_Com =  await GetandSharehapi_Block(ComJson);
-            return await GetandShare_Block(ComJson);
+            return await GetandShare_Block(ComJson, TokenValue);
 
         }
 
         [HttpPost]
-        public async Task<dynamic> GetandShare_Block(string bundlejson)
+        public async Task<dynamic> GetandShare_Block(string bundlejson,string tokenvalue)
         {
             //var json = JsonConvert.SerializeObject(Post_data);
             var data = new StringContent(bundlejson, Encoding.UTF8, "application/json");
 
             //var url = "http://localhost:12904/api/Geth/" + Request_Url;
             var url = ConfigurationManager.AppSettings.Get("FHIRAPI");
-            var Username = ConfigurationManager.AppSettings.Get("Username");
-            var Password = ConfigurationManager.AppSettings.Get("Password");
+            //var Username = ConfigurationManager.AppSettings.Get("Username");
+            //var Password = ConfigurationManager.AppSettings.Get("Password");
 
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             HttpClient client = new HttpClient();
 
             //specify to use TLS 1.2 as default connection
-            var byteArray = Encoding.ASCII.GetBytes($"{Username}:{Password}");
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+            //var byteArray = Encoding.ASCII.GetBytes($"{Username}:{Password}");
+            client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", tokenvalue);
+            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 
             //POST資料
             var response = await client.PostAsync(url, data);
